@@ -13,8 +13,10 @@ const dataComposer = ({ context, moduleid }, onData) => {
 
   // a query to pull in the module, its root component and its data query. more later
   const cQuery = `
-    [:find ?query
+    [:find ?query ?sortfields ?sortorders
      :where [?e2 "query" ?query]
+            [?e2 "sortfields" ?sortfields]
+            [?e2 "sortorders" ?sortorders]
             [?e2 "componentid" ?compid]
             [?e "rootcomponent" ?e2]
             [?e "moduleid" "${moduleid}"]]`
@@ -22,9 +24,11 @@ const dataComposer = ({ context, moduleid }, onData) => {
   // arguments to a components query
   const cArgs = [cQuery, db_components]
   // fetching the query you actually want from the query about components
-  const query = datascript.q(...cArgs)[0][0]
-  // arguments for the actual query we want
-  const qArgs = [query, db]
+
+  const compquery = datascript.q(...cArgs)
+  const query = compquery[0][0]
+  const sortfields = JSON.parse("[" + compquery[0][1].substring(1).slice(0,-1).split(",") + "]")
+  const sortorders = compquery[0][2].substring(1).slice(0,-1).split(",")
 
   // recursive multidimensional array sort being formed. TODO: change the structure to match datascript output (arrays all the way down)
   try {
@@ -32,7 +36,7 @@ const dataComposer = ({ context, moduleid }, onData) => {
       [:find (pull $x ?e ["componentsname", "componentstype", "componentsfunction", {"_componentsparents" ...}]) :in $x :where [$x ?e "componentsname" "Root"]]
     `
     var pullcomponents = datascript.q(...[pullquery, db_components])[0]
-    var result = multisort.arr.multisort(datascript.q(...qArgs), [2, 0], ['DESC', 'ASC'])
+    var result = multisort.arr.multisort(datascript.q(...[query, db]), sortfields, sortorders)
     onData(null, {result, pullcomponents})
   } catch (error) {
     alert(error)

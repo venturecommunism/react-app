@@ -1,7 +1,7 @@
 // Datascript things
 import datascript from 'datascript'
 import createDBConn from './lib/createDBConn'
-import createDBConn_components from './lib/createDBConn_components'
+import createDBConn_components from './lib/components_createDBConn'
 const conn = createDBConn()
 // const transact = datascript.transact
 // Transaction function maintains the log (for time travel, undo, etc.)
