@@ -1,6 +1,6 @@
 import React from 'react'
 
-import DataContainer from '../../cleanup/container'
+import DataContainer from '../../core/containers/appbuilder'
 import ActionsMapper from '../containers/actionsmapper'
 import RecursiveComponent from '../../cleanup/component'
 const Module = DataContainer(ActionsMapper('general', RecursiveComponent))
