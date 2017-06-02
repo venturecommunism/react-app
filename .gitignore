@@ -1,2 +1,11 @@
 node_modules
 core/configs/url.js
+
+# Compiled output
+public/dist
+public/index.html
+
+# Node.js and NPM
+node_modules
+npm-debug.log
+
