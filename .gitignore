@@ -1,5 +1,5 @@
 node_modules
-core/configs/url.js
+config/url.js
 
 # Compiled output
 public/dist

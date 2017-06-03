@@ -1,6 +1,6 @@
 import React from 'react'
 import {mount} from 'react-mounter'
-import { DBConnProvider } from '../../lib/helpers/legacy/react-datascript'
+import { DBConnProvider } from '../../config/lib/helpers/legacy/react-datascript'
 
 import MainLayout from '../layout/components/main_layout'
 

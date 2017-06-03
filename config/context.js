@@ -1,5 +1,5 @@
 import datascript from 'datascript'
-import createDBConn from '../lib/createDBConn'
+import createDBConn from './lib/createDBConn'
 import { Socket } from 'phoenix'
 import Channel from './channel'
 import url from './url'
