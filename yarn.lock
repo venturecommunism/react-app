@@ -4663,9 +4663,9 @@ rc@^1.1.7:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
-react-app-tools@^1.1.2:
+"react-app-tools@git+https://github.com/venturecommunism/react-app-tools.git":
   version "1.1.2"
-  resolved "https://registry.yarnpkg.com/react-app-tools/-/react-app-tools-1.1.2.tgz#98b6137491a3b7755bb45209d1800e6d6420a208"
+  resolved "git+https://github.com/venturecommunism/react-app-tools.git#06db343d17592bbf3ffaa58772b196c882ee3394"
   dependencies:
     assets-webpack-plugin "^3.4.0"
     autoprefixer "^6.3.7"
