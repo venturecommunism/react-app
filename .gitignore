@@ -13,6 +13,8 @@ npm-debug.log
 
 ### SERVER ###
 
+/apps/auth/priv/keys
+
 # The directory Mix will write compiled artifacts to.
 /_build
 

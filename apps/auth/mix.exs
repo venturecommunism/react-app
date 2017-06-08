@@ -18,7 +18,13 @@ defmodule Auth.Mixfile do
   #
   # Type "mix help compile.app" for more information
   def application do
-    [applications: [:logger, :postgrex, :ecto],
+    [applications:
+     [
+       :logger,
+       :comeonin,
+       :postgrex,
+       :ecto
+     ],
      mod: {Auth, []}]
   end
 
@@ -37,6 +43,7 @@ defmodule Auth.Mixfile do
   # Type "mix help deps" for more examples and options
   defp deps do
     [
+      {:comeonin, "~> 2.5.3"},
       {:postgrex, "~> 0.11"},
       {:ecto, "~> 2.0"},
       {:poison, "~> 2.0"}
