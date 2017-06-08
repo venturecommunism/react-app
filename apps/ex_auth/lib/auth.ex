@@ -1,23 +1,15 @@
 defmodule Auth do
-end
+  use Application
 
-defmodule Auth.Session do
-  alias Auth.{Repo, User}
+  def start(_type, _args) do
+    import Supervisor.Spec, warn: false
 
-  def authenticate(%{"email" => email, "password" => password}) do
-    user = Repo.get_by(User, email: String.downcase(email))
+    children = [
+      supervisor(Auth.Repo, [])
+    ]
 
-    case check_password(user, password) do
-      true -> {:ok, user}
-      _ -> :error
-    end
-  end
-
-  defp check_password(user, password) do
-    case user do
-      nil -> Comeonin.Bcrypt.dummy_checkpw()
-      _ -> Comeonin.Bcrypt.checkpw(password, user.encrypted_password)
-    end
+    opts = [strategy: :one_for_one, name: Auth.Supervisor]
+    Supervisor.start_link(children, opts)
   end
 end
 

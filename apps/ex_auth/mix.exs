@@ -18,8 +18,8 @@ defmodule Auth.Mixfile do
   #
   # Type "mix help compile.app" for more information
   def application do
-    [mod: {Auth, []},
-      applications: [:logger, :postgrex, :ecto]]
+    [applications: [:logger, :postgrex, :ecto],
+     mod: {Auth, []}]
   end
 
   # Dependencies can be Hex packages:
