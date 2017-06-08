@@ -38,7 +38,7 @@ defmodule PhoenixInterface.Mixfile do
      {:phoenix_live_reload, "~> 1.0", only: :dev},
      {:gettext, "~> 0.11"},
      {:cowboy, "~> 1.0"},
-     {:datomic, [path: "../ex_datomic", from_umbrella: true, env: :dev, manager: :mix]},
-     {:auth, [path: "../ex_auth", from_umbrella: true, env: :dev, manager: :mix]}]
+     {:datomic, [path: "../datomic", from_umbrella: true, env: :dev, manager: :mix]},
+     {:auth, [path: "../auth", from_umbrella: true, env: :dev, manager: :mix]}]
   end
 end
