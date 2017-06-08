@@ -21,7 +21,7 @@ defmodule PhoenixInterface.Mixfile do
   # Type `mix help compile.app` for more information.
   def application do
     [mod: {PhoenixInterface, []},
-     applications: [:phoenix, :phoenix_pubsub, :phoenix_html, :cowboy, :logger, :gettext]]
+     applications: [:phoenix, :phoenix_pubsub, :phoenix_html, :cowboy, :logger, :gettext, :auth]]
   end
 
   # Specifies which paths to compile per environment.
@@ -38,6 +38,7 @@ defmodule PhoenixInterface.Mixfile do
      {:phoenix_live_reload, "~> 1.0", only: :dev},
      {:gettext, "~> 0.11"},
      {:cowboy, "~> 1.0"},
-     {:datomic, [path: "../datomic", from_umbrella: true, env: :dev, manager: :mix]}]
+     {:datomic, [path: "../ex_datomic", from_umbrella: true, env: :dev, manager: :mix]},
+     {:auth, [path: "../ex_auth", from_umbrella: true, env: :dev, manager: :mix]}]
   end
 end
