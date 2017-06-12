@@ -1,15 +1,15 @@
 defmodule Auth.User do
   use Ecto.Schema
 
-  import Ecto
+#  import Ecto
   import Ecto.Changeset
-  import Ecto.Query, only: [from: 1, from: 2]
+#  import Ecto.Query, only: [from: 1, from: 2]
 
   @derive {Poison.Encoder, only: [:id, :first_name, :last_name, :email]}
 
   schema "users" do
-    field :first_name, :string
-    field :last_name, :string
+#    field :first_name, :string
+#    field :last_name, :string
     field :email, :string
     field :encrypted_password, :string
     field :password, :string, virtual: true
@@ -18,7 +18,7 @@ defmodule Auth.User do
   end
 
   @required_fields ~w(first_name last_name email password)
-  @optional_fields ~w(encrypted_password)
+  @optional_fields ~w()
 
   @doc """
   Creates a changeset based on the `model` and `params`.
@@ -28,7 +28,8 @@ defmodule Auth.User do
   """
   def changeset(model, params \\ %{}) do
     model
-    |> cast(params, @required_fields, @optional_fields)
+    |> cast(params, [:email, :password, :encrypted_password])
+    |> validate_required([:email, :password])
     |> validate_format(:email, ~r/@/)
     |> validate_length(:password, min: 5)
     |> validate_confirmation(:password, message: "Password does not match")
