@@ -11,7 +11,22 @@ defmodule Exmacaroons.Mixfile do
      elixir: "~> 1.3",
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
+     compilers: [:rustler] ++ Mix.compilers(),
+     rustler_crates: rustler_crates(),
      deps: deps]
+  end
+
+  def rustler_crates do
+    [
+      rustmacaroons: [
+        path: "native/rustmacaroons",
+        cargo: :system,
+        default_features: false,
+        features: [],
+        mode: :release,
+        # mode: (if Mix.env == :prod, do: :release, else: :debug),
+      ]
+    ]
   end
 
   # Configuration for the OTP application
