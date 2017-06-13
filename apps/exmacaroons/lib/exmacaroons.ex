@@ -1,0 +1,2 @@
+defmodule Exmacaroons do
+end
