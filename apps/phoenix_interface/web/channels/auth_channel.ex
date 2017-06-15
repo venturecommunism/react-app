@@ -2,7 +2,7 @@ defmodule PhoenixInterface.AuthChannel do
   use PhoenixInterface.Web, :channel
 
   def join("rooms:auth", _params, socket) do
-    {:noreply, socket}
+    {:ok, socket}
   end
 
   def handle_in("new:msg", %{"body" => %{"email" => email, "password" => password}, "user" => user}, socket) do

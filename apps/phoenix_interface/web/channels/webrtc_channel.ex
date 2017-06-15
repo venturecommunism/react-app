@@ -2,11 +2,11 @@ defmodule PhoenixInterface.WebRtcChannel do
   use PhoenixInterface.Web, :channel
 
   def join("rooms:webrtc", _params, socket) do
-    {:noreply, socket}
+    {:ok, socket}
   end
 
   def handle_in("new:msg", %{"body" => %{"id" => id}, "user" => user}, socket) do
-    IO.inspect "2"
+    IO.inspect "peer id"
     {:noreply, socket}
   end
 
