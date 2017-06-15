@@ -6,15 +6,9 @@ defmodule PhoenixInterface.DatomicChannel do
   end
 
   def handle_in("new:msg", %{"body" => %{"syncpoint" => latest_tx}, "user" => user}, socket) do
-    IO.puts "MSG FALSE"
-
-    query = "[:find ?e ?aname ?v ?tx ?op :where [?e ?a ?v ?tx ?op] [?a :db/ident ?aname]]"
-
-#    {:error, edn} = DatomicGenServer.q(DatomicGenServerLink, query, [], [:options, {:client_timeout, 100_000}])
-    {:ok, edn} = DatomicGenServer.q(DatomicGenServerLink, query, [], [:options, {:client_timeout, 100_000}])
-    IO.puts edn
-    grouped_tx = Datomic.TransactionLogQueryLogger.parse(edn) |> Enum.group_by( fn(x) -> x["tx"] end )
-    Enum.each(grouped_tx, fn({_, x}) -> IO.puts push socket, "new:msg", %{"user" => "system", "body" => x} end)
+    IO.inspect latest_tx
+    Datomic.Channel.sync(latest_tx, socket)
+    |> Enum.each(fn({_, x}) -> IO.puts push socket, "new:msg", %{"user" => "system", "body" => x} end)
 
     push socket, "join", %{status: "connected"}
     broadcast! socket, "new:msg", %{user: user, body: %{"syncpoint": false, "user": user}}
