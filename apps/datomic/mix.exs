@@ -21,7 +21,7 @@ defmodule Datomic.Mixfile do
     [applications:
       [
         :logger,
-        :tz_data
+        :tzdata
       ],
      mod: {Datomic, []}]
   end
