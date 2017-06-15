@@ -18,7 +18,11 @@ defmodule Datomic.Mixfile do
   #
   # Type "mix help compile.app" for more information
   def application do
-    [applications: [:logger],
+    [applications:
+      [
+        :logger,
+        :tz_data
+      ],
      mod: {Datomic, []}]
   end
 
@@ -36,6 +40,9 @@ defmodule Datomic.Mixfile do
   #
   # Type "mix help deps" for more examples and options
   defp deps do
-    [{:datomic_gen_server, github: "venturecommunism/datomic_gen_server"}]
+    [
+      {:datomic_gen_server, github: "venturecommunism/datomic_gen_server"},
+      {:exdn, "~> 2.1.2"}
+    ]
   end
 end

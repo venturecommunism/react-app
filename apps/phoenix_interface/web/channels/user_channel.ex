@@ -2,7 +2,7 @@ defmodule PhoenixInterface.UserChannel do
   use PhoenixInterface.Web, :channel
 
   def join("rooms:lobby", _params, socket) do
-    Datomic.Channel.join(socket)
+    {:ok, socket}
   end
 
   def handle_in("new:msg", %{"body" => %{"email" => email, "password" => password}, "user" => user}, socket) do

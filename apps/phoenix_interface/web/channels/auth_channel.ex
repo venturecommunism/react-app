@@ -6,10 +6,7 @@ defmodule PhoenixInterface.AuthChannel do
   end
 
   def handle_in("new:msg", %{"body" => %{"email" => email, "password" => password}, "user" => user}, socket) do
-    IO.puts "EMAIL & PASSWORD"
-    IO.inspect email
-    IO.inspect password
-
+    IO.puts "authenticate"
     case Auth.Session.authenticate(%{"email" => email, "password" => password}) do
       {:ok, user} ->
         IO.puts "signing in.."
