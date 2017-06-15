@@ -3,6 +3,9 @@ defmodule PhoenixInterface.UserSocket do
 
   ## Channels
   channel "rooms:lobby", PhoenixInterface.UserChannel
+  channel "rooms:datomic", PhoenixInterface.DatomicChannel
+  channel "rooms:auth", PhoenixInterface.AuthChannel
+  channel "rooms:webrtc", PhoenixInterface.WebRtcChannel
 
   ## Transports
   transport :websocket, Phoenix.Transports.WebSocket

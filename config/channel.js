@@ -4,7 +4,7 @@ import datascript from 'datascript'
 import url from './url'
 
 const TIMEOUT = 10000
-const LOBBY = 'rooms:lobby'
+const LOBBY = 'rooms:datomic'
 
 export default (conn, user, onChat) => {
   // construct a socket
@@ -54,7 +54,7 @@ export default (conn, user, onChat) => {
     var obj = {}
     obj.email = 'john@phoenix-trello.com'
     obj.password = '12345678'
-    send(obj)
+//    send(obj)
     var query = `[:find ?latest_tx :where [?e "app/sync" ?latest_tx]]`
     var syncpoint = datascript.q(query, datascript.db(conn))
 //    syncpoint[0] ? console.log(syncpoint[0][0]) : console.log('no syncpoint')
