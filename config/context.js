@@ -10,22 +10,17 @@ let chAuth = chan()
 
 // Process Data
 go(function* () {
-  localStorage.setItem('key', 'got a value from localStorage')
-  console.log(localStorage.getItem('key'))
-  while (1==1) {
-    console.log('DATA > RECEIVED:', yield take(chData))
-    yield put(chAuth, 'cat')
-    console.log('DATA > RECEIVED:', yield take(chData))
-    yield timeout(8000)
-  }
+  localStorage.removeItem('key')
+  var key = yield localStorage.getItem('key') || take(chData)
+  console.log('key is:', key)
 })
 
 // Process Auth
 go(function* () {
-  while (1==1) {
-    yield put(chData, 'dog')
-    console.log('AUTH > RECEIVED:', yield take(chAuth))
-    yield put(chData, 'another dog')
+  if (!localStorage.getItem('key')) {
+    var value = 'test'
+    localStorage.setItem('key', value)
+    yield put(chData, localStorage.getItem('key'))
   }
 })
 

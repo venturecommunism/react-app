@@ -1,12 +1,12 @@
 import { Socket } from 'phoenix'
-import datascript from 'datascript'
+# import datascript from 'datascript'
 
-import url from './url'
+# import url from './url'
 
 const TIMEOUT = 10000
-const LOBBY = 'rooms:lobby'
+# const LOBBY = 'rooms:lobby'
 
-export default (conn, user, onChat) => {
+export default (url, room, user, onChat) => {
   // construct a socket
   const socket = new Socket(url)
 
@@ -19,12 +19,12 @@ export default (conn, user, onChat) => {
   socket.connect()
 
   // configure a channel into a room - https://www.youtube.com/watch?v=vWFX4ylV_ko
-  const chan = socket.channel(LOBBY, { user })
+  const chan = socket.channel(room, { user })
 
   // join the channel and listen for admittance
   chan.join()
     .receive('ignore', () => console.log('Access denied.'))
-    .receive('ok', () => syncfunc())
+    .receive('ok', () => console.log('Access granted.'))
     .receive('timeout', () => console.log('Must be a MongoDB.'))
 
   // add some channel-level event handlers
@@ -48,6 +48,12 @@ export default (conn, user, onChat) => {
       .receive('timeout', () => console.log('slow much?'))
   }
 
+  // reveal a couple ways to drive this bus
+  return { close, send }
+}
+
+/*
+
   function syncfunc() {
     console.log('Access Granted. Syncing...')
     var obj = {}
@@ -64,7 +70,4 @@ export default (conn, user, onChat) => {
     }
   }
 
-
-  // reveal a couple ways to drive this bus
-  return { close, send }
-}
+*/
