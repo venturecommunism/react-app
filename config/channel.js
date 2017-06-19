@@ -1,19 +1,19 @@
 import { Socket } from 'phoenix'
-# import datascript from 'datascript'
+// import datascript from 'datascript'
 
-# import url from './url'
+// import url from './url'
 
 const TIMEOUT = 10000
-# const LOBBY = 'rooms:lobby'
+// const LOBBY = 'rooms:lobby'
 
 export default (url, room, user, onChat) => {
   // construct a socket
   const socket = new Socket(url)
 
   // configure the event handlers
-  socket.onOpen(event => console.log('Connected.'))
-  socket.onError(event => console.log('Cannot connect.'))
-  socket.onClose(event => console.log('Goodbye.'))
+  socket.onOpen(event => console.log(room, 'Connected.'))
+  socket.onError(event => console.log(room, 'Cannot connect.'))
+  socket.onClose(event => console.log(room, 'Goodbye.'))
 
   // open a connection to the server
   socket.connect()
@@ -23,9 +23,9 @@ export default (url, room, user, onChat) => {
 
   // join the channel and listen for admittance
   chan.join()
-    .receive('ignore', () => console.log('Access denied.'))
-    .receive('ok', () => console.log('Access granted.'))
-    .receive('timeout', () => console.log('Must be a MongoDB.'))
+    .receive('ignore', () => console.log(room, 'Access denied.'))
+    .receive('ok', () => console.log(room, 'Access granted.'))
+    .receive('timeout', () => console.log(room, 'Must be a MongoDB.'))
 
   // add some channel-level event handlers
   chan.onError(event => console.log('Channel blew up.'))
@@ -42,6 +42,7 @@ export default (url, room, user, onChat) => {
 
   // a function to send a message
   const send = (message) => {
+console.log('trying to send')
     chan.push('new:msg', {body: message, user}, TIMEOUT)
       .receive('ok', (msg) => console.log('sent'))
       .receive('error', (reasons) => console.log('flop', reasons))

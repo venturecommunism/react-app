@@ -1,28 +1,8 @@
 import {go, chan, take, put, timeout} from 'js-csp'
 import datascript from 'datascript'
 import createDBConn from './lib/createDBConn'
-import { Socket } from 'phoenix'
 import Channel from './channel'
 import url from './url'
-
-let chData = chan()
-let chAuth = chan()
-
-// Process Data
-go(function* () {
-  localStorage.removeItem('key')
-  var key = yield localStorage.getItem('key') || take(chData)
-  console.log('key is:', key)
-})
-
-// Process Auth
-go(function* () {
-  if (!localStorage.getItem('key')) {
-    var value = 'test'
-    localStorage.setItem('key', value)
-    yield put(chData, localStorage.getItem('key'))
-  }
-})
 
 const NAMES = ['Girl', 'Boy', 'Horse', 'Foo', 'Face', 'Giant', 'Super', 'Bug', 'Captain', 'Lazer']
 const getRandomInt = (min, max) => Math.floor(Math.random() * (max - min)) + min
@@ -30,7 +10,6 @@ const getRandomName = () => NAMES[getRandomInt(0, NAMES.length)]
 const getRandomUser = () => `${ getRandomName() }${ getRandomName() }${ getRandomName() }`
 const me = getRandomUser()
 
-const exsocket = new Socket(url)
 const conn = createDBConn()
 //const transact = datascript.transact
 
@@ -113,7 +92,31 @@ const receiveChatMessage = (conn, message) => {
   }
 }
 
-const channel = Channel(conn, me, receiveChatMessage)
+const channel = Channel(url, "rooms:lobby", me, receiveChatMessage)
+
+let chData = chan()
+let chAuth = chan()
+
+// Process Data
+go(function* () {
+  localStorage.removeItem('key')
+  var key = yield localStorage.getItem('key') || take(chData)
+  console.log('key is:', key)
+})
+
+// Process Auth
+go(function* () {
+  if (!localStorage.getItem('key')) {
+    var user = me
+    var msg = {email: 'john@phoenix-trello.com', password: '12345678'}
+    const ex_auth_channel = Channel(url, "rooms:auth", user, receiveChatMessage)
+    yield timeout(10000)
+    ex_auth_channel.send(msg)
+    var value = 'test'
+    localStorage.setItem('key', value)
+    yield put(chData, localStorage.getItem('key'))
+  }
+})
 
 // fires when we transact data
 datascript.listen(conn, {channel}, function(report) {
@@ -140,7 +143,6 @@ datascript.listen(conn, {channel}, function(report) {
 export const initContext = () => {
   return {
     peers: peers,
-    socket: exsocket,
     conn: conn,
     channel: channel,
     transact: transact,
