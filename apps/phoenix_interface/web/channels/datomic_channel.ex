@@ -1,5 +1,6 @@
 defmodule PhoenixInterface.DatomicChannel do
   use PhoenixInterface.Web, :channel
+  use Auth.Channel
 
   def join("rooms:datomic", _params, socket) do
     Datomic.Channel.join(socket)
@@ -22,7 +23,7 @@ defmodule PhoenixInterface.DatomicChannel do
     IO.inspect msg
     IO.puts 'data'
     IO.inspect data
-    some_data = ParseDatascriptTransaction.first(data)
+    some_data = Datomic.ParseDatascriptTransaction.first(data)
     IO.puts 'some_data'
     IO.inspect some_data
 

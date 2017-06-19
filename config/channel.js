@@ -4,12 +4,11 @@ import datascript from 'datascript'
 import url from './url'
 
 const TIMEOUT = 10000
-const LOBBY = 'rooms:datomic'
+const LOBBY = 'rooms:lobby'
 
 export default (conn, user, onChat) => {
   // construct a socket
   const socket = new Socket(url)
-//  const socket = new Socket(url)
 
   // configure the event handlers
   socket.onOpen(event => console.log('Connected.'))

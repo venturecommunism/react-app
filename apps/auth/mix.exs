@@ -46,7 +46,8 @@ defmodule Auth.Mixfile do
       {:comeonin, "~> 2.5.3"},
       {:postgrex, "~> 0.11"},
       {:ecto, "~> 2.0"},
-      {:poison, "~> 2.0"}
+      {:poison, "~> 2.0"},
+      {:guardian, "~> 0.13.0"}
     ]
   end
 end

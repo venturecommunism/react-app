@@ -15,6 +15,17 @@ config :auth, Auth.Repo,
   hostname: "localhost",
   pool_size: 10
 
+# Configure guardian
+config :guardian, Guardian,
+  issuer: "PheonixAuth",
+  ttl: { 3, :days },
+  verify_issuer: true,
+  serializer: Auth.GuardianSerializer
+
+# Guardian configuration
+config :guardian, Guardian,
+  secret_key: "W9cDv9fjPtsYv2gItOcFb5PzmRzqGkrOsJGmby0KpBOlHJIlhxMKFmIlcCG9PVFQ"
+
 # This configuration is loaded before any dependency and is restricted
 # to this project. If another project depends on this project, this
 # file won't be loaded nor affect the parent project. For this reason,

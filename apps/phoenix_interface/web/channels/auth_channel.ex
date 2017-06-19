@@ -1,5 +1,6 @@
 defmodule PhoenixInterface.AuthChannel do
   use PhoenixInterface.Web, :channel
+  use Auth.Channel
 
   def join("rooms:auth", _params, socket) do
     {:ok, socket}
