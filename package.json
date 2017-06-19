@@ -6,22 +6,20 @@
   },
   "dependencies": {
     "datascript": "^0.15.3",
+    "history": "^3.0.0",
+    "js-csp": "^0.9.3",
     "mantra-core": "^1.7.0",
     "mobx": "2.6.3",
     "moment": "2.18.1",
     "phoenix": "^1.2.1",
-    "react": "^15.4.2",
-    "react-dom": "^15.3.1",
-    "react-komposer": "^1.13.1",
-    "react-mounter": "^1.2.0",
-    "simple-peer": "^8.1.0",
-
-    "history": "^3.0.0",
     "react": "^15.3.0",
     "react-app": "^1.1.2",
     "react-dom": "^15.3.0",
+    "react-komposer": "^1.13.1",
+    "react-mounter": "^1.2.0",
     "react-redux": "^4.4.5",
     "redux": "^3.5.2",
+    "simple-peer": "^8.1.0",
     "whatwg-fetch": "^1.0.0"
   },
   "devDependencies": {

@@ -1,8 +1,33 @@
+import {go, chan, take, put, timeout} from 'js-csp'
 import datascript from 'datascript'
 import createDBConn from './lib/createDBConn'
 import { Socket } from 'phoenix'
 import Channel from './channel'
 import url from './url'
+
+let chData = chan()
+let chAuth = chan()
+
+// Process Data
+go(function* () {
+  localStorage.setItem('key', 'got a value from localStorage')
+  console.log(localStorage.getItem('key'))
+  while (1==1) {
+    console.log('DATA > RECEIVED:', yield take(chData))
+    yield put(chAuth, 'cat')
+    console.log('DATA > RECEIVED:', yield take(chData))
+    yield timeout(8000)
+  }
+})
+
+// Process Auth
+go(function* () {
+  while (1==1) {
+    yield put(chData, 'dog')
+    console.log('AUTH > RECEIVED:', yield take(chAuth))
+    yield put(chData, 'another dog')
+  }
+})
 
 const NAMES = ['Girl', 'Boy', 'Horse', 'Foo', 'Face', 'Giant', 'Super', 'Bug', 'Captain', 'Lazer']
 const getRandomInt = (min, max) => Math.floor(Math.random() * (max - min)) + min

@@ -3055,6 +3055,13 @@ js-base64@^2.1.9:
   version "2.1.9"
   resolved "https://registry.yarnpkg.com/js-base64/-/js-base64-2.1.9.tgz#f0e80ae039a4bd654b5f281fc93f04a914a7fcce"
 
+js-csp@^0.9.3:
+  version "0.9.3"
+  resolved "https://registry.yarnpkg.com/js-csp/-/js-csp-0.9.3.tgz#8514769c62a39fbdeacd91228230955cdeeee1a3"
+  dependencies:
+    babel-runtime "^6.22.0"
+    lodash "^4.17.4"
+
 js-tokens@^3.0.0:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/js-tokens/-/js-tokens-3.0.1.tgz#08e9f132484a2c45a30907e9dc4d5567b7f114d7"
