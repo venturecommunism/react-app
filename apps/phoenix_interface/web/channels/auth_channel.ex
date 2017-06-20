@@ -9,7 +9,9 @@ defmodule PhoenixInterface.AuthChannel do
     IO.puts "authenticate"
     case Auth.Session.authenticate(%{"email" => email, "password" => password}) do
       {:ok, user} ->
-        IO.puts "signing in.."
+        IO.puts "signing in..."
+        {:ok, jwt, _full_claims} = user |> Guardian.encode_and_sign(:token)
+        IO.inspect jwt
         :ok
 
       :error ->
@@ -17,7 +19,7 @@ defmodule PhoenixInterface.AuthChannel do
         :error
     end
 
-    push socket, "new:msg", %{jwt: "some jwt"}
+    push socket, "new:msg", %{jwt: jwt}
     push socket, "join", %{status: "connected"}
     {:reply, {:ok, %{msg: %{"user": user}}}, assign(socket, :user, user)}
   end
