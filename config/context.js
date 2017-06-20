@@ -97,11 +97,23 @@ const channel = Channel(url, "rooms:lobby", me, receiveChatMessage)
 let chData = chan()
 let chAuth = chan()
 
+const receiveDataMessage = (message) => {
+  console.log('conn', conn)
+  console.log('message', message)
+  putAsync(chData, message)
+}
+
 // Process Data
 go(function* () {
-  localStorage.removeItem('key')
   var key = yield localStorage.getItem('key') || take(chData)
   console.log('key is:', key)
+  var user = me
+  var msg = {jwt: key, syncpoint: 'none'}
+  const ex_data_channel = Channel(url, "rooms:datomic", user, receiveDataMessage, chData)
+  yield timeout(10000)
+  ex_data_channel.send(msg)
+  console.log('yield take chData', yield take(chData))
+  console.log('end data go function')
 })
 
 const receiveAuthMessage = (message) => {
