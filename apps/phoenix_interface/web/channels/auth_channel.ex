@@ -17,6 +17,7 @@ defmodule PhoenixInterface.AuthChannel do
         :error
     end
 
+    push socket, "new:msg", %{jwt: "some jwt"}
     push socket, "join", %{status: "connected"}
     {:reply, {:ok, %{msg: %{"user": user}}}, assign(socket, :user, user)}
   end

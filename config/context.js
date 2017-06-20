@@ -120,7 +120,7 @@ go(function* () {
     ex_auth_channel.send(msg)
     console.log('yield take chAuth', yield take(chAuth))
     var value = yield take(chAuth)
-    localStorage.setItem('key', value.somefin)
+    localStorage.setItem('key', value.jwt)
     yield put(chData, localStorage.getItem('key'))
   }
 })
