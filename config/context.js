@@ -1,4 +1,4 @@
-import {go, chan, take, put, timeout} from 'js-csp'
+import {go, chan, take, put, timeout, putAsync} from 'js-csp'
 import datascript from 'datascript'
 import createDBConn from './lib/createDBConn'
 import Channel from './channel'
@@ -104,16 +104,23 @@ go(function* () {
   console.log('key is:', key)
 })
 
+const receiveAuthMessage = (message) => {
+  console.log('conn', conn)
+  console.log('message', message)
+  putAsync(chAuth, message)
+}
+
 // Process Auth
 go(function* () {
   if (!localStorage.getItem('key')) {
     var user = me
     var msg = {email: 'john@phoenix-trello.com', password: '12345678'}
-    const ex_auth_channel = Channel(url, "rooms:auth", user, receiveChatMessage)
+    const ex_auth_channel = Channel(url, "rooms:auth", user, receiveAuthMessage, chAuth)
     yield timeout(10000)
     ex_auth_channel.send(msg)
-    var value = 'test'
-    localStorage.setItem('key', value)
+    console.log('yield take chAuth', yield take(chAuth))
+    var value = yield take(chAuth)
+    localStorage.setItem('key', value.somefin)
     yield put(chData, localStorage.getItem('key'))
   }
 })

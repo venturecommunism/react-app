@@ -1,12 +1,9 @@
+import { putAsync } from 'js-csp'
 import { Socket } from 'phoenix'
-// import datascript from 'datascript'
-
-// import url from './url'
 
 const TIMEOUT = 10000
-// const LOBBY = 'rooms:lobby'
 
-export default (url, room, user, onChat) => {
+export default (url, room, user, onChat, cspChan) => {
   // construct a socket
   const socket = new Socket(url)
 
@@ -32,7 +29,7 @@ export default (url, room, user, onChat) => {
   chan.onClose(event => console.log('Channel closed.'))
 
   // when we receive a new chat message, just trigger the appropriate callback
-  chan.on('new:msg', msg => onChat && onChat(conn, msg))
+  chan.on('new:msg', msg => onChat && onChat(msg))
 
   // you can can listen to multiple types
   chan.on('user:entered', msg => console.log('say hello to ', msg))
@@ -42,11 +39,11 @@ export default (url, room, user, onChat) => {
 
   // a function to send a message
   const send = (message) => {
-console.log('trying to send')
     chan.push('new:msg', {body: message, user}, TIMEOUT)
       .receive('ok', (msg) => console.log('sent'))
       .receive('error', (reasons) => console.log('flop', reasons))
       .receive('timeout', () => console.log('slow much?'))
+    putAsync(cspChan, message)
   }
 
   // reveal a couple ways to drive this bus
