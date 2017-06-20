@@ -16,7 +16,7 @@ export default (url, room, user, onChat, cspChan, guardian_token) => {
   socket.connect()
 
   // configure a channel into a room - https://www.youtube.com/watch?v=vWFX4ylV_ko
-  const chan = socket.channel(room, { user, guardian_token: guardian_token })
+  const chan = socket.channel(room, { user, guardian_token })
 
   // join the channel and listen for admittance
   chan.join()

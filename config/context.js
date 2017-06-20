@@ -92,7 +92,8 @@ const receiveChatMessage = (conn, message) => {
   }
 }
 
-const channel = Channel(url, "rooms:lobby", me, receiveChatMessage)
+// var channel
+// const channel = Channel(url, "rooms:lobby", me, receiveChatMessage)
 
 let chData = chan()
 let chAuth = chan()
@@ -104,7 +105,7 @@ const receiveDataMessage = (message) => {
 }
 
 // Process Data
-go(function* () {
+const channel = go(function* () {
   localStorage.removeItem('key')
   var key = yield localStorage.getItem('key') || take(chData)
   console.log('key is:', key)
@@ -115,6 +116,7 @@ go(function* () {
   ex_data_channel.send(msg)
   console.log('yield take chData', yield take(chData))
   console.log('end data go function')
+  return ex_data_channel
 })
 
 const receiveAuthMessage = (message) => {
