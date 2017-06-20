@@ -7,6 +7,8 @@ defmodule PhoenixInterface.UserSocket do
   channel "rooms:auth", PhoenixInterface.AuthChannel
   channel "rooms:webrtc", PhoenixInterface.WebRtcChannel
 
+  channel "authorized:*", PhoenixInterface.AuthorizedChannel
+
   ## Transports
   transport :websocket, Phoenix.Transports.WebSocket
 

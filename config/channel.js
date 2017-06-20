@@ -3,7 +3,7 @@ import { Socket } from 'phoenix'
 
 const TIMEOUT = 10000
 
-export default (url, room, user, onChat, cspChan) => {
+export default (url, room, user, onChat, cspChan, guardian_token) => {
   // construct a socket
   const socket = new Socket(url)
 
@@ -16,7 +16,7 @@ export default (url, room, user, onChat, cspChan) => {
   socket.connect()
 
   // configure a channel into a room - https://www.youtube.com/watch?v=vWFX4ylV_ko
-  const chan = socket.channel(room, { user })
+  const chan = socket.channel(room, { user, guardian_token: guardian_token })
 
   // join the channel and listen for admittance
   chan.join()
