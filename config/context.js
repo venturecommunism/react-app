@@ -21,9 +21,11 @@ function transact(conn, data_to_add, meta) {
 var log = []
 var meta = []
 var peers = []
+let chData = chan()
+let chAuth = chan()
 
 // fires when we receive a message
-const receiveChatMessage = (conn, message) => {
+const receiveDataMessage = (conn, message) => {
   const user = message.user
   const isMe = (someUser) => me === someUser
   console.log('ELIXIR MSG', JSON.stringify(message))
@@ -92,18 +94,6 @@ const receiveChatMessage = (conn, message) => {
   }
 }
 
-// var channel
-// const channel = Channel(url, "rooms:lobby", me, receiveChatMessage)
-
-let chData = chan()
-let chAuth = chan()
-
-const receiveDataMessage = (message) => {
-  console.log('conn', conn)
-  console.log('message', message)
-  putAsync(chData, message)
-}
-
 // Process Data
 const channel = go(function* () {
   localStorage.removeItem('key')
@@ -111,7 +101,7 @@ const channel = go(function* () {
   console.log('key is:', key)
   var user = me
   var msg = {jwt: key, syncpoint: 'none'}
-  const ex_data_channel = Channel(url, "authorized:lobby", user, receiveDataMessage, chData, key)
+  const ex_data_channel = Channel(url, "rooms:datomic", user, receiveDataMessage, chData, conn, key)
   yield timeout(10000)
   ex_data_channel.send(msg)
   console.log('yield take chData', yield take(chData))
@@ -119,8 +109,7 @@ const channel = go(function* () {
   return ex_data_channel
 })
 
-const receiveAuthMessage = (message) => {
-  console.log('conn', conn)
+const receiveAuthMessage = (conn, message) => {
   console.log('message', message)
   putAsync(chAuth, message)
 }
@@ -130,7 +119,7 @@ go(function* () {
   if (!localStorage.getItem('key')) {
     var user = me
     var msg = {email: 'john@phoenix-trello.com', password: '12345678'}
-    const ex_auth_channel = Channel(url, "rooms:auth", user, receiveAuthMessage, chAuth)
+    const ex_auth_channel = Channel(url, "rooms:auth", user, receiveAuthMessage, chAuth, conn)
     yield timeout(10000)
     ex_auth_channel.send(msg)
     console.log('yield take chAuth', yield take(chAuth))

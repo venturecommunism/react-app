@@ -1,6 +1,6 @@
 defmodule PhoenixInterface.DatomicChannel do
   use PhoenixInterface.Web, :channel
-  use Auth.Channel
+  use Guardian.Channel
 
   def join("rooms:datomic", _params, socket) do
     Datomic.Channel.join(socket)
