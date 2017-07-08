@@ -8,9 +8,17 @@ import '../../layout/components/styles/index.css'
 // import ChatGame from '../../chatgame/components/index'
 import QueryBuilder from '../../querybuilder/components/index'
 
+import Appbar from 'muicss/lib/react/appbar'
+import Button from 'muicss/lib/react/button'
+import Container from 'muicss/lib/react/container'
+
 const Root = ({result}) => (
   <div>{ !result ? <div>
     <div className='App-header'>
+      <Appbar></Appbar>
+      <Container>
+        <Button onClick={() => alert('web component button works!')} color="primary">button</Button>
+      </Container>
       <img src={logo} className='App-logo' alt='logo' />
       <h2>Under Construction</h2>
     </div>
