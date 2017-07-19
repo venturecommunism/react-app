@@ -1,7 +1,7 @@
-import followertree from './followertree'
+import stellarcommands from './stellarcommands'
 
 const actions = {
-  followertree,
+  stellarcommands,
 }
 
 export default actions

@@ -1,30 +1,15 @@
 import React from 'react'
 
-import DataContainer from '../../core/containers/datacontainer'
 import ActionsMapper from '../../core/containers/actionsmapper'
 
-import AllUsersComponent from './allusers'
-import AllUserEdgesComponent from './alluseredges'
-import FollowerTreeComponent from './followertree'
+import StellarComponent from './stellar'
 
-import allUserQuery from '../queries/alluser'
+const StellarContainer = ActionsMapper('stellarcommands', StellarComponent)
 
-import PlainResultComponent from './plainresult'
-const AllUsersDataContainer = DataContainer(PlainResultComponent)
-
-const AllUsersFromIndex = DataContainer(AllUsersComponent)
-
-const AllUserEdges = DataContainer(AllUserEdgesComponent)
-
-const FollowerTree = ActionsMapper('followertree', FollowerTreeComponent)
-
-const Demo = () => (
+const Stellar = () => (
   <div>
-    <AllUsersDataContainer query={allUserQuery} />
-    <AllUsersFromIndex query={allUserQuery} />
-    <AllUserEdges query={allUserQuery} />
-    <FollowerTree entityIds={[['name', 'Jane']]} />
+    <StellarContainer entityIds={[['name', 'Jane']]} />
   </div>
 )
 
-export default Demo
+export default Stellar
