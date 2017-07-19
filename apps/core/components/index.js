@@ -14,11 +14,12 @@ import QueryBuilder from '../../querybuilder/components/index'
 **  (go to step 2 at apps/timetracker/components/index.js)
 **/
 import TimeTracker from '../../timetracker/components/index'
-// import StellarTestnet from '../../stellar/components/index'
+import StellarTestnet from '../../stellar/components/index'
 
 const Root = ({result}) => (
   <div>{ !result ? <div>
     <div className='App-header'>
+      <StellarTestnet />
       <TimeTracker />
       <img src={logo} className='App-logo' alt='logo' />
       <h2>Under Construction</h2>
