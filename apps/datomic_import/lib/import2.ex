@@ -8,7 +8,7 @@ IO.inspect Link.start
 stringit = fn arg when is_list(arg) ->
   case Enum.count(arg) do
     1 ->
-      [head | tail] = arg
+      [head | _tail] = arg
       ~s("#{head}")
     _ ->
   case Enum.find_value(arg, "no floats", &is_float/1) do
