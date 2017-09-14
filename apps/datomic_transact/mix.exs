@@ -1,8 +1,8 @@
-defmodule DatomicImportParse.Mixfile do
+defmodule DatomicTransact.Mixfile do
   use Mix.Project
 
   def project do
-    [app: :datomic_import_parse,
+    [app: :datomic_transact,
      version: "0.1.0",
      build_path: "../../_build",
      config_path: "../../config/config.exs",
@@ -36,9 +36,7 @@ defmodule DatomicImportParse.Mixfile do
   # Type "mix help deps" for more examples and options
   defp deps do
     [
-      {:poison, "~> 2.0"},
-      {:datomic_link, [path: "../datomic_link", from_umbrella: true, env: :dev, manager: :mix]},
-      {:datomic_transact, [path: "../datomic_transact", from_umbrella: true, env: :dev, manager: :mix]}
+      {:datomic_link, [path: "../datomic_link", from_umbrella: true, env: :dev, manager: :mix]}
     ]
   end
 end

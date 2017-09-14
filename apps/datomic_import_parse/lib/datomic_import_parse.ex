@@ -31,7 +31,7 @@ defmodule ImportData do
     data_to_add = ~s([{ #{join} }])
 
     IO.inspect "adding data"
-    IO.inspect {:ok, _transaction_result} = DatomicGenServer.transact(DatomicGenServerLink, data_to_add, [:options, {:client_timeout, 100_000}])
+    IO.inspect {:ok, _transaction_result} = DatomicTransact.transact(data_to_add)
     IO.puts "END"
     ImportData.parse(tail, inc + 1)
   end
