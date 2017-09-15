@@ -29,7 +29,9 @@ defmodule ImportData do
     list = Enum.map(record, fn({x,y}) -> IO.inspect ~s(:#{x} #{ImportData.stringit y}) end)
     join = Enum.join(list, " ")
     data_to_add = ~s([{ #{join} }])
-
+    
+    IO.puts "data to add:"
+    IO.inspect data_to_add
     IO.inspect "adding data"
     IO.inspect {:ok, _transaction_result} = DatomicTransact.transact(data_to_add)
     IO.puts "END"

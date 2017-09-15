@@ -47,7 +47,7 @@ schema_to_add = """
                            :db/cardinality :db.cardinality/many
                            :db/doc "Tags"}
 
-                         {:db/ident :_context
+                         {:db/ident :jsonldcontext
                            :db/valueType :db.type/string
                            :db/cardinality :db.cardinality/many
                            :db/doc "JSON-LD style context"}
