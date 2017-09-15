@@ -21,6 +21,7 @@
     "react-redux": "^4.4.5",
     "redux": "^3.5.2",
     "simple-peer": "^8.1.0",
+    "stellar-sdk": "chatch/js-stellar-sdk#patched",
     "whatwg-fetch": "^1.0.0"
   },
   "devDependencies": {
