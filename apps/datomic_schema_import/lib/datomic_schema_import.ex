@@ -1,4 +1,5 @@
 defmodule DatomicSchemaImport do
+IO.puts "test"
   IO.inspect DatomicLink.start
 
 schema_to_add = """
@@ -19,12 +20,14 @@ schema_to_add = """
 
                           {:db/ident :db:ident
                            :db/valueType :db.type/string
-                           :db/cardinality :db.cardinality/many
+                           :db/cardinality :db.cardinality/one
+                           :db/unique :db.unique/identity
                            :db/doc "A substitute for db:ident from tripl.py"}
 
                           {:db/ident :uuid
                            :db/valueType :db.type/string
-                           :db/cardinality :db.cardinality/many
+                           :db/cardinality :db.cardinality/one
+                           :db/unique :db.unique/identity
                            :db/doc "Universal Unique Identifier"}
 
                           {:db/ident :owner
@@ -61,6 +64,116 @@ schema_to_add = """
                            :db/valueType :db.type/string
                            :db/cardinality :db.cardinality/many
                            :db/doc "Project"}
+
+                         {:db/ident :payload
+                           :db/valueType :db.type/string
+                           :db/cardinality :db.cardinality/many
+                           :db/doc "Some extra JSON data legacy of mongodb"}
+
+                         {:db/ident :type
+                           :db/valueType :db.type/string
+                           :db/cardinality :db.cardinality/many
+                           :db/doc "Different data types in the task manager"}
+
+                         {:db/ident :contextcategory
+                           :db/valueType :db.type/string
+                           :db/cardinality :db.cardinality/many
+                           :db/doc "Categories to hold contexts"}
+
+                         {:db/ident :contextaor
+                           :db/valueType :db.type/string
+                           :db/cardinality :db.cardinality/many
+                           :db/doc "Areas of Responsibility that specific contexts may be found under"}
+
+                         {:db/ident :energylevel
+                           :db/valueType :db.type/string
+                           :db/cardinality :db.cardinality/many
+                           :db/doc "Energy level required for a task (may be context or state dependent)"}
+
+                         {:db/ident :aor
+                           :db/valueType :db.type/string
+                           :db/cardinality :db.cardinality/many
+                           :db/doc "Area of Responsibility. Every project must belong to one AOR"}
+
+                         {:db/ident :weeklyreviewchecked
+                           :db/valueType :db.type/string
+                           :db/cardinality :db.cardinality/many
+                           :db/doc "Whether something has been checked at the Weekly Review"}
+
+                         {:db/ident :duration
+                           :db/valueType :db.type/string
+                           :db/cardinality :db.cardinality/many
+                           :db/doc "Estimate of how much time a task will take"}
+
+                         {:db/ident :wip
+                           :db/valueType :db.type/string
+                           :db/cardinality :db.cardinality/many
+                           :db/doc "Work in Progress. A tool to limit how many tasks are seen at any given time."}
+
+                         {:db/ident :timerank
+                           :db/valueType :db.type/string
+                           :db/cardinality :db.cardinality/many
+                           :db/doc "An estimate of the rank order tasks might be done in linear time."}
+
+                         {:db/ident :checklistid
+                           :db/valueType :db.type/string
+                           :db/cardinality :db.cardinality/many
+                           :db/doc "Checklist a task belongs to"}
+
+                         {:db/ident :checked
+                           :db/valueType :db.type/string
+                           :db/cardinality :db.cardinality/many
+                           :db/doc "Whether a task is checked on the checklist"}
+
+                         {:db/ident :due
+                           :db/valueType :db.type/string
+                           :db/cardinality :db.cardinality/many
+                           :db/doc "Time and date a task or relevant note is due."}
+
+                         {:db/ident :alarmorder
+                           :db/valueType :db.type/string
+                           :db/cardinality :db.cardinality/many
+                           :db/doc "The order in time of a series of alarms."}
+
+                         {:db/ident :nextalarm
+                           :db/valueType :db.type/string
+                           :db/cardinality :db.cardinality/many
+                           :db/doc "The next alarm in a series."}
+
+                         {:db/ident :timer
+                           :db/valueType :db.type/string
+                           :db/cardinality :db.cardinality/many
+                           :db/doc "The amount of time remaining on an alarm."}
+
+                         {:db/ident :defaultcontext
+                           :db/valueType :db.type/string
+                           :db/cardinality :db.cardinality/many
+                           :db/doc "A suggested context for tasks already belonging to the project."}
+
+                         {:db/ident :navigatingto
+                           :db/valueType :db.type/string
+                           :db/cardinality :db.cardinality/many
+                           :db/doc "What you're navigating to."}
+
+                         {:db/ident :contextlocation
+                           :db/valueType :db.type/string
+                           :db/cardinality :db.cardinality/many
+                           :db/doc "Latitude/Longitude for a context."}
+
+                         {:db/ident :yval
+                           :db/valueType :db.type/string
+                           :db/cardinality :db.cardinality/many
+                           :db/doc "Y value of the user's scroll position."}
+
+                         {:db/ident :username
+                           :db/valueType :db.type/string
+                           :db/cardinality :db.cardinality/many
+                           :db/doc "Email or username."}
+
+                         {:db/ident :created
+                           :db/valueType :db.type/string
+                           :db/cardinality :db.cardinality/many
+                           :db/doc "Date of creation."}
 
                          {:db/ident :id
                            :db/valueType :db.type/string
