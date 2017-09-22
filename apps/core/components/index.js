@@ -19,9 +19,9 @@ import StellarTestnet from '../../stellar/components/index'
 const Root = ({result}) => (
   <div>{ !result ? <div>
     <div className='App-header'>
-      <StellarTestnet />
+      {/* <StellarTestnet />
       <TimeTracker />
-      <img src={logo} className='App-logo' alt='logo' />
+      <img src={logo} className='App-logo' alt='logo' /> */}
       <h2>Under Construction</h2>
     </div>
     <p className='App-intro'>

@@ -47,10 +47,36 @@ export default () => {
   const conn = datascript.create_conn(twitterUserSchema)
 
   /**
+   * Define some query data.
+   */
+  const datoms = [
+    {
+      ':db/id': -1,
+      name: 'Reactive Test Query',
+      query: `[:find ?e ?user
+ :where [?e "name"]
+        [?e "name" ?user]]`
+    },
+    {
+      ':db/id': -2,
+      name: 'Stringified Result',
+      query: `[:find ?user
+ :where [?u "name"]
+        [?u "name" ?user]]`
+    },
+    {
+      ':db/id': -2,
+      name: 'Secrets',
+      'app/secrets': ['app/secrets', 'app/credentials']
+    }
+  ]
+
+
+  /**
    * Define some seed data; including some `follower` references (that make
    * use of a temporary id to point to other entities within the array.)
    */
-  const datoms = [
+  const refdatoms = [
     {
       ':db/id': -1,
       name: 'John',
@@ -65,25 +91,6 @@ export default () => {
       ':db/id': -3,
       name: 'Jane'
     },
-    {
-      ':db/id': -4,
-      name: 'Twitter Stream',
-      query: `[:find ?e ?user
- :where [?e "name"]
-        [?e "name" ?user]]`
-    },
-    {
-      ':db/id': -5,
-      name: 'Stringified Result',
-      query: `[:find ?user
- :where [?u "name"]
-        [?u "name" ?user]]`
-    },
-    {
-      ':db/id': -5,
-      name: 'Secrets',
-      'app/secrets': ['app/secrets', 'app/credentials']
-    }
   ]
 
   /**
@@ -91,5 +98,6 @@ export default () => {
    * querying.
    */
   datascript.transact(conn, datoms)
+  datascript.transact(conn, refdatoms)
   return conn
 }

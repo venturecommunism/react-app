@@ -21,6 +21,7 @@ function transact(conn, data_to_add, meta) {
 var log = []
 var meta = []
 var peers = []
+var channel
 let chData = chan()
 let chAuth = chan()
 
@@ -95,10 +96,11 @@ const receiveDataMessage = (conn, message) => {
 }
 
 // Process Data
-const channel = go(function* () {
+go(function* () {
   localStorage.removeItem('key')
   var key = yield localStorage.getItem('key') || take(chData)
   console.log('key is:', key)
+
   var user = me
   var msg = {jwt: key, syncpoint: 'none'}
   const ex_data_channel = Channel(url, "rooms:datomic", user, receiveDataMessage, chData, conn, key)
@@ -106,7 +108,7 @@ const channel = go(function* () {
   ex_data_channel.send(msg)
   console.log('yield take chData', yield take(chData))
   console.log('end data go function')
-  return ex_data_channel
+  channel = ex_data_channel
 })
 
 const receiveAuthMessage = (conn, message) => {
