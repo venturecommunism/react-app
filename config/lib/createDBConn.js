@@ -59,13 +59,42 @@ export default () => {
     },
     {
       ':db/id': -2,
+      name: 'Calendar',
+      query: `[:find ?status ?uuid ?entry ?description ?due ?e
+ :where [?e "status" ?status]
+        [?e "uuid" ?uuid]
+        [?e "entry" ?entry]
+        [?e "description" ?description]
+        [?e "due" ?due]]`
+    },
+    {
+      ':db/id': -3,
+      name: 'Contexts',
+      query: `[:find ?e ?context ?desc ?type
+ :where [?e "context"]
+        [?e "description" ?desc]
+        [?e "type" ?type]
+        [?e "context" ?context]]`
+    },
+    {
+      ':db/id': -4,
+      name: 'Areas of Responsibility',
+      query: `[:find ?e ?desc
+ :where [?e "description" ?desc]
+        [?e "tags" "aor"]]`
+    }
+  ]
+
+  const secretdatoms = [
+    {
+      ':db/id': -1,
       name: 'Stringified Result',
       query: `[:find ?user
  :where [?u "name"]
         [?u "name" ?user]]`
     },
     {
-      ':db/id': -2,
+      ':db/id': -1,
       name: 'Secrets',
       'app/secrets': ['app/secrets', 'app/credentials']
     }
@@ -98,6 +127,7 @@ export default () => {
    * querying.
    */
   datascript.transact(conn, datoms)
+  datascript.transact(conn, secretdatoms)
   datascript.transact(conn, refdatoms)
   return conn
 }
