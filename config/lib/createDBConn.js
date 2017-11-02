@@ -59,6 +59,20 @@ export default () => {
     },
     {
       ':db/id': -2,
+      name: 'Inbox',
+      query: `[:find ?e ?entry ?id ?created ?username ?uuid ?desc ?ident ?status
+ :where [?e "workflow" "/tw-ui/0.inbox"]
+        [?e "entry" ?entry]
+        [?e "id" ?id]
+        [?e "created" ?created]
+        [?e "username" ?username]
+        [?e "uuid" ?uuid]
+        [?e "description" ?desc]
+        [?e "db:ident" ?ident]
+        [?e "status" ?status]]`
+    },
+    {
+      ':db/id': -3,
       name: 'Calendar',
       query: `[:find ?status ?uuid ?entry ?description ?due ?e
  :where [?e "status" ?status]
@@ -68,7 +82,7 @@ export default () => {
         [?e "due" ?due]]`
     },
     {
-      ':db/id': -3,
+      ':db/id': -4,
       name: 'Contexts',
       query: `[:find ?e ?context ?desc ?type
  :where [?e "context"]
@@ -77,7 +91,7 @@ export default () => {
         [?e "context" ?context]]`
     },
     {
-      ':db/id': -4,
+      ':db/id': -5,
       name: 'Areas of Responsibility',
       query: `[:find ?e ?desc
  :where [?e "description" ?desc]
