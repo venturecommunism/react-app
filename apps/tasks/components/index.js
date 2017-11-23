@@ -1,6 +1,6 @@
 import React from 'react'
 
-import DataContainer from '../../core/containers/datacontainer'
+import DataContainer from '../containers/tasksdatacontainer'
 import ActionsMapper from '../../core/containers/actionsmapper'
 
 import projectsQuery from '../queries/projects'
