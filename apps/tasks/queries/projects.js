@@ -4,7 +4,19 @@
  */
 const allUserQuery = `
 [:find
-        ?description ?workflow ?status ?istheprojecttype ?id ?dbident ?rank ?owner ?entry ?jsonldcontext ?e2 ?desc2
+        ?description 
+        ?workflow 
+        ?status 
+        ?istheprojecttype 
+        ?id 
+        ?dbident 
+        ?rank 
+        ?owner 
+        ?entry 
+        ?jsonldcontext 
+        ?e2 
+        ?desc2
+        ?entry2
  :where
 [?e ?attrib]
 [?e "workflow" ?workflow]
@@ -20,6 +32,7 @@ const allUserQuery = `
 
 [?e2 "project" ?id]
 [?e2 "description" ?desc2]
+[?e2 "entry" ?entry2]
 
         [?e "type" "project"]]
 `

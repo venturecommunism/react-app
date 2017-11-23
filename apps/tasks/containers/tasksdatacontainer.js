@@ -8,7 +8,13 @@ const dataComposer = ({ context, query }, onData) => {
 
   const qArgs = [query, db]
   try {
-    var result = datascript.q(...qArgs)
+    function generalsort(array, index) {
+      function sortfunction(a,b) {
+        return a[index] > b[index]
+      }
+      return array.sort(sortfunction)
+    }
+    var result = generalsort(generalsort(datascript.q(...qArgs), 12), 5)
     onData(null, {result})
   } catch (error) {
     onData(null, {error})
