@@ -3,6 +3,11 @@
  * of all users in the graph
  */
 const allUserQuery = `
+  [:find ?user
+   :where [?u "name"]
+          [?u "name" ?user]]`
+
+const allProjectsQuery = `
 [:find
         ?description 
         ?workflow 
@@ -37,4 +42,4 @@ const allUserQuery = `
         [?e "type" "project"]]
 `
 
-export default allUserQuery
+export default allProjectsQuery

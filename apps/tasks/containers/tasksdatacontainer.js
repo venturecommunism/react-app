@@ -10,11 +10,28 @@ const dataComposer = ({ context, query }, onData) => {
   try {
     function generalsort(array, index) {
       function sortfunction(a,b) {
-        return a[index] > b[index]
+        if (index[0] >= 1) {
+          return a[index[0]] > b[index[0]]
+        } else {
+          // do reverse sorting if the number is negative
+          index[0] = Math.abs(index[0])
+          return b[index[0]] > a[index[0]]
+        }
       }
-      return array.sort(sortfunction)
+      if (index.length <= 1) {
+console.log("index is")
+console.log(index)
+console.log(array.sort(sortfunction))
+        return array.sort(sortfunction)
+      }
+      else {
+        return generalsort(array.sort(sortfunction), index.slice(1, index.length)) 
+      }
     }
-    var result = generalsort(generalsort(datascript.q(...qArgs), 12), 5)
+    var result = generalsort(datascript.q(...qArgs), [12,-5])
+//    var result = generalsort(generalsort(datascript.q(...qArgs), 12), 5)
+console.log("result is:")
+console.log(result)
     onData(null, {result})
   } catch (error) {
     onData(null, {error})
