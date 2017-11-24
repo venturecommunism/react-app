@@ -2,7 +2,7 @@
  * A query for returning names
  * of all users in the graph
  */
-const allUserQuery = `
+const allUsersQuery = `
   [:find ?user
    :where [?u "name"]
           [?u "name" ?user]]`
