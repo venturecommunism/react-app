@@ -19,9 +19,6 @@ const dataComposer = ({ context, query }, onData) => {
         }
       }
       if (index.length <= 1) {
-console.log("index is")
-console.log(index)
-console.log(array.sort(sortfunction))
         return array.sort(sortfunction)
       }
       else {
@@ -29,9 +26,6 @@ console.log(array.sort(sortfunction))
       }
     }
     var result = generalsort(datascript.q(...qArgs), [12,-5])
-//    var result = generalsort(generalsort(datascript.q(...qArgs), 12), 5)
-console.log("result is:")
-console.log(result)
     onData(null, {result})
   } catch (error) {
     onData(null, {error})

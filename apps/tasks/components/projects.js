@@ -11,7 +11,7 @@ const PlainResultComponent = ({ result }) => (
 
 : ''}
 <ul>
-          <li key={`${item[1]}`}>{`${item[1]}`}</li>
+          {/* <li key={`${item[1]}`}>{`${item[1]}`}</li>
           <li key={`${item[2]}`}>{`${item[2]}`}</li>
           <li key={`${item[3]}`}>{`${item[3]}`}</li>
           <li key={`${item[4]}`}>{`${item[4]}`}</li>
@@ -20,7 +20,7 @@ const PlainResultComponent = ({ result }) => (
           <li key={`${item[7]}`}>{`${item[7]}`}</li>
           <li key={`${item[8]}`}>{`${item[8]}`}</li>
           <li key={`${item[9]}`}>{`${item[9]}`}</li>
-          <li key={`${item[10]}`}>{`${item[10]}`}</li>
+          <li key={`${item[10]}`}>{`${item[10]}`}</li> */}
           <li key={`${item[11]}`}>{`${item[11]}`}</li>
 </ul>
 
