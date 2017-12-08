@@ -3,9 +3,11 @@
  * of all users in the graph
  */
 const inboxQuery = `
-  [:find ?desc ?date
+  [:find ?desc ?date ?status ?uuid
    :where [?u "description"]
           [?u "description" ?desc]
-          [?u "date" ?date]]`
+          [?u "date" ?date]
+	  [?u "status" ?status]
+	  [?u "uuid" ?uuid]]`
 
 export default inboxQuery
