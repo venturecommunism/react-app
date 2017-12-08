@@ -53,9 +53,9 @@ export default () => {
     {
       ':db/id': -1,
       name: 'Reactive Test Query',
-      query: `[:find ?e ?user
- :where [?e "name"]
-        [?e "name" ?user]]`
+      query: `[:find ?e ?val
+ :where [?e "db/doc"]
+        [?e "db/doc" ?val]]`
     },
     {
       ':db/id': -2,

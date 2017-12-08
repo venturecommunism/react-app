@@ -95,6 +95,10 @@ const receiveDataMessage = (conn, message) => {
   }
 }
 
+channel = Channel(url, "rooms:datomic", me, receiveDataMessage, chData, conn, 'test')
+
+/*
+
 // Process Data
 go(function* () {
   localStorage.removeItem('key')
@@ -110,6 +114,8 @@ go(function* () {
   console.log('end data go function')
   channel = ex_data_channel
 })
+
+*/
 
 const receiveAuthMessage = (conn, message) => {
   console.log('message', message)
