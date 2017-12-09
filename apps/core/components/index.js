@@ -4,6 +4,7 @@ import logo from '../../layout/components/images/fivepetal.svg'
 import '../../layout/components/styles/app.css'
 import '../../layout/components/styles/index.css'
 
+import General from '../../general/components/index'
 import Tasks from '../../tasks/components/index'
 // import Demo from '../../demo/components/index'
 // import ChatGame from '../../chatgame/components/index'
@@ -28,6 +29,7 @@ const Root = ({result}) => (
     <p className='App-intro'>
       To get started, edit <code>src/modules/core/components/index.js</code> and save to reload.
     </p>
+    <General />
     <Tasks />
     <QueryBuilder />
  </div> : <div>
