@@ -2,19 +2,26 @@ import { useDeps, compose, composeAll } from 'mantra-core'
 import datascript from 'datascript'
 
 const dataComposer = ({ context, componentid }, onData) => {
+  // pull in the datascript connection and log of previous transactions from the context (see mantra spec for what the context is)
   const {conn, log} = context()
 
+  // get the database from the connection
   var db = datascript.db(conn)
 
+  // a query to pull in components and their queries. more later
   const cQuery = `
     [:find ?query
      :where [?e "query" ?query]
             [?e "componentid" "${componentid}"]]`
 
+  // arguments to a components query
   const cArgs = [cQuery, db]
+  // fetching the query you actually want from the query about components
   const query = datascript.q(...cArgs)[0][0]
+  // arguments for the actual query we want
   const qArgs = [query, db]
 
+// recursive multidimensional array sort being formed. TODO: change the structure to match datascript output (arrays all the way down)
 try {
 
   if( typeof helper == 'undefined' ) {
@@ -54,6 +61,7 @@ try {
         var y = is_numeric ? b[columns[index]] : b[columns[index]].toLowerCase();
 
 /*
+// TODO: replace helper with something tha will work for non-numerics
             if(!is_numeric) {
                 x = helper.string.to_ascii(a[columns[index]].toLowerCase(),-1),
                 y = helper.string.to_ascii(b[columns[index]].toLowerCase(),-1);
@@ -86,16 +94,13 @@ try {
   // sort this list by points, if points is equal, sort by name.
   var result = helper.arr.multisort(peoples, ['points', 'name'], ['DESC','ASC'])
   console.log(result)
+  // TODO: add back in the actual datascript query we want once multidimensional sorts work
   // result = datascript.q(...qArgs)
   onData(null, {result})
 } catch (error) {
   alert(error)
   onData(null, {error})
 }
-
-/*
-
-*/
 
 }
 
