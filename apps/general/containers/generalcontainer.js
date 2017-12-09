@@ -91,8 +91,21 @@ try {
       {name: 'Foo', lastname: 'Bar', points: 55}
   ]
 
+  var peoples = [
+      ['Jean', 'Rodrigues', 30],
+      ['Sara', 'Hope', 30],
+      ['Igor', 'Leroy', 25],
+      ['Foo', 'Bar', 55]
+  ]
+
   // sort this list by points, if points is equal, sort by name.
-  var result = helper.arr.multisort(peoples, ['points', 'name'], ['DESC','ASC'])
+
+  //  var result = helper.arr.multisort(peoples, ['points', 'name'], ['DESC','ASC'])
+
+  var result = helper.arr.multisort(peoples, [2, 0], ['DESC', 'ASC'])
+
+  var result = helper.arr.multisort(datascript.q(...qArgs), [2, 0], ['DESC', 'ASC'])
+
   console.log(result)
   // TODO: add back in the actual datascript query we want once multidimensional sorts work
   // result = datascript.q(...qArgs)
