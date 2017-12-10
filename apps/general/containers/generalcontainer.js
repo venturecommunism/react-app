@@ -5,6 +5,14 @@ const dataComposer = ({ context, componentid }, onData) => {
   // pull in the datascript connection and log of previous transactions from the context (see mantra spec for what the context is)
   const {conn, log} = context()
 
+  var func = new Function(`return ` +
+    `function () {
+      return console.log('function test')
+    }`
+  )()
+
+  func()
+
   // get the database from the connection
   var db = datascript.db(conn)
 
