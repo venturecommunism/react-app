@@ -3,19 +3,21 @@ import React from 'react'
 const RecursiveResultComponent = ({ pullcomponents }) => (
   <div>
       <div>
-        <h1>Top Header</h1>
+        <pre>{JSON.stringify(pullcomponents, null, 2)}</pre>
+        <h6>Top Header</h6>
         {pullcomponents.map(subitem =>
-          <div key={subitem.name} >
-            <span>Name: {subitem.name}</span>
-            <pre>Follows: {JSON.stringify(subitem._follows, null, 2)}</pre>
-            {subitem._follows && subitem._follows.map(subsubitem =>
-              <div><p>{subsubitem.name}</p>
-                { subsubitem._follows && <RecursiveResultComponent pullcomponents={subsubitem._follows} /> }
+          <div key={subitem.componentsname} >
+            <span>Name: {subitem.componentsname}</span>
+            <pre>Parents: {JSON.stringify(subitem._componentsparents, null, 2)}</pre>
+            {subitem._componentsparents && subitem._componentsparents.map(subsubitem =>
+              <div><p>{subsubitem.componentsname}</p>
+                   <p>{subsubitem.componentstype}</p>
+                { subsubitem._componentsparents && <RecursiveResultComponent pullcomponents={subsubitem._componentsparents} /> }
               </div>
             )}
           </div>
         )}
-      <h1>Bottom Header</h1>
+      <h6>Bottom Header</h6>
       </div>
   </div>
 )

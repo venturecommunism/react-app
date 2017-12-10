@@ -92,7 +92,7 @@ const dataComposer = ({ context, componentid }, onData) => {
       }
     }
 
-    var pullcomponentsresult = datascript.pull_many(db, '["name", {"_follows" ...}]', [['name', 'Jane']])
+    var pullcomponentsresult = datascript.pull_many(db, '["componentsname", "componentstype", {"_componentsparents" ...}]', [['componentsname', 'Root']])
 
     var result = helper.arr.multisort(datascript.q(...qArgs), [2, 0], ['DESC', 'ASC'])
     onData(null, {result, pullcomponentsresult})
