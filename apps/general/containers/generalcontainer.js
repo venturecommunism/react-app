@@ -92,8 +92,10 @@ const dataComposer = ({ context, componentid }, onData) => {
       }
     }
 
+    var pullcomponentsresult = datascript.pull_many(db, '["name", {"_follows" ...}]', [['name', 'Jane']])
+
     var result = helper.arr.multisort(datascript.q(...qArgs), [2, 0], ['DESC', 'ASC'])
-    onData(null, {result})
+    onData(null, {result, pullcomponentsresult})
   } catch (error) {
     alert(error)
     onData(null, {error})

@@ -1,14 +1,21 @@
 import React from 'react'
 
-const RecursiveResultComponent = ({ component }) => (
+const RecursiveResultComponent = ({ pullcomponents }) => (
   <div>
       <div>
-        {component.map(subitem =>
-          <div key={subitem[1]} >
-            <span>{subitem[0]}</span>
-            {subitem[0] && <RecursiveResultComponent component={subitem[0]} />}
+        <h1>Top Header</h1>
+        {pullcomponents.map(subitem =>
+          <div key={subitem.name} >
+            <span>Name: {subitem.name}</span>
+            <pre>Follows: {JSON.stringify(subitem._follows, null, 2)}</pre>
+            {subitem._follows && subitem._follows.map(subsubitem =>
+              <div><p>{subsubitem.name}</p>
+                { subsubitem._follows && <RecursiveResultComponent pullcomponents={subsubitem._follows} /> }
+              </div>
+            )}
           </div>
         )}
+      <h1>Bottom Header</h1>
       </div>
   </div>
 )

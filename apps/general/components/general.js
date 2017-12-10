@@ -2,14 +2,14 @@ import React from 'react'
 
 import RecursiveResultComponent from './recursive'
 
-const GeneralResultComponent = ({ result, actions }) => (
+const GeneralResultComponent = ({ result, actions, pullcomponentsresult }) => (
   <div>
     <h3>General </h3>
       <h4># of Items: {result.length}</h4>
 
       <input onKeyUp={actions.keyupaddtask} />
 
-      <RecursiveResultComponent component={result} />
+      <RecursiveResultComponent pullcomponents={pullcomponentsresult} />
 
       {result.map((item, i) => (
         <ul>
