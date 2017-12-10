@@ -1,11 +1,15 @@
 import React from 'react'
 
-const PlainResultComponent = ({ result, actions }) => (
+import RecursiveResultComponent from './recursive'
+
+const GeneralResultComponent = ({ result, actions }) => (
   <div>
     <h3>General </h3>
       <h4># of Items: {result.length}</h4>
 
       <input onKeyUp={actions.keyupaddtask} />
+
+      <RecursiveResultComponent component={result} />
 
       {result.map((item, i) => (
         <ul>
@@ -17,4 +21,4 @@ const PlainResultComponent = ({ result, actions }) => (
   </div>
 )
 
-export default PlainResultComponent
+export default GeneralResultComponent
