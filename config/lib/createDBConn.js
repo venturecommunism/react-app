@@ -153,14 +153,14 @@ end components schema
     {
       ':db/id': -2,
       'componentsname': 'Action used in multiple places',
-      'componentsparents': -5,
+      'componentsparents': [-1, -5],
       'componentstype': 'action',
       'componentsfunction': `() => alert('One action')`
     },
     {
       ':db/id': -3,
       'componentsname': 'Another Action',
-      'componentsparents': -5,
+      'componentsparents': -1,
       'componentstype': 'action',
       'componentsfunction': `() => alert('Another action')`
     },
@@ -174,6 +174,51 @@ end components schema
       ':db/id': -5,
       'componentsname': 'Root',
       'componentstype': 'root'
+    },
+    {
+      ':db/id': -6,
+      'componentsname': 'Second Data Component',
+      'componentsparents': -1,
+      'componentstype': 'data'
+    },
+    {
+      ':db/id': -7,
+      'componentsname': 'A third action',
+      'componentsparents': -1,
+      'componentstype': 'action',
+      'componentsfunction': `() => alert('Third action')`
+    },
+    {
+      ':db/id': -8,
+      'componentsname': 'Third Data Component',
+      'componentsparents': -5,
+      'componentstype': 'data'
+    },
+    {
+      ':db/id': -9,
+      'componentsname': 'A fourth action',
+      'componentsparents': -5,
+      'componentstype': 'action',
+      'componentsfunction': `() => alert('Fourth action')`
+    },
+    {
+      ':db/id': -10,
+      'componentsname': 'Fourth Data Component',
+      'componentsparents': -5,
+      'componentstype': 'data'
+    },
+    {
+      ':db/id': -11,
+      'componentsname': 'A fifth action',
+      'componentsparents': -5,
+      'componentstype': 'action',
+      'componentsfunction': `() => alert('Fifth action')`
+    },
+    {
+      ':db/id': -12,
+      'componentsname': 'Fifth Data Component (fourth in the main)',
+      'componentsparents': -5,
+      'componentstype': 'data'
     },
   ]
 
