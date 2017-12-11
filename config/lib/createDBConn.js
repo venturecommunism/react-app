@@ -11,7 +11,7 @@ export default () => {
  * reference type, with a cardinality of 'many' since someone can follow more
  * than one person.)
  */
-  const twitterUserSchema = {
+  const Schema = {
     name: {
       ':db/cardinality': ':db.cardinality/one',
       ':db/unique': ':db.unique/identity'
@@ -39,12 +39,34 @@ export default () => {
       ':db/cardinality': ':db.cardinality/one',
       ':db/unique': ':db.unique/identity'
     },
+
+/**
+components schema
+*/
+
+    'componentsname': {
+      ':db/cardinality': ':db.cardinality/one',
+      ':db/unique': ':db.unique/identity'
+    },
+    'componentsparents': {
+      ':db/cardinality': ':db.cardinality/many',
+      ':db/valueType': ':db.type/ref'
+    },
+    'componentstype': {
+      ':db/cardinality': ':db.cardinality/one',
+      ':db/unique': ':db.unique/identity'
+    },
+
+/**
+end components schema
+*/
+
   }
 
   /**
    * Create connection to db (that's been instantiated with the schema above.)
    */
-  const conn = datascript.create_conn(twitterUserSchema)
+  const conn = datascript.create_conn(Schema)
 
   /**
    * Define some query data.
@@ -122,6 +144,27 @@ export default () => {
     }
   ]
 
+  const componentdatoms = [
+    {
+      ':db/id': -1,
+      'componentsname': 'Subcomponent',
+      'componentsparents': -3,
+      'componentstype': 'subcomponent'
+    },
+    {
+      ':db/id': -2,
+      'componentsname': 'Action used in multiple places',
+      'componentsparents': [-3, -1],
+      'componentstype': 'action'
+    },
+    {
+      ':db/id': -3,
+      'componentsname': 'Root',
+      'componentstype': 'root'
+    },
+  ]
+
+
 
   /**
    * Define some seed data; including some `follower` references (that make
@@ -151,5 +194,6 @@ export default () => {
   datascript.transact(conn, datoms)
   datascript.transact(conn, secretdatoms)
   datascript.transact(conn, refdatoms)
+  datascript.transact(conn, componentdatoms)
   return conn
 }

@@ -10,16 +10,16 @@ const GeneralResultComponent = ({ result, actions, pullcomponentsresult }) => (
       <input onKeyUp={actions.keyupaddtask} />
 
       <h1>Top Level</h1>
-      <RecursiveResultComponent pullcomponents={pullcomponentsresult} />
+      <RecursiveResultComponent result={result} pullcomponents={pullcomponentsresult} />
       <h1>Bottom Level</h1>
 
-      {result.map((item, i) => (
+      {/* result.map((item, i) => (
         <ul>
           {[...Array(item.length)].map((x, i) =>
             <li key={`${item[i]}`}>{`${item[i]}`}</li>
           )}
         </ul>
-      ))}
+      )) */}
   </div>
 )
 
