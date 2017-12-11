@@ -92,7 +92,17 @@ const dataComposer = ({ context, componentid }, onData) => {
       }
     }
 
+    const pullquery = `
+      [:find (pull $x ?e2 [*]) :in $x :where [$x ?e "componentsname" ?v]
+                                            [$x ?e2 "componentsparents" ?e]]
+    `
+
+    const pullquery2 = `
+      [:find (pull $x ?e [*]) :in $x :where [$x ?e "componentsname" ?v]]
+    `
+
     var pullcomponentsresult = datascript.pull_many(db, '["componentsname", "componentstype", "componentsfunction", {"_componentsparents" ...}]', [['componentsname', 'Root']])
+//    var pullcomponentsresult = datascript.q(...[pullquery2, db])
 
     var result = helper.arr.multisort(datascript.q(...qArgs), [2, 0], ['DESC', 'ASC'])
     onData(null, {result, pullcomponentsresult})

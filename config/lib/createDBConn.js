@@ -53,8 +53,7 @@ components schema
       ':db/valueType': ':db.type/ref'
     },
     'componentstype': {
-      ':db/cardinality': ':db.cardinality/one',
-      ':db/unique': ':db.unique/identity'
+      ':db/cardinality': ':db.cardinality/one'
     },
 
 /**
@@ -148,31 +147,31 @@ end components schema
     {
       ':db/id': -1,
       'componentsname': 'Subcomponent',
-      'componentsparents': -6,
+      'componentsparents': -5,
       'componentstype': 'subcomponent'
     },
     {
       ':db/id': -2,
       'componentsname': 'Action used in multiple places',
-      'componentsparents': -6,
+      'componentsparents': -5,
       'componentstype': 'action',
       'componentsfunction': `() => alert('One action')`
     },
     {
-      ':db/id': -4,
+      ':db/id': -3,
       'componentsname': 'Another Action',
-      'componentsparents': [-6, -1],
+      'componentsparents': -5,
       'componentstype': 'action',
       'componentsfunction': `() => alert('Another action')`
     },
     {
-      ':db/id': -5,
+      ':db/id': -4,
       'componentsname': 'Data Component',
-      'componentsparents': -6,
+      'componentsparents': -5,
       'componentstype': 'data'
     },
     {
-      ':db/id': -6,
+      ':db/id': -5,
       'componentsname': 'Root',
       'componentstype': 'root'
     },

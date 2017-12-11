@@ -3,6 +3,7 @@ import React from 'react'
 const RecursiveResultComponent = ({ result, pullcomponents }) => (
   <div>
       <div>
+        {/* <pre>{JSON.stringify(result, null, 2)}</pre> */}
         <pre>{JSON.stringify(pullcomponents, null, 2)}</pre>
         <h6 style={{margin:'0 20px', padding:'0 20px'}} >Top Header</h6>
         {pullcomponents.map(subitem =>
