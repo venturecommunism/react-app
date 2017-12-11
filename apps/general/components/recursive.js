@@ -1,5 +1,7 @@
 import React from 'react'
 
+import badmapreduce from '../lib/badmapreduce'
+
 const RecursiveResultComponent = ({ result, pullcomponents }) => (
   <div>
       <div>
@@ -10,6 +12,18 @@ const RecursiveResultComponent = ({ result, pullcomponents }) => (
           <div style={{margin:'0 20px', padding:'0 20px'}} key={subitem.componentsname} >
             <span style={{margin:'0 20px', padding:'0 20px'}} >Name: {subitem.componentsname}</span>
             {/* <pre style={{margin:'0 20px', padding:'0 20px'}} >Parents: {JSON.stringify(subitem._componentsparents, null, 2)}</pre> */}
+
+{result && badmapreduce(result, subitem)}
+
+{result && result.map( (resultitem, resultindex) =>
+subitem._componentsparents.map( (componentsubitem, componentindex) =>
+resultitem.map( (resultsubitem, resultsubindex) =>
+  <div>
+    { resultsubindex == componentindex && componentsubitem.componentstype == 'data' ? "RESULT:" + result[resultindex] + ' ' + Object.keys(componentsubitem) + componentindex + ' ' + subitem._componentsparents.length : ''}
+  </div>
+)
+)
+)}
 
 
             {subitem._componentsparents && subitem._componentsparents.map((subsubitem, index) =>
