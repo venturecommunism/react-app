@@ -13,7 +13,7 @@ const badmapreduce = function (result, components) {
         for (var k = 0; k < components._componentsparents.length; k++) {
 //          console.log("ALPHABET", i, j, k, l)
           console.log("COMPONENTS", components._componentsparents[k])
-          components._componentsparents[k].componentstype == 'data' ? singlecomponent.push(result[i][l]) && l++ : singlecomponent.push(components._componentsparents[k].componentsname) && (console.log(result[i][l]) && l++)
+          components._componentsparents[k].componentstype == 'data' ? singlecomponent.push(result[i][l]) && l++ : singlecomponent.push(components._componentsparents[k]) && (console.log(result[i][l]) && l++)
         }
 //      }
       filledcomponents.push(singlecomponent)
@@ -23,7 +23,11 @@ const badmapreduce = function (result, components) {
 
     {filledcomponents.map( item =>
       item.map( singlecomponent =>
-        <div>{singlecomponent}</div>
+        <div>{singlecomponent.componentstype && (singlecomponent.componentstype == 'action') ? <button onClick={
+          new Function(`return ` +
+            `${singlecomponent.componentsfunction}`
+          )()
+        } >{singlecomponent.componentsname}</button> : singlecomponent.componentsname ? singlecomponent.componentsname : singlecomponent }</div>
       )
     )}
 
