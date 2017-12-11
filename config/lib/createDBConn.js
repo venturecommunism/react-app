@@ -148,17 +148,31 @@ end components schema
     {
       ':db/id': -1,
       'componentsname': 'Subcomponent',
-      'componentsparents': -3,
+      'componentsparents': -6,
       'componentstype': 'subcomponent'
     },
     {
       ':db/id': -2,
       'componentsname': 'Action used in multiple places',
-      'componentsparents': [-3, -1],
-      'componentstype': 'action'
+      'componentsparents': -6,
+      'componentstype': 'action',
+      'componentsfunction': `() => alert('One action')`
     },
     {
-      ':db/id': -3,
+      ':db/id': -4,
+      'componentsname': 'Another Action',
+      'componentsparents': [-6, -1],
+      'componentstype': 'action',
+      'componentsfunction': `() => alert('Another action')`
+    },
+    {
+      ':db/id': -5,
+      'componentsname': 'Data Component',
+      'componentsparents': -6,
+      'componentstype': 'data'
+    },
+    {
+      ':db/id': -6,
       'componentsname': 'Root',
       'componentstype': 'root'
     },
