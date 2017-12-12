@@ -1,14 +1,12 @@
 import React from 'react'
 
 import DataContainer from '../containers/generalcontainer'
-import GeneralComponent from './general'
-const General = DataContainer(GeneralComponent)
+import RecursiveComponent from './recursive'
+const Recursive = DataContainer(RecursiveComponent)
 
-const GeneralWrapper = () => (
-  <div>
-    <General componentid={"rootcomponentcleanup"} />
-  </div>
+const RecursiveWrapper = () => (
+  <Recursive componentid={"rootcomponentcleanup"} />
 )
 
-export default GeneralWrapper
+export default RecursiveWrapper
 
