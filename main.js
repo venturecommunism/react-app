@@ -1,8 +1,7 @@
-import {initContext} from './config/context'
 import {createApp} from './config/lib/mantra'
+import {initContext} from './config/context'
 
-const context = initContext()
-const app = createApp(context)
+const app = createApp(initContext())
 
 import coreModule from './apps/core'
 

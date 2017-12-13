@@ -168,11 +168,11 @@ datascript.listen(conn, {channel}, function(report) {
 // The actual context. This is the first argument to actions.
 export const initContext = () => {
   return {
-    peers: peers,
     conn: conn,
-    channel: channel,
     transact: transact,
     log: log,
     meta: meta,
+    channel: channel,
+    peers: peers,
   }
 }

@@ -60,6 +60,27 @@ components schema
 end components schema
 */
 
+/**
+module schema
+*/
+
+    'modulename': {
+      ':db/cardinality': ':db.cardinality/one',
+      ':db/unique': ':db.unique/identity'
+    },
+    'moduleactionsets': {
+      ':db/cardinality': ':db.cardinality/many',
+      ':db/valueType': ':db.type/ref'
+    },
+    'moduleactions': {
+      ':db/cardinality': ':db.cardinality/many',
+      ':db/valueType': ':db.type/ref'
+    },
+
+
+/**
+end module schema
+*/
   }
 
   /**
@@ -237,7 +258,47 @@ end components schema
     },
   ]
 
+  const moduledatoms = [
+    { ':db/id': -1,
+      moduleid: 'core',
+      modulename: 'Core module',
+      moduleactionsets: -2,
+      routes: -3
+    },
+    { ':db/id': -2,
+      actionsetid: 'general',
+      modulename: 'General actions',
+      moduleactions: -4
+    },
+    { ':db/id': -3,
+      routeid: 'home',
+      modulename: 'Core module'
+    },
+    { ':db/id': -4,
+      actionid: 'keyupaddtask',
+      moduleactionfunction: `
 
+    function keyupaddtask({context}, e) {
+      var conn = context.conn,
+          transact = context.transact;
+
+      if (e.which === 13) {
+        var date = new Date().getTime();
+        transact(conn, [{
+          ':db/id': -1,
+          description: e.target.value,
+          date: "" + date,
+          status: "pending",
+          uuid: "uuid-" + date
+        }]);
+        e.target.value = "";
+      }
+    }
+
+
+`
+    },
+  ]
 
   /**
    * Define some seed data; including some `follower` references (that make
@@ -268,5 +329,6 @@ end components schema
   datascript.transact(conn, secretdatoms)
   datascript.transact(conn, refdatoms)
   datascript.transact(conn, componentdatoms)
+  datascript.transact(conn, moduledatoms)
   return conn
 }

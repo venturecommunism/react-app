@@ -1,3 +1,15 @@
+import datascript from 'datascript'
+
+// a query to pull in components and their queries. more later
+const cQuery = `
+  [:find ?e2 ?modid ?action ?function ?actionsetid ?actionid
+   :where [?e3 "moduleid" ?modid]
+          [?e3 "moduleactionsets" ?e2]
+          [?e2 "moduleactions" ?action]
+          [?e2 "actionsetid" ?actionsetid]
+          [?action "moduleactionfunction" ?function]
+          [?action "actionid" ?actionid]]`
+
 import {
   injectDeps
 } from 'react-simple-di';
@@ -55,7 +67,24 @@ export default class App {
       this._routeFns.push(module.routes);
     }
 
-    const actions = module.actions || {};
+//    const actions = module.actions || {};
+    const actions = {}
+    actions.general = {}
+
+    const db = datascript.db(this.context.conn)
+    // arguments to a components query
+    const cArgs = [cQuery, db]
+    const query = datascript.q(...cArgs)
+
+    actions[query[0][4]][query[0][5]] = new Function(`return ` + `${query[0][3]}`)
+
+    if (module.actions.general.keyupaddtask === actions.general.keyupaddtask) {
+      alert('true')
+    } else {
+      console.log('module.actions', module.actions)
+      console.log('actions', actions)
+    }
+
     this.actions = {
       ...this.actions,
       ...actions
