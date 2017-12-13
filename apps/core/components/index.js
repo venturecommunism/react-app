@@ -3,7 +3,7 @@ import React from 'react'
 import DataContainer from '../../cleanup/container'
 import ActionsMapper from '../containers/actionsmapper'
 import RecursiveComponent from '../../cleanup/component'
-const Recursive = DataContainer(ActionsMapper('general', RecursiveComponent))
+const Module = DataContainer(ActionsMapper('general', RecursiveComponent))
 
 /**
 **  MAKING A NEW MODULE
@@ -12,7 +12,7 @@ const Recursive = DataContainer(ActionsMapper('general', RecursiveComponent))
 **/
 
 const Root = ({result}) => (
-  <Recursive componentid={"rootcomponentcleanup"} />
+  <Module moduleid={"core"} />
 )
 
 export default Root

@@ -67,19 +67,19 @@ export default class App {
       this._routeFns.push(module.routes);
     }
 
-//    const actions = module.actions || {};
-    const actions = {}
-    actions.general = {}
+    const actions = module.actions || {};
+//    const actions = {}
+//    actions.general = {}
 
     const db = datascript.db(this.context.conn)
     // arguments to a components query
     const cArgs = [cQuery, db]
     const query = datascript.q(...cArgs)
 
-    actions[query[0][4]][query[0][5]] = new Function(`return ` + `${query[0][3]}`)
+//    actions[query[0][4]][query[0][5]] = new Function(`return ` + `${query[0][3]}`)
 
     if (module.actions.general.keyupaddtask === actions.general.keyupaddtask) {
-      alert('true')
+//      alert('true')
     } else {
       console.log('module.actions', module.actions)
       console.log('actions', actions)

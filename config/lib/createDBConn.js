@@ -68,6 +68,14 @@ module schema
       ':db/cardinality': ':db.cardinality/one',
       ':db/unique': ':db.unique/identity'
     },
+    'moduleid': {
+      ':db/cardinality': ':db.cardinality/one',
+      ':db/unique': ':db.unique/identity'
+    },
+    'rootcomponent': {
+      ':db/cardinality': ':db.cardinality/one',
+      ':db/valueType': ':db.type/ref'
+    },
     'moduleactionsets': {
       ':db/cardinality': ':db.cardinality/many',
       ':db/valueType': ':db.type/ref'
@@ -256,25 +264,23 @@ end module schema
       query: `[:find ?u ?u ?u ?desc
                :where [?u ?attrib ?desc]]`
     },
-  ]
-
-  const moduledatoms = [
-    { ':db/id': -1,
+    { ':db/id': -15,
       moduleid: 'core',
       modulename: 'Core module',
-      moduleactionsets: -2,
-      routes: -3
+      moduleactionsets: -16,
+      rootcomponent: -13,
+      routes: -17
     },
-    { ':db/id': -2,
+    { ':db/id': -16,
       actionsetid: 'general',
       modulename: 'General actions',
-      moduleactions: -4
+      moduleactions: -18
     },
-    { ':db/id': -3,
+    { ':db/id': -17,
       routeid: 'home',
       modulename: 'Core module'
     },
-    { ':db/id': -4,
+    { ':db/id': -18,
       actionid: 'keyupaddtask',
       moduleactionfunction: `
 
@@ -329,6 +335,5 @@ end module schema
   datascript.transact(conn, secretdatoms)
   datascript.transact(conn, refdatoms)
   datascript.transact(conn, componentdatoms)
-  datascript.transact(conn, moduledatoms)
   return conn
 }

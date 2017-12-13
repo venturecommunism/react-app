@@ -3,18 +3,20 @@ import datascript from 'datascript'
 
 import multisort from './lib/multisort'
 
-const dataComposer = ({ context, componentid }, onData) => {
+const dataComposer = ({ context, moduleid }, onData) => {
   // pull in the datascript connection and log of previous transactions from the context (see mantra spec for what the context is)
   const {conn, log} = context()
 
   // get the database from the connection
   var db = datascript.db(conn)
 
-  // a query to pull in components and their queries. more later
+  // a query to pull in the module, its root component and its data query. more later
   const cQuery = `
     [:find ?query
-     :where [?e "query" ?query]
-            [?e "componentid" "${componentid}"]]`
+     :where [?e2 "query" ?query]
+            [?e2 "componentid" ?compid]
+            [?e "rootcomponent" ?e2]
+            [?e "moduleid" "${moduleid}"]]`
 
   // arguments to a components query
   const cArgs = [cQuery, db]
