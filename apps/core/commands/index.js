@@ -1,7 +1,7 @@
-import followertree from './followertree'
+import general from './general'
 
 const actions = {
-  followertree,
+  general
 }
 
 export default actions

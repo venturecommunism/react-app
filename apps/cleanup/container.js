@@ -1,7 +1,7 @@
 import { useDeps, compose, composeAll } from 'mantra-core'
 import datascript from 'datascript'
 
-import multisort from '../lib/multisort'
+import multisort from './lib/multisort'
 
 const dataComposer = ({ context, componentid }, onData) => {
   // pull in the datascript connection and log of previous transactions from the context (see mantra spec for what the context is)
