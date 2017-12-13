@@ -231,7 +231,7 @@ end components schema
     },
     { ':db/id': -14,
       componentid: 'rootcomponentcleanup_serverversion',
-      componentsname: 'Root component (cleanup)',
+      componentsname: 'Root component (with a query that works for Server)',
       query: `[:find ?u ?u ?u ?desc
                :where [?u ?attrib ?desc]]`
     },

@@ -10,6 +10,7 @@ function transact(conn, data_to_add, meta) {
 }
 
 // Elixir / Phoenix Channels things
+var clientonly = false
 import {go, chan, take, put, timeout, putAsync} from 'js-csp'
 import Channel from './channel'
 import url from './url'
@@ -100,12 +101,11 @@ const receiveDataMessage = (conn, message) => {
   }
 }
 
-// Sets up the channel on Elixir/Phoenix
-// channel = Channel(url, "rooms:datomic", me, receiveDataMessage, chData, conn, 'test')
-
-
-
-// Data Communicating Sequential Processes. Takes JWT from the Auth CSP and sets up the Elixir channel
+// Sets up the channel on Elixir/Phoenix (client only)
+if (clientonly) {
+  channel = Channel(url, "rooms:datomic", me, receiveDataMessage, chData, conn, 'test')
+} else {
+// Data Communicating Sequential Processes. Takes JWT from the Auth CSP and sets up the Elixir channel (server only)
 go(function* () {
   localStorage.removeItem('key')
   var key = yield localStorage.getItem('key') || take(chData)
@@ -120,8 +120,7 @@ go(function* () {
   console.log('end data go function')
   channel = ex_data_channel
 })
-
-
+}
 
 // Authentication Communicating Sequential Process. Puts a JWT on the Data CSP.
 go(function* () {
