@@ -101,46 +101,47 @@ const receiveDataMessage = (conn, message) => {
   }
 }
 
+// Choose between Client and Server
 // Sets up the channel on Elixir/Phoenix (client only)
 if (clientonly) {
   channel = Channel(url, "rooms:datomic", me, receiveDataMessage, chData, conn, 'test')
 } else {
-// Data Communicating Sequential Processes. Takes JWT from the Auth CSP and sets up the Elixir channel (server only)
-go(function* () {
-  localStorage.removeItem('key')
-  var key = yield localStorage.getItem('key') || take(chData)
-  console.log('key is:', key)
+  // Data Communicating Sequential Processes. Takes JWT from the Auth CSP and sets up the Elixir channel (server only)
+  go(function* () {
+    localStorage.removeItem('key')
+    var key = yield localStorage.getItem('key') || take(chData)
+    console.log('key is:', key)
 
-  var user = me
-  var msg = {jwt: key, syncpoint: 'none'}
-  const ex_data_channel = Channel(url, "rooms:datomic", user, receiveDataMessage, chData, conn, key)
-  yield timeout(10000)
-  ex_data_channel.send(msg)
-  console.log('yield take chData', yield take(chData))
-  console.log('end data go function')
-  channel = ex_data_channel
-})
-}
-
-// Authentication Communicating Sequential Process. Puts a JWT on the Data CSP.
-go(function* () {
-  // putAsync is more Communicating Sequential Processes but from outside Go functions
-  const receiveAuthMessage = (conn, message) => {
-    console.log('message', message)
-    putAsync(chAuth, message)
-  }
-  if (!localStorage.getItem('key')) {
     var user = me
-    var msg = {email: 'john@phoenix-trello.com', password: '12345678'}
-    const ex_auth_channel = Channel(url, "rooms:auth", user, receiveAuthMessage, chAuth, conn)
+    var msg = {jwt: key, syncpoint: 'none'}
+    const ex_data_channel = Channel(url, "rooms:datomic", user, receiveDataMessage, chData, conn, key)
     yield timeout(10000)
-    ex_auth_channel.send(msg)
-    console.log('yield take chAuth', yield take(chAuth))
-    var value = yield take(chAuth)
-    localStorage.setItem('key', value.jwt)
-    yield put(chData, localStorage.getItem('key'))
-  }
-})
+    ex_data_channel.send(msg)
+    console.log('yield take chData', yield take(chData))
+    console.log('end data go function')
+    channel = ex_data_channel
+  })
+
+  // Authentication Communicating Sequential Process. Puts a JWT on the Data CSP.
+  go(function* () {
+    // putAsync is more Communicating Sequential Processes but from outside Go functions
+    const receiveAuthMessage = (conn, message) => {
+      console.log('message', message)
+      putAsync(chAuth, message)
+    }
+    if (!localStorage.getItem('key')) {
+      var user = me
+      var msg = {email: 'john@phoenix-trello.com', password: '12345678'}
+      const ex_auth_channel = Channel(url, "rooms:auth", user, receiveAuthMessage, chAuth, conn)
+      yield timeout(10000)
+      ex_auth_channel.send(msg)
+      console.log('yield take chAuth', yield take(chAuth))
+      var value = yield take(chAuth)
+      localStorage.setItem('key', value.jwt)
+      yield put(chData, localStorage.getItem('key'))
+    }
+  })
+}
 
 // Datascript listener. Fires when we transact data
 datascript.listen(conn, {channel}, function(report) {
