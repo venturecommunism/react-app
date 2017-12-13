@@ -1,5 +1,5 @@
 import {initContext} from './config/context'
-import {createApp} from 'mantra-core'
+import {createApp} from './config/lib/mantra'
 
 const context = initContext()
 const app = createApp(context)
