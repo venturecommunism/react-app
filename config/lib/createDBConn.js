@@ -220,6 +220,15 @@ end components schema
       'componentsparents': -5,
       'componentstype': 'data'
     },
+    { ':db/id': -13,
+      componentid: 'rootcomponentcleanup',
+      componentsname: 'Root component (cleanup)',
+      query: `[:find ?desc ?date ?status ?uuid
+               :where [?u "description" ?desc]
+                      [?u "date" ?date]
+                      [?u "status" ?status]
+                      [?u "uuid" ?uuid]]`
+    },
   ]
 
 
