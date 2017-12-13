@@ -1,23 +1,28 @@
-import {go, chan, take, put, timeout, putAsync} from 'js-csp'
+// Datascript things
 import datascript from 'datascript'
 import createDBConn from './lib/createDBConn'
+const conn = createDBConn()
+// const transact = datascript.transact
+// Transaction function maintains the log (for time travel, undo, etc.)
+function transact(conn, data_to_add, meta) {
+  var tx_report = datascript.transact(conn, data_to_add, meta)
+  console.log('resolved tempid', datascript.resolve_tempid(tx_report.tempids, -1))
+}
+
+// Elixir / Phoenix Channels things
+import {go, chan, take, put, timeout, putAsync} from 'js-csp'
 import Channel from './channel'
 import url from './url'
 
+// Generates random-ish names
 const NAMES = ['Girl', 'Boy', 'Horse', 'Foo', 'Face', 'Giant', 'Super', 'Bug', 'Captain', 'Lazer']
 const getRandomInt = (min, max) => Math.floor(Math.random() * (max - min)) + min
 const getRandomName = () => NAMES[getRandomInt(0, NAMES.length)]
 const getRandomUser = () => `${ getRandomName() }${ getRandomName() }${ getRandomName() }`
 const me = getRandomUser()
 
-const conn = createDBConn()
-//const transact = datascript.transact
-
-function transact(conn, data_to_add, meta) {
-  var tx_report = datascript.transact(conn, data_to_add, meta)
-  console.log('resolved tempid', datascript.resolve_tempid(tx_report.tempids, -1))
-}
-
+// Transaction log, transaction metadata, connected peers (not used yet),
+// data channel for elixir/phoenix, a Data CSP and Auth CSP
 var log = []
 var meta = []
 var peers = []
@@ -25,7 +30,7 @@ var channel
 let chData = chan()
 let chAuth = chan()
 
-// fires when we receive a message
+// Fires when we receive a message on the Elixir data channel
 const receiveDataMessage = (conn, message) => {
   const user = message.user
   const isMe = (someUser) => me === someUser
@@ -95,11 +100,12 @@ const receiveDataMessage = (conn, message) => {
   }
 }
 
-channel = Channel(url, "rooms:datomic", me, receiveDataMessage, chData, conn, 'test')
+// Sets up the channel on Elixir/Phoenix
+// channel = Channel(url, "rooms:datomic", me, receiveDataMessage, chData, conn, 'test')
 
-/*
 
-// Process Data
+
+// Data Communicating Sequential Processes. Takes JWT from the Auth CSP and sets up the Elixir channel
 go(function* () {
   localStorage.removeItem('key')
   var key = yield localStorage.getItem('key') || take(chData)
@@ -115,15 +121,15 @@ go(function* () {
   channel = ex_data_channel
 })
 
-*/
 
-const receiveAuthMessage = (conn, message) => {
-  console.log('message', message)
-  putAsync(chAuth, message)
-}
 
-// Process Auth
+// Authentication Communicating Sequential Process. Puts a JWT on the Data CSP.
 go(function* () {
+  // putAsync is more Communicating Sequential Processes but from outside Go functions
+  const receiveAuthMessage = (conn, message) => {
+    console.log('message', message)
+    putAsync(chAuth, message)
+  }
   if (!localStorage.getItem('key')) {
     var user = me
     var msg = {email: 'john@phoenix-trello.com', password: '12345678'}
@@ -137,7 +143,7 @@ go(function* () {
   }
 })
 
-// fires when we transact data
+// Datascript listener. Fires when we transact data
 datascript.listen(conn, {channel}, function(report) {
   log.push(report.tx_data)
   meta.push(report.tx_meta)
@@ -159,6 +165,7 @@ datascript.listen(conn, {channel}, function(report) {
   channel.send({data: report.tx_data, meta: report.tx_meta})
 })
 
+// The actual context. This is the first argument to actions.
 export const initContext = () => {
   return {
     peers: peers,

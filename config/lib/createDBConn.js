@@ -229,6 +229,12 @@ end components schema
                       [?u "status" ?status]
                       [?u "uuid" ?uuid]]`
     },
+    { ':db/id': -14,
+      componentid: 'rootcomponentcleanup_serverversion',
+      componentsname: 'Root component (cleanup)',
+      query: `[:find ?u ?u ?u ?desc
+               :where [?u ?attrib ?desc]]`
+    },
   ]
 
 
