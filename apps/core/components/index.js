@@ -12,7 +12,7 @@ const Recursive = DataContainer(ActionsMapper('general', RecursiveComponent))
 **/
 
 const Root = ({result}) => (
-  <Recursive componentid={"rootcomponentcleanup_serverversion"} />
+  <Recursive componentid={"rootcomponentcleanup"} />
 )
 
 export default Root
