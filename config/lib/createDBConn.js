@@ -282,27 +282,19 @@ end module schema
     },
     { ':db/id': -18,
       actionid: 'keyupaddtask',
-      moduleactionfunction: `
-
-    function keyupaddtask({context}, e) {
-      var conn = context.conn,
-          transact = context.transact;
-
-      if (e.which === 13) {
-        var date = new Date().getTime();
-        transact(conn, [{
-          ':db/id': -1,
-          description: e.target.value,
-          date: "" + date,
-          status: "pending",
-          uuid: "uuid-" + date
-        }]);
-        e.target.value = "";
-      }
-    }
-
-
-`
+      moduleactionfunction: `({conn, transact}, e) {
+        if (e.which === 13) {
+          var date = new Date().getTime()
+          transact(conn, [{
+            ':db/id': -1,
+            description: e.target.value,
+            date: date,
+            status: 'pending',
+            uuid: 'uuid-' + date
+          }])
+          e.target.value = ""
+        }
+      }`
     },
     { ':db/id': -19,
       moduleid: 'servercore',

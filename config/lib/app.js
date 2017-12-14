@@ -68,7 +68,6 @@ export default class App {
       this._routeFns.push(module.routes);
     }
 
-//    const actions = module.actions || {};
     const actions = {}
     actions.general = {}
 
@@ -77,23 +76,7 @@ export default class App {
     const cArgs = [cQuery, db]
     const query = datascript.q(...cArgs)
 
-    actions[query[0][4]][query[0][5]] = new Function(`return ` + `${query[0][3]}`)
-
-actions[query[0][4]][query[0][5]] = new Function(
-    `return function ` + query[0][5] + 
-    `() {
-       alert('Hi!')
-     }`
-)()
-
-
-    if (module.actions.general.keyupaddtask === actions.general.keyupaddtask) {
-//      alert('true')
-    } else {
-      console.log('module.actions', module.actions)
-      console.log('actions', actions)
-      console.log('actions', actions.general.keyupaddtask)
-    }
+    actions[query[0][4]][query[0][5]] = new Function(`return function ` + query[0][5] + query[0][3])()
 
     this.actions = {
       ...this.actions,
