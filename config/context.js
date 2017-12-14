@@ -170,9 +170,6 @@ export const initContext = () => {
   return {
     conn: conn,
     transact: transact,
-    log: log,
-    meta: meta,
-    channel: channel,
-    peers: peers,
+    log: log
   }
 }

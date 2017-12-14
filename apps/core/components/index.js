@@ -12,7 +12,10 @@ const Module = DataContainer(ActionsMapper('general', RecursiveComponent))
 **/
 
 const Root = ({result}) => (
-  <Module moduleid={"core"} />
+  <div>
+    <Module moduleid={"core"} />
+    <Module moduleid={"servercore"} />
+  </div>
 )
 
 export default Root

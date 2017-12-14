@@ -304,6 +304,13 @@ end module schema
 
 `
     },
+    { ':db/id': -19,
+      moduleid: 'servercore',
+      modulename: 'Core module (server version)',
+      moduleactionsets: -16,
+      rootcomponent: -14,
+      routes: -17
+    },
   ]
 
   /**
