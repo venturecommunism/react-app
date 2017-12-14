@@ -1,6 +1,6 @@
 import {
   useDeps as _useDeps
-} from 'react-simple-di';
+} from './injectdeps';
 
 import {
   compose as _compose,

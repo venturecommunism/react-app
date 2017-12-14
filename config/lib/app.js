@@ -1,5 +1,10 @@
 import datascript from 'datascript'
 
+import {
+  injectDeps
+} from './injectdeps';
+
+
 // a query to pull in components and their queries. more later
 const cQuery = `
   [:find ?e2 ?modid ?action ?function ?actionsetid ?actionid
@@ -9,10 +14,6 @@ const cQuery = `
           [?e2 "actionsetid" ?actionsetid]
           [?action "moduleactionfunction" ?function]
           [?action "actionid" ?actionid]]`
-
-import {
-  injectDeps
-} from 'react-simple-di';
 
 export default class App {
   constructor(context) {
@@ -67,22 +68,31 @@ export default class App {
       this._routeFns.push(module.routes);
     }
 
-    const actions = module.actions || {};
-//    const actions = {}
-//    actions.general = {}
+//    const actions = module.actions || {};
+    const actions = {}
+    actions.general = {}
 
     const db = datascript.db(this.context.conn)
     // arguments to a components query
     const cArgs = [cQuery, db]
     const query = datascript.q(...cArgs)
 
-//    actions[query[0][4]][query[0][5]] = new Function(`return ` + `${query[0][3]}`)
+    actions[query[0][4]][query[0][5]] = new Function(`return ` + `${query[0][3]}`)
+
+actions[query[0][4]][query[0][5]] = new Function(
+    `return function ` + query[0][5] + 
+    `() {
+       alert('Hi!')
+     }`
+)()
+
 
     if (module.actions.general.keyupaddtask === actions.general.keyupaddtask) {
 //      alert('true')
     } else {
       console.log('module.actions', module.actions)
       console.log('actions', actions)
+      console.log('actions', actions.general.keyupaddtask)
     }
 
     this.actions = {
