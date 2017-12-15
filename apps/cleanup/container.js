@@ -27,13 +27,10 @@ const dataComposer = ({ context, moduleid }, onData) => {
 
   // recursive multidimensional array sort being formed. TODO: change the structure to match datascript output (arrays all the way down)
   try {
-
     const pullquery = `
-      [:find (pull $x ?e [*]) :in $x :where [$x ?e "componentsname" ?v]]
+      [:find (pull $x ?e ["componentsname", "componentstype", "componentsfunction", {"_componentsparents" ...}]) :in $x :where [$x ?e "componentsname" "Root"]]
     `
-    var pullcomponents = datascript.pull_many(db, '["componentsname", "componentstype", "componentsfunction", {"_componentsparents" ...}]', [['componentsname', 'Root']])
-    // var pullcomponentsresult = datascript.q(...[pullquery, db])
-
+    var pullcomponents = datascript.q(...[pullquery, db])[0]
     var result = multisort.arr.multisort(datascript.q(...qArgs), [2, 0], ['DESC', 'ASC'])
     onData(null, {result, pullcomponents})
   } catch (error) {
