@@ -381,9 +381,9 @@ end module schema
    * Transact in the data, to be stored and indexed by datascript for performant
    * querying.
    */
-  datascript.transact(conn, datoms)
-  datascript.transact(conn, secretdatoms)
-  datascript.transact(conn, refdatoms)
-//  datascript.transact(conn, componentdatoms)
+//  datascript.transact(conn, datoms)
+//  datascript.transact(conn, secretdatoms)
+//  datascript.transact(conn, refdatoms)
+  datascript.transact(conn, componentdatoms)
   return conn
 }

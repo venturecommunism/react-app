@@ -68,7 +68,7 @@ export default class App {
       this._routeFns.push(module.routes)
     }
 
-    const db = datascript.db(this.context.conn)
+    const db = datascript.db(this.context.conn_components)
     // arguments to a components query
     const cArgs = [cQuery, db]
     const query = datascript.q(...cArgs)

@@ -5,10 +5,11 @@ import multisort from './lib/multisort'
 
 const dataComposer = ({ context, moduleid }, onData) => {
   // pull in the datascript connection and log of previous transactions from the context (see mantra spec for what the context is)
-  const {conn, log} = context()
+  const {conn, conn_components, log} = context()
 
   // get the database from the connection
   var db = datascript.db(conn)
+  var db_components = datascript.db(conn_components)
 
   // a query to pull in the module, its root component and its data query. more later
   const cQuery = `
@@ -19,7 +20,7 @@ const dataComposer = ({ context, moduleid }, onData) => {
             [?e "moduleid" "${moduleid}"]]`
 
   // arguments to a components query
-  const cArgs = [cQuery, db]
+  const cArgs = [cQuery, db_components]
   // fetching the query you actually want from the query about components
   const query = datascript.q(...cArgs)[0][0]
   // arguments for the actual query we want
@@ -30,7 +31,7 @@ const dataComposer = ({ context, moduleid }, onData) => {
     const pullquery = `
       [:find (pull $x ?e ["componentsname", "componentstype", "componentsfunction", {"_componentsparents" ...}]) :in $x :where [$x ?e "componentsname" "Root"]]
     `
-    var pullcomponents = datascript.q(...[pullquery, db])[0]
+    var pullcomponents = datascript.q(...[pullquery, db_components])[0]
     var result = multisort.arr.multisort(datascript.q(...qArgs), [2, 0], ['DESC', 'ASC'])
     onData(null, {result, pullcomponents})
   } catch (error) {
