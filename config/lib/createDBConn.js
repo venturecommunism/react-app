@@ -181,17 +181,37 @@ end module schema
     },
     {
       ':db/id': -2,
-      'componentsname': 'Action used in multiple places',
+      'componentsname': 'multipleplaces',
       'componentsparents': [-1, -5],
       'componentstype': 'action',
-      'componentsfunction': `() => alert('One action')`
+      'componentsfunction': `({conn, transact}, e) {
+        var date = new Date().getTime()
+        transact(conn, [{
+          ':db/id': -1,
+          description: 'multipleplaces test',
+          date: date,
+          status: 'pending',
+          uuid: 'uuid-' + date
+        }])
+        e.target.value = ""
+      }`
     },
     {
       ':db/id': -3,
-      'componentsname': 'Another Action',
+      'componentsname': 'anotheraction',
       'componentsparents': -1,
       'componentstype': 'action',
-      'componentsfunction': `() => alert('Another action')`
+      'componentsfunction': `({conn, transact}, e) {
+        var date = new Date().getTime()
+        transact(conn, [{
+          ':db/id': -1,
+          description: 'anotheraction test',
+          date: date,
+          status: 'pending',
+          uuid: 'uuid-' + date
+        }])
+        e.target.value = ""
+      }`
     },
     {
       ':db/id': -4,
@@ -212,10 +232,20 @@ end module schema
     },
     {
       ':db/id': -7,
-      'componentsname': 'A third action',
+      'componentsname': 'thirdaction',
       'componentsparents': -1,
       'componentstype': 'action',
-      'componentsfunction': `() => alert('Third action')`
+      'componentsfunction': `({conn, transact}, e) {
+        var date = new Date().getTime()
+        transact(conn, [{
+          ':db/id': -1,
+          description: 'thirdaction test',
+          date: date,
+          status: 'pending',
+          uuid: 'uuid-' + date
+        }])
+        e.target.value = ""
+      }`
     },
     {
       ':db/id': -8,
@@ -225,10 +255,20 @@ end module schema
     },
     {
       ':db/id': -9,
-      'componentsname': 'A fourth action',
+      'componentsname': 'fourthaction',
       'componentsparents': -5,
       'componentstype': 'action',
-      'componentsfunction': `() => alert('Fourth action')`
+      'componentsfunction': `({conn, transact}, e) {
+        var date = new Date().getTime()
+        transact(conn, [{
+          ':db/id': -1,
+          description: 'fourthaction test',
+          date: date,
+          status: 'pending',
+          uuid: 'uuid-' + date
+        }])
+        e.target.value = ""
+      }`
     },
     {
       ':db/id': -10,
@@ -238,10 +278,20 @@ end module schema
     },
     {
       ':db/id': -11,
-      'componentsname': 'A fifth action',
+      'componentsname': 'fifthaction',
       'componentsparents': -5,
       'componentstype': 'action',
-      'componentsfunction': `() => alert('Fifth action')`
+      'componentsfunction': `({conn, transact}, e) {
+        var date = new Date().getTime()
+        transact(conn, [{
+          ':db/id': -1,
+          description: 'fifthaction test',
+          date: date,
+          status: 'pending',
+          uuid: 'uuid-' + date
+        }])
+        e.target.value = ""
+      }`
     },
     {
       ':db/id': -12,
@@ -274,15 +324,16 @@ end module schema
     { ':db/id': -16,
       actionsetid: 'general',
       modulename: 'General actions',
-      moduleactions: -18
+      moduleactions: [-18, -2, -9, -11]
     },
     { ':db/id': -17,
       routeid: 'home',
       modulename: 'Core module'
     },
     { ':db/id': -18,
-      actionid: 'keyupaddtask',
-      moduleactionfunction: `({conn, transact}, e) {
+      componentsname: 'keyupaddtask',
+      componentstype: 'action',
+      componentsfunction: `({conn, transact}, e) {
         if (e.which === 13) {
           var date = new Date().getTime()
           transact(conn, [{

@@ -10,7 +10,7 @@ const RecursiveResultComponent = ({ result, actions, pullcomponents }) => (
     {pullcomponents.map(subitem =>
       <div style={{margin:'0 20px', padding:'0 20px'}} key={subitem.componentsname} >
         <span>Name: {subitem.componentsname}</span>
-        {result && badmapreduce(result, subitem)}
+        {result && badmapreduce(result, actions, subitem)}
       </div>
     )}
   </div>
