@@ -23,8 +23,8 @@ defmodule Exmacaroons.Mixfile do
         cargo: :system,
         default_features: false,
         features: [],
-        mode: :release,
-        # mode: (if Mix.env == :prod, do: :release, else: :debug),
+        # mode: :release,
+        mode: (if Mix.env == :prod, do: :release, else: :debug),
       ]
     ]
   end
