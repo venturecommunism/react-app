@@ -12,7 +12,25 @@ $ npm start
 
 The app should become available at [http://localhost:3000](http://localhost:3000)
 
-# Server side
+# Server side installation
+
+Tested on Ubuntu 14.04
+
+1) On for e.g. Rackspace, Install a 512MB flavor Ubuntu 14.04 LTS (Trusty Tahr) (PV)
+
+2) Log in as the root user
+
+3)
+
+### Install script
+
+To install you could use the [install script](https://raw.github.com/venturecommunism/meteor-taskwarrior/master/install.sh) using Wget:
+
+    wget -qO- https://raw.github.com/venturecommunism/react-app/master/install-server.sh | /bin/bash
+
+or cURL:
+
+    curl https://raw.github.com/venturecommunism/react-app/master/install-server.sh | /bin/bash
 
 Install like other Elixir projects (TODO: Elixir documentation)
 
