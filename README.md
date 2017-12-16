@@ -16,8 +16,8 @@ The app should become available at [http://localhost:3000](http://localhost:3000
 
 Install like other Elixir projects (TODO: Elixir documentation)
 
-To use the Server side, then install Datomic (TODO: document this)
+To use the Server side, install Datomic (TODO: document this)
 
-Compile different parts individually for now (TODO: remove rust module)
+(TODO: Document mix.compile and mix phx.server)
 
-Then create a database my uncommenting part at the bottom of peer.js (inside deps/datomic_gen_server/priv/datomic_gen_server_peer/src/datomic_gen_server/peer.clj) and commenting out most of the rest above.
+Then create a database by uncommenting the relevant part at the bottom of peer.js (inside deps/datomic_gen_server/priv/datomic_gen_server_peer/src/datomic_gen_server/peer.clj) and commenting out most of the rest above.
