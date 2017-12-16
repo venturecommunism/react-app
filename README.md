@@ -16,7 +16,7 @@ The app should become available at [http://localhost:3000](http://localhost:3000
 
 Tested on Ubuntu 14.04
 
-1) On for e.g. Rackspace, Install a 512MB flavor Ubuntu 14.04 LTS (Trusty Tahr) (PV)
+1) On for e.g. Rackspace, Install a 2GB flavor (needed or the Datomic docker container will crash) Ubuntu 14.04 LTS (Trusty Tahr) (PV)
 
 2) Log in as the root user
 
@@ -31,11 +31,5 @@ To install you could use the [install script](https://raw.github.com/venturecomm
 or cURL:
 
     curl https://raw.github.com/venturecommunism/react-app/master/install-server.sh | /bin/bash
-
-Install like other Elixir projects (TODO: Elixir documentation)
-
-To use the Server side, install Datomic (TODO: document this)
-
-(TODO: Document mix.compile and mix phx.server)
 
 Then create a database by uncommenting the relevant part at the bottom of peer.js (inside deps/datomic_gen_server/priv/datomic_gen_server_peer/src/datomic_gen_server/peer.clj) and commenting out most of the rest above.
