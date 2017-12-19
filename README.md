@@ -24,7 +24,7 @@ Tested on Ubuntu 14.04
 
 ### Install script
 
-To install you could use the [install script](https://raw.github.com/venturecommunism/meteor-taskwarrior/master/install.sh) using Wget:
+To install you could use the [install script](https://raw.github.com/venturecommunism/react-app/master/install-server.sh) using Wget:
 
     wget -qO- https://raw.github.com/venturecommunism/react-app/master/install-server.sh | /bin/bash
 
