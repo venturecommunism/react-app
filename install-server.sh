@@ -12,12 +12,15 @@ cd react-app
 sudo apt-get install -y postgresql postgresql-contrib
 mix local.hex --force && mix local.rebar --force
 mix deps.get && mix compile
+echo "Set up Postgres..."
 echo "sudo -u postgres psql postgres"
 echo "ALTER USER 'postgres' WITH PASSWORD 'postgres';"
 echo "\q"
-echo "cd apps/auth"
+echo "Seed Username/Password data..."
+echo "cd react-app/apps/auth"
 echo "mix run priv/repo/seeds.exs"
-echo "cd ../.."
+echo "cd .."
+echo "Then run the app!"
 echo "cd react-app && mix phx.server"
 
 }
