@@ -9,8 +9,15 @@ echo "***** Pulled Datomic docker image and started container"
 git clone https://github.com/venturecommunism/react-app.git
 echo "***** Git cloned repository"
 cd react-app
+sudo apt-get install -y postgresql postgresql-contrib
 mix local.hex --force && mix local.rebar --force
 mix deps.get && mix compile
+echo "sudo -u postgres psql postgres"
+echo "ALTER USER 'postgres' WITH PASSWORD 'postgres';"
+echo "\q"
+echo "cd apps/auth"
+echo "mix run priv/repo/seeds.exs"
+echo "cd ../.."
 echo "cd react-app && mix phx.server"
 
 }
