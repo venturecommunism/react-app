@@ -11,14 +11,16 @@ echo "***** Git cloned repository"
 cd react-app
 sudo apt-get install -y postgresql postgresql-contrib
 mix local.hex --force && mix local.rebar --force
-export LEIN_ROOT=true && mix deps.get && mix compile
+cd apps/auth
 su - postgres -c "psql -U postgres -d postgres -c \"alter user postgres with password 'postgres';\""
 echo "***** Set up Postgres"
-cp -r priv/example-keys apps/phoenix_interface/priv/keys
-cd apps/auth
+mix compile
 mix ecto.create && mix ecto.migrate
 mix run priv/repo/seeds.exs
-echo "***** Inserted seed data"
+cd ../..
+echo "***** Inserted up seed data"
+export LEIN_ROOT=true && mix deps.get && mix compile
+cp -r priv/example-keys apps/phoenix_interface/priv/keys
 echo "Now run the app!"
 echo "cd react-app/apps/phoenix_interface && mix phoenix.server"
 
