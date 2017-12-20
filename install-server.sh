@@ -14,11 +14,13 @@ mix local.hex --force && mix local.rebar --force
 export LEIN_ROOT=true && mix deps.get && mix compile
 su - postgres -c "psql -U postgres -d postgres -c \"alter user postgres with password 'postgres';\""
 echo "***** Set up Postgres"
+cp -r priv/example-keys apps/phoenix_interface/priv/keys
 cd apps/auth
+mix ecto.create && mix ecto.migrate
 mix run priv/repo/seeds.exs
 echo "***** Inserted seed data"
 echo "Now run the app!"
-echo "cd apps/phoenix_interface && mix phoenix.server"
+echo "cd react-app/apps/phoenix_interface && mix phoenix.server"
 
 }
 
