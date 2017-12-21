@@ -6,6 +6,8 @@ echo "***** Finished apt-get update and installed git, curl, erlang, elixir, bui
 sudo docker pull akiel/datomic-free:0.9.5544
 docker run -d -p 4334-4336:4334-4336 --name datomic-free akiel/datomic-free:0.9.5544
 echo "***** Pulled Datomic docker image and started container"
+mkdir -p ~/.m2/repository/org/erlang/otp/jinterface
+git clone https://github.com/venturecommunism/jinterface-1.5.9.git ~/.m2/repository/org/erlang/otp/jinterface/1.5.9
 git clone https://github.com/venturecommunism/react-app.git
 echo "***** Git cloned repository"
 cd react-app
