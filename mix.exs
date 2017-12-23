@@ -3,7 +3,7 @@ defmodule ReactApp.Mixfile do
 
   def project do
     [apps_path: "apps",
-     apps: [:phoenix_interface, :web_agent],
+     apps: [:phoenix_interface, :auth, :datomic, :web_agent],
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
      deps: deps()]
