@@ -12,7 +12,7 @@ docker run -d -p 4334-4336:4334-4336 --name datomic-free akiel/datomic-free:0.9.
 echo "***** Pulled Datomic docker image and started container"
 mkdir -p ~/.m2/repository/org/erlang/otp/jinterface
 git clone https://github.com/venturecommunism/jinterface-1.5.9.git ~/.m2/repository/org/erlang/otp/jinterface/1.5.9
-git clone https://github.com/venturecommunism/react-app.git ~
+git clone https://github.com/venturecommunism/react-app.git ~/react-app
 echo "***** Git cloned repository"
 cd ~/react-app
 sudo apt-get install -y postgresql postgresql-contrib
