@@ -7,6 +7,10 @@ cd ~/react-app
 yarn install
 cd apps/phoenix_interface
 yarn install
+echo "***** Setting IP in config config/url.js"
+cp ~/react-app/config/example-url.js ~/react-app/config/url.js
+OUTPUT=`ifconfig eth0 |grep 'inet addr' |awk '{print $2}' |awk -F: '{print $2}'`
+sed -i "/xx.xxx.xxx.xxx/c\const url='wss://$OUTPUT:443/socket'" ~/react-app/config/url.js
 }
 
 run_it
