@@ -34,6 +34,8 @@ or cURL:
 
 Then create a database by uncommenting the relevant part at the bottom of peer.js (inside deps/datomic_gen_server/priv/datomic_gen_server_peer/src/datomic_gen_server/peer.clj) and commenting out most of the rest above.
 
+To use the web agent based acceptance testing run the install-webagent.sh script under apps/web_agent.
+
 #Client side installation
 
 To install you could use the [CLIENT install script](https://raw.github.com/venturecommunism/react-app/master/install-client.sh) using Wget:

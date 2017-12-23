@@ -16,6 +16,7 @@ defmodule PhoenixInterface.AuthChannel do
 
       :error ->
         IO.puts "error signing in..."
+        IO.puts "Did you remember to do 'mix run priv/repo/seeds.exs' from the apps/auth directory?"
         :error
     end
 
