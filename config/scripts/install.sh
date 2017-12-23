@@ -17,6 +17,24 @@ git clone https://github.com/venturecommunism/jinterface-1.5.9.git ~/.m2/reposit
 git clone https://github.com/venturecommunism/react-app.git ~/react-app
 echo "***** Git cloned repository"
 
+###
+### phantomjs for :web_agent
+###
+
+echo "***** Installing nvm"
+curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.8/install.sh | bash
+[[ -s ~/.nvm/nvm.sh ]] && . ~/.nvm/nvm.sh
+nvm install 8.9.3
+nvm alias default 8.9.3
+nvm use 8.9.3
+echo "***** Installing phantomjs"
+cd ~/react-app
+git clone https://github.com/Medium/phantomjs && cd phantomjs && npm i && node install.js && cd .. && cp phantomjs/lib/phantom/bin/phantomjs /bin/phantomjs && rm -r phantomjs
+
+###
+### the app itself
+###
+
 cd ~/react-app
 mix local.hex --force && mix local.rebar --force
 
@@ -44,20 +62,6 @@ echo "***** Setting IP in config config/url.js"
 cp ~/react-app/config/example-url.js ~/react-app/config/url.js
 OUTPUT=`ifconfig eth0 |grep 'inet addr' |awk '{print $2}' |awk -F: '{print $2}'`
 sed -i "/xx.xxx.xxx.xxx/c\const url='wss://$OUTPUT:443/socket'" ~/react-app/config/url.js
-
-###
-### phantomjs for :web_agent
-###
-
-echo "***** Installing nvm"
-curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.8/install.sh | bash
-[[ -s ~/.nvm/nvm.sh ]] && . ~/.nvm/nvm.sh
-nvm install 8.9.3
-nvm alias default 8.9.3
-nvm use 8.9.3
-echo "***** Installing phantomjs"
-cd ~/react-app
-git clone https://github.com/Medium/phantomjs && cd phantomjs && npm i && node install.js && cd .. && cp phantomjs/lib/phantom/bin/phantomjs /bin/phantomjs && rm -r phantomjs
 
 ###
 ### final
