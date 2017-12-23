@@ -1,4 +1,4 @@
-run_it1 () {
+run_it () {
 
 ###
 ### server
