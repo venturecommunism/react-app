@@ -24,7 +24,7 @@ Tested on Ubuntu 14.04
 
 ### Install script
 
-To install you could use the [install script](https://raw.github.com/venturecommunism/react-app/master/install-server.sh) using Wget:
+To install you could use the [SERVER install script](https://raw.github.com/venturecommunism/react-app/master/install-server.sh) using Wget:
 
     wget -qO- https://raw.github.com/venturecommunism/react-app/master/install-server.sh | /bin/bash
 
@@ -33,3 +33,14 @@ or cURL:
     curl https://raw.github.com/venturecommunism/react-app/master/install-server.sh | /bin/bash
 
 Then create a database by uncommenting the relevant part at the bottom of peer.js (inside deps/datomic_gen_server/priv/datomic_gen_server_peer/src/datomic_gen_server/peer.clj) and commenting out most of the rest above.
+
+#Client side installation
+
+To install you could use the [CLIENT install script](https://raw.github.com/venturecommunism/react-app/master/install-client.sh) using Wget:
+
+    wget -qO- https://raw.github.com/venturecommunism/react-app/master/install-client.sh | /bin/bash
+
+or cURL:
+
+    curl https://raw.github.com/venturecommunism/react-app/master/install-client.sh | /bin/bash
+

@@ -884,7 +884,7 @@ babel-register@^6.11.6, babel-register@^6.24.1:
     mkdirp "^0.5.1"
     source-map-support "^0.4.2"
 
-babel-runtime@6.x.x, babel-runtime@^6.11.6, babel-runtime@^6.18.0, babel-runtime@^6.22.0, babel-runtime@^6.23.0:
+babel-runtime@6.x.x, babel-runtime@^6.11.6, babel-runtime@^6.18.0, babel-runtime@^6.22.0:
   version "6.23.0"
   resolved "https://registry.yarnpkg.com/babel-runtime/-/babel-runtime-6.23.0.tgz#0a9489f144de70efb3ce4300accdb329e2fc543b"
   dependencies:
@@ -989,10 +989,6 @@ better-assert@~1.0.0:
 big.js@^3.1.3:
   version "3.1.3"
   resolved "https://registry.yarnpkg.com/big.js/-/big.js-3.1.3.tgz#4cada2193652eb3ca9ec8e55c9015669c9806978"
-
-bignumber.js@^2.0.7:
-  version "2.4.0"
-  resolved "https://registry.yarnpkg.com/bignumber.js/-/bignumber.js-2.4.0.tgz#838a992da9f9d737e0f4b2db0be62bb09dd0c5e8"
 
 bignumber.js@^4.0.0:
   version "4.0.2"
@@ -1557,10 +1553,6 @@ crypto-browserify@3.3.0:
     ripemd160 "0.2.0"
     sha.js "2.2.6"
 
-crypto-js@^3.1.9-1:
-  version "3.1.9-1"
-  resolved "https://registry.yarnpkg.com/crypto-js/-/crypto-js-3.1.9-1.tgz#fda19e761fc077e01ffbfdc6e9fdfc59e8806cd8"
-
 css-color-function@^1.2.0:
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/css-color-function/-/css-color-function-1.3.0.tgz#72c767baf978f01b8a8a94f42f17ba5d22a776fc"
@@ -1742,10 +1734,6 @@ debug@~0.7.4:
 decamelize@^1.0.0, decamelize@^1.1.1, decamelize@^1.1.2:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/decamelize/-/decamelize-1.2.0.tgz#f6534d15148269b20352e7bee26f501f9a191290"
-
-decimal.js@^7.1.1:
-  version "7.2.3"
-  resolved "https://registry.yarnpkg.com/decimal.js/-/decimal.js-7.2.3.tgz#6434c3b8a8c375780062fc633d0d2bbdb264cc78"
 
 deep-eql@^0.1.3:
   version "0.1.3"
@@ -3120,7 +3108,7 @@ isobject@^2.0.0:
   dependencies:
     isarray "1.0.0"
 
-isomorphic-fetch@^2.1.1, isomorphic-fetch@^2.2.1:
+isomorphic-fetch@^2.1.1:
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/isomorphic-fetch/-/isomorphic-fetch-2.2.1.tgz#611ae1acf14f5e81f729507472819fe9733558a9"
   dependencies:
@@ -3152,9 +3140,9 @@ js-tokens@^3.0.0:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/js-tokens/-/js-tokens-3.0.1.tgz#08e9f132484a2c45a30907e9dc4d5567b7f114d7"
 
-js-xdr@^1.0.0:
+js-xdr@chatch/js-xdr#master:
   version "1.0.0"
-  resolved "https://registry.yarnpkg.com/js-xdr/-/js-xdr-1.0.0.tgz#91fad1c94b6d3300228e717c135e6c196fa2bcee"
+  resolved "https://codeload.github.com/chatch/js-xdr/tar.gz/d015fac0f270aab615b18d5703fe13197e5a6c41"
   dependencies:
     babel-runtime "^4.7.16"
     cursor "^0.1.5"
@@ -4768,7 +4756,7 @@ qs@6.2.1:
   version "6.3.2"
   resolved "https://registry.yarnpkg.com/qs/-/qs-6.3.2.tgz#e75bd5f6e268122a2a0e0bda630b2550c166502c"
 
-qs@^6.4.0, qs@~6.4.0:
+qs@~6.4.0:
   version "6.4.0"
   resolved "https://registry.yarnpkg.com/qs/-/qs-6.4.0.tgz#13e26d28ad6b0ffaa91312cd3bf708ed351e7233"
 
@@ -5594,37 +5582,23 @@ stackframe@^0.3.1:
   version "1.3.1"
   resolved "https://registry.yarnpkg.com/statuses/-/statuses-1.3.1.tgz#faf51b9eb74aaef3b3acf4ad5f61abf24cb7b93e"
 
-stellar-base@0.6.0:
-  version "0.6.0"
-  resolved "https://registry.yarnpkg.com/stellar-base/-/stellar-base-0.6.0.tgz#fe47dbf803c3da72a40bb2e1cca4ddd5ca777720"
-  dependencies:
-    base32.js "~0.1.0"
-    bignumber.js "^2.0.7"
-    crc "^3.3.0"
-    js-xdr "^1.0.0"
-    lodash "^4.0.1"
-    sha.js "^2.3.6"
-    tweetnacl "^0.13.0"
-  optionalDependencies:
-    ed25519 "0.0.4"
-
-stellar-base@^0.7.3:
+stellar-base@chatch/js-stellar-base#master:
   version "0.7.4"
-  resolved "https://registry.yarnpkg.com/stellar-base/-/stellar-base-0.7.4.tgz#dfd08a74675646bcd7f0379d6246c7c47272ea31"
+  resolved "https://codeload.github.com/chatch/js-stellar-base/tar.gz/30831b45388068c5db405b21d4bc7002bbd27479"
   dependencies:
     base32.js "~0.1.0"
     bignumber.js "^4.0.0"
     crc "^3.3.0"
-    js-xdr "^1.0.0"
+    js-xdr chatch/js-xdr#master
     lodash "^4.0.1"
     sha.js "^2.3.6"
     tweetnacl "^0.14.5"
   optionalDependencies:
     ed25519 "0.0.4"
 
-"stellar-sdk@^0.7.2,":
-  version "0.7.2"
-  resolved "https://registry.yarnpkg.com/stellar-sdk/-/stellar-sdk-0.7.2.tgz#c45d60298b9f047ae987475143f24268f4a91377"
+stellar-sdk@chatch/js-stellar-sdk#patched:
+  version "0.7.3"
+  resolved "https://codeload.github.com/chatch/js-stellar-sdk/tar.gz/5cbbafecc9396bd9e0f8ba79eb8ba875dcfefa63"
   dependencies:
     axios "^0.12.0"
     bluebird "^3.1.5"
@@ -5633,21 +5607,9 @@ stellar-base@^0.7.3:
     eventsource "^0.2.1"
     jsdoc "^3.4.1"
     lodash "^4.0.1"
-    stellar-base "^0.7.3"
+    stellar-base chatch/js-stellar-base#master
     toml "^2.3.0"
     urijs "1.18.4"
-
-stellar-toolkit@0.3.6:
-  version "0.3.6"
-  resolved "https://registry.yarnpkg.com/stellar-toolkit/-/stellar-toolkit-0.3.6.tgz#14556e80d288a46a1ac0e0f2aaedc998a90f0244"
-  dependencies:
-    babel-runtime "^6.23.0"
-    crypto-js "^3.1.9-1"
-    decimal.js "^7.1.1"
-    isomorphic-fetch "^2.2.1"
-    lodash "^4.17.4"
-    qs "^6.4.0"
-    uuid "^3.0.1"
 
 stream-browserify@^2.0.1:
   version "2.0.1"
@@ -6047,10 +6009,6 @@ tunnel-agent@~0.4.1:
   version "0.4.3"
   resolved "https://registry.yarnpkg.com/tunnel-agent/-/tunnel-agent-0.4.3.tgz#6373db76909fe570e08d73583365ed828a74eeeb"
 
-tweetnacl@^0.13.0:
-  version "0.13.3"
-  resolved "https://registry.yarnpkg.com/tweetnacl/-/tweetnacl-0.13.3.tgz#d628b56f3bcc3d5ae74ba9d4c1a704def5ab4b56"
-
 tweetnacl@^0.14.3, tweetnacl@^0.14.5, tweetnacl@~0.14.0:
   version "0.14.5"
   resolved "https://registry.yarnpkg.com/tweetnacl/-/tweetnacl-0.14.5.tgz#5ae68177f192d4456269d108afa93ff8743f4f64"
@@ -6191,7 +6149,7 @@ utils-merge@1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/utils-merge/-/utils-merge-1.0.0.tgz#0294fb922bb9375153541c4f7096231f287c8af8"
 
-uuid@^3.0.0, uuid@^3.0.1:
+uuid@^3.0.0:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.0.1.tgz#6544bba2dfda8c1cf17e629a3a305e2bb1fee6c1"
 
