@@ -28,7 +28,7 @@ su - postgres -c "psql -U postgres -d postgres -c \"alter user postgres with pas
 echo "***** Set up Postgres"
 
 mix ecto.create && mix ecto.migrate
-mix run priv/repo/seeds.exs
+mix run apps/auth/priv/repo/seeds.exs
 echo "***** Inserted up seed data"
 
 ###
@@ -56,6 +56,7 @@ nvm install 8.9.3
 nvm alias default 8.9.3
 nvm use 8.9.3
 echo "***** Installing phantomjs"
+cd ~/react-app
 git clone https://github.com/Medium/phantomjs && cd phantomjs && npm i && node install.js && cd .. && cp phantomjs/lib/phantom/bin/phantomjs /bin/phantomjs && rm -r phantomjs
 
 ###
