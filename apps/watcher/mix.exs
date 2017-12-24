@@ -18,7 +18,7 @@ defmodule Watcher.Mixfile do
   #
   # Type "mix help compile.app" for more information
   def application do
-    [applications: [:logger],
+    [applications: [:logger, :sentix],
      mod: {Watcher, []}]
   end
 
@@ -36,6 +36,8 @@ defmodule Watcher.Mixfile do
   #
   # Type "mix help deps" for more examples and options
   defp deps do
-    []
+    [
+      {:sentix, "~> 1.0"}
+    ]
   end
 end
