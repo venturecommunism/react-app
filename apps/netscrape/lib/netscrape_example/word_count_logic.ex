@@ -1,4 +1,4 @@
-defmodule CrawlieExample.WordCountLogic do
+defmodule NetscrapeExample.WordCountLogic do
   @behaviour Crawlie.ParserLogic
 
   alias Crawlie.Response

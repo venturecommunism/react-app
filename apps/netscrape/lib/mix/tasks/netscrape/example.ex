@@ -1,4 +1,4 @@
-defmodule Mix.Tasks.Crawlie.Example do
+defmodule Mix.Tasks.Netscrape.Example do
   use Mix.Task
 
   alias Flow
@@ -7,7 +7,7 @@ defmodule Mix.Tasks.Crawlie.Example do
   Runs the simple crawlie example.
 
   Usage:
-      mix crawlie.example https://en.wikipedia.org/wiki/Xkcd https://en.wikipedia.org/wiki/Garfield
+      mix netscrape.example https://en.wikipedia.org/wiki/Xkcd https://en.wikipedia.org/wiki/Garfield
   """
 
   @default_urls [
@@ -50,7 +50,7 @@ defmodule Mix.Tasks.Crawlie.Example do
       domain: "en.wikipedia.org", # used in WordCountLogic
     ]
 
-    {stats_ref, results} = Crawlie.crawl_and_track_stats(urls, CrawlieExample.WordCountLogic, options)
+    {stats_ref, results} = Crawlie.crawl_and_track_stats(urls, NetscrapeExample.WordCountLogic, options)
     stats_printing_task = Task.async(fn -> periodically_dump_stats(stats_ref) end)
 
     results = results

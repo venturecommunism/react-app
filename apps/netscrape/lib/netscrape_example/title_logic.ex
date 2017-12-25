@@ -1,4 +1,4 @@
-defmodule CrawlieExample.TitleLogic do
+defmodule NetscrapeExample.TitleLogic do
   use Crawlie.ParserLogic
 
   def extract_data(%{body: body}, _options) do
