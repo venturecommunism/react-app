@@ -1,16 +1,10 @@
 # Rihanna (An Umbrella App)
 
 This client side was created with a custom version of **[React App SDK](https://github.com/kriasoft/react-app)** — CLI
-tools and templates for authoring React (Redux has been replaced with Datascript) applications with just a single dev dependency and
+tools and templates for authoring React applications with just a single dev dependency and
 zero configuration.
 
-In order to compile the app and launch a development web server with "live reload" run:
-
-```sh
-$ npm start
-```
-
-The app should become available at [http://localhost:3000](http://localhost:3000)
+Redux has been replaced with Datascript. The server runs Elixir and Datomic.
 
 # Installation
 
@@ -22,7 +16,7 @@ For the server side, this is tested on Ubuntu 14.04
 
 3)
 
-### Install script
+### Install script (~7 minutes)
 
 To install you could use the [install script](https://raw.github.com/venturecommunism/react-app/master/config/scripts/install.sh) using Wget:
 
@@ -34,4 +28,28 @@ or cURL:
 
 Then create a database by uncommenting the relevant part at the bottom of peer.js (inside deps/datomic_gen_server/priv/datomic_gen_server_peer/src/datomic_gen_server/peer.clj) and commenting out most of the rest above.
 
+4) In the same terminal you did the install:
 
+    cd react-app
+    mix phoenix.server
+
+You can stop the Elixir server by hitting Ctrl-C.
+
+5) In a new terminal (since npm won't be picked up yet until you log back in again):
+
+    cd react-app/apps/phoenix_interface
+    yarn install
+    cd ../..
+    yarn install
+    npm start
+
+You can stop the NodeJS server that serves the client by hitting Ctrl-C.
+
+6) First you will want to navigate to [https://your-ip-address](https://your-ip-address) and set a temporary or permanent security exception. This is necessary unless you create your own signed certificate (TODO: link to one of the many good sources on how to do this).
+
+7) The app should become available at [http://your-ip-address:3000](http://your-ip-address:3000). If you skipped step 6 this may look like it works but actually it can't connect to the server. This has to do with self-signed security certificates.
+
+8) To make the red warning that appears when you start the server go away next time you run it:
+
+    cd apps/phoenix_interface
+    yarn install
