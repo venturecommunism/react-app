@@ -5,8 +5,8 @@ run_it () {
 ###
 
 wget https://packages.erlang-solutions.com/erlang-solutions_1.0_all.deb && sudo dpkg -i erlang-solutions_1.0_all.deb
-sudo apt-get update && sudo apt-get install -y git curl esl-erlang elixir build-essential docker.io leiningen
-echo "***** Finished apt-get update and installed git, curl, erlang, elixir, build-essential (for cmake)"
+sudo apt-get update && sudo apt-get install -y git curl esl-erlang elixir build-essential docker.io leiningen inotify-tools
+echo "***** Finished apt-get update and installed git, curl, erlang, elixir, build-essential (for cmake), inotify-tools (for :watcher / FileSystem)"
 
 sudo docker pull akiel/datomic-free:0.9.5544
 docker run -d -p 4334-4336:4334-4336 --name datomic-free akiel/datomic-free:0.9.5544
@@ -62,19 +62,6 @@ echo "***** Setting IP in config config/url.js"
 cp ~/react-app/config/example-url.js ~/react-app/config/url.js
 OUTPUT=`ifconfig eth0 |grep 'inet addr' |awk '{print $2}' |awk -F: '{print $2}'`
 sed -i "/xx.xxx.xxx.xxx/c\const url='wss://$OUTPUT:443/socket'" ~/react-app/config/url.js
-
-###
-### install fswatch to watch filesystem changes
-###
-
-cd ~
-wget https://github.com/emcrisostomo/fswatch/releases/download/1.9.3/fswatch-1.9.3.tar.gz
-tar -xvzf fswatch-1.9.3.tar.gz
-cd fswatch-1.9.3
-./configure
-make
-sudo make install
-sudo ldconfig
 
 ###
 ### final
