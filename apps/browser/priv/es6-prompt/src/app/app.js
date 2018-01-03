@@ -1,6 +1,7 @@
 // https://stackoverflow.com/questions/45763072/repeatedly-prompt-user-until-resolved-using-nodejs-async-await
 // when this code is used with babel-polyfill it makes it so you can't use parseInt because babel-polyfill won't work with async/await apparently? https://github.com/babel/babel/issues/4107
 
+require('babel-polyfill')
 var puppeteer = require('puppeteer')
 var readline = require('readline')
 var rl = readline.createInterface({
@@ -11,12 +12,11 @@ var fs = require('fs')
 
 // the only changes are in promptAge()
 // an internal function executes the asking, without generating a new Promise
-function promptAge(object) {
+function promptCommand(object) {
   return new Promise(function(resolve, reject) {
     var ask = function(object) {
       // if (object.content) { console.log(object.content, "got content") }
       rl.question('Enter your input (will keep asking until we get a number):  ', async function(answer) {
-        age = parseInt(answer)
         switch (answer) {
           case 'goto':
             await object.page.goto('http://thedrupalblog.com/')
@@ -90,10 +90,18 @@ function promptAge(object) {
   const page = await browser.newPage()
   console.log("Open a new tab")
 
+  console.log("In order you should enter the commands:")
+  console.log("goto")
+  console.log("waitfor")
+  console.log("insert-ids")
+  console.log("record")
+  console.log("filewrite")
+  console.log("end")
+
   const object = {}
   object.page = page
 
-  var userAge =  await promptAge(object)
+  var userAge =  await promptCommand(object)
   console.log('GOT A NUMBER: ' + userAge)
 
   await browser.close()
