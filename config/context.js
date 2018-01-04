@@ -7,7 +7,7 @@ const conn = createDBConn()
 // Transaction function maintains the log (for time travel, undo, etc.)
 function transact(conn, data_to_add, meta) {
   var tx_report = datascript.transact(conn, data_to_add, meta)
-  console.log('resolved tempid', datascript.resolve_tempid(tx_report.tempids, -1))
+//  console.log('resolved tempid', datascript.resolve_tempid(tx_report.tempids, -1))
 }
 
 // Elixir / Phoenix Channels things
@@ -154,8 +154,8 @@ datascript.listen(conn, {channel}, function(report) {
 
   if (report.tx_meta && (report.tx_meta.remoteuser || report.tx_meta.secrets)) return
 
-  console.log('META', report.tx_meta)
-  console.log('listened tempid', datascript.resolve_tempid(report.tempids, -1))
+//  console.log('META', report.tx_meta)
+//  console.log('listened tempid', datascript.resolve_tempid(report.tempids, -1))
 
   var query = `[:find ?id
                 :where [?e ":app/peer" ?id]]`
@@ -164,7 +164,7 @@ datascript.listen(conn, {channel}, function(report) {
 
   const qArgs = [query, db]
   var result = datascript.q(...qArgs)
-  console.log('RESULT', result)
+//  console.log('RESULT', result)
 
   channel.send({data: report.tx_data, meta: report.tx_meta})
 })

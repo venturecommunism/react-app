@@ -5,6 +5,8 @@ import ActionsMapper from '../containers/actionsmapper'
 import RecursiveComponent from '../../cleanup/component'
 const Module = DataContainer(ActionsMapper('general', RecursiveComponent))
 
+import CreateTask from '../../tasks/components/createtask'
+
 /**
 **  MAKING A NEW MODULE
 **  1. Import a new component and place it within the Root component
@@ -13,6 +15,7 @@ const Module = DataContainer(ActionsMapper('general', RecursiveComponent))
 
 const Root = ({result}) => (
   <div>
+    <CreateTask />
     <Module moduleid={"core"} />
     <Module moduleid={"servercore"} />
   </div>
