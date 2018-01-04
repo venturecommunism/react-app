@@ -11,7 +11,7 @@ function transact(conn, data_to_add, meta) {
 }
 
 // Elixir / Phoenix Channels things
-var clientonly = false
+var clientonly = true
 import {go, chan, take, put, timeout, putAsync} from 'js-csp'
 import Channel from './channel'
 import url from './url'
@@ -105,7 +105,10 @@ const receiveDataMessage = (conn, message) => {
 // Choose between Client and Server
 // Sets up the channel on Elixir/Phoenix (client only)
 if (clientonly) {
-  channel = Channel(url, "rooms:datomic", me, receiveDataMessage, chData, conn, 'test')
+  channel = {}
+  channel.send = function () {
+    console.log('set clientonly to false in order to actually send')
+  }
 } else {
   // Data Communicating Sequential Processes. Takes JWT from the Auth CSP and sets up the Elixir channel (server only)
   go(function* () {

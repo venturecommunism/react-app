@@ -6,7 +6,7 @@ const badmapreduce = function (result, actions, components) {
       var singlecomponent = new Array()
       var l = 0
         for (var k = 0; k < components._componentsparents.length; k++) {
-          components._componentsparents[k].componentstype == 'data' ? singlecomponent.push(result[i][l]) && l++ : singlecomponent.push(components._componentsparents[k]) && (console.log(result[i][l]) && l++)
+          components._componentsparents[k].componentstype == 'data' ? singlecomponent.push(result[i][l]) && l++ : singlecomponent.push(components._componentsparents[k])
         }
       filledcomponents.push(singlecomponent)
     }
