@@ -73,10 +73,14 @@ export default class App {
     const cArgs = [cQuery, db]
     const query = datascript.q(...cArgs)
 
+    // alert(query)
+
     const actions = {}
 
     for (var i = 0; i < query.length; i++) {
-      if (!actions[query[i][1]]) { actions[query[i][1]] = {}}
+      if (!actions[query[i][1]]) {
+        actions[query[i][1]] = {}
+      }
       actions[query[i][1]][query[i][2]] = new Function(`return function ` + query[i][2] + query[i][3])()
     }
 
@@ -84,6 +88,9 @@ export default class App {
       ...this.actions,
       ...actions
     }
+
+    // alert(Object.keys(this.actions))
+    // alert(Object.keys(this.actions.general))
 
     if (module.load) {
       if (typeof module.load !== 'function') {
