@@ -2,7 +2,7 @@
    * Define some seed data; including some `follower` references (that make
    * use of a temporary id to point to other entities within the array.)
    */
-  const refdatoms = [
+  const followerdatoms = [
     {
       ':db/id': -1,
       name: 'John',
@@ -17,6 +17,13 @@
       ':db/id': -3,
       name: 'Jane'
     },
+    {
+      ':db/id': -4,
+      name: 'Stringified Result',
+      query: `[:find ?user
+ :where [?u "name"]
+        [?u "name" ?user]]`
+    },
   ]
 
-export default refdatoms
+export default followerdatoms

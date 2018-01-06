@@ -49,14 +49,6 @@
  :where [?e "description" ?desc]
         [?e "tags" "aor"]]`
     },
-    { ':db/id': -6,
-      componentid: 'comp',
-      query: `[:find ?desc ?date ?status ?uuid
-   :where [?u "description" ?desc]
-          [?u "date" ?date]
-          [?u "status" ?status]
-          [?u "uuid" ?uuid]]`
-    },
   ]
 
 export default datoms

@@ -1,3 +1,7 @@
+  /**
+   * Define some query data.
+   */
+
   const componentdatoms = [
     {
       ':db/id': -1,
@@ -132,13 +136,17 @@
                :where [?u "description" ?desc]
                       [?u "date" ?date]
                       [?u "status" ?status]
-                      [?u "uuid" ?uuid]]`
+                      [?u "uuid" ?uuid]]`,
+      sortfields: `[2, 0]`,
+      sortorders: `[DESC, ASC]`
     },
     { ':db/id': -14,
       componentid: 'rootcomponentcleanup_serverversion',
       componentsname: 'Root component (with a query that works for Server)',
       query: `[:find ?u ?u ?u ?desc
-               :where [?u ?attrib ?desc]]`
+               :where [?u ?attrib ?desc]]`,
+      sortfields: `[2, 0]`,
+      sortorders: `[DESC, ASC]`
     },
     { ':db/id': -15,
       moduleid: 'core',

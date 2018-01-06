@@ -10,6 +10,13 @@ const Schema = {
     'componentstype': {
       ':db/cardinality': ':db.cardinality/one'
     },
+    'componentid': {
+      ':db/cardinality': ':db.cardinality/one',
+      ':db/unique': ':db.unique/identity'
+    },
+    'componentquery': {
+      ':db/cardinality': ':db.cardinality/one'
+    },
 }
 
 export default Schema

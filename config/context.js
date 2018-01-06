@@ -1,8 +1,8 @@
 // Datascript things
 import datascript from 'datascript'
-import createDBConn from './lib/createDBConn'
-import createDBConn_components from './lib/components_createDBConn'
-const conn = createDBConn()
+import {maindb, componentdb} from './lib/createDBConn'
+const conn = maindb()
+const conn_components = componentdb()
 // const transact = datascript.transact
 // Transaction function maintains the log (for time travel, undo, etc.)
 function transact(conn, data_to_add, meta) {
@@ -175,6 +175,6 @@ export const initContext = () => {
     conn: conn,
     transact: transact,
     log: log,
-    conn_components: createDBConn_components()
+    conn_components: conn_components
   }
 }

@@ -19,6 +19,12 @@ const Schema = {
       ':db/cardinality': ':db.cardinality/many',
       ':db/valueType': ':db.type/ref'
     },
+    'sortfields': {
+      ':db/cardinality': ':db.cardinality/many'
+    },
+    'sortorders': {
+      ':db/cardinality': ':db.cardinality/many'
+    },
 }
 
 export default Schema
