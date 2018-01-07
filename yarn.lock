@@ -1695,9 +1695,9 @@ data-uri-to-buffer@0.0.4:
   version "0.0.4"
   resolved "https://registry.yarnpkg.com/data-uri-to-buffer/-/data-uri-to-buffer-0.0.4.tgz#46e13ab9da8e309745c8d01ce547213ebdb2fe3f"
 
-datascript@^0.15.3:
-  version "0.15.5"
-  resolved "https://registry.yarnpkg.com/datascript/-/datascript-0.15.5.tgz#7e053159d5e38a014b0085e245b9649b65f037ce"
+datascript@^0.16.3:
+  version "0.16.3"
+  resolved "https://registry.yarnpkg.com/datascript/-/datascript-0.16.3.tgz#91135583d2a0b416f99e0ac19e16cfa3c1de4f6f"
 
 date-now@^0.1.4:
   version "0.1.4"

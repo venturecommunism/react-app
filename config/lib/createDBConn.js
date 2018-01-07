@@ -10,6 +10,8 @@ import secretdatoms from '../../apps/core/datoms/seeds/secretdatoms'
 import followerdatoms from '../../apps/core/datoms/seeds/followerdatoms'
 import componentdatoms from '../../apps/core/datoms/seeds/componentdatoms'
 
+import createtask from '../../apps/core/datoms/seeds/createtask'
+
 const maindb = () => {
   const Schema = {
     ...CoreAppSchema,
@@ -38,6 +40,7 @@ const componentdb = () => {
    * querying.
    */
   datascript.transact(conn_db, componentdatoms)
+  datascript.transact(conn_db, createtask)
   return conn_db
 }
 

@@ -6,13 +6,13 @@
     {
       ':db/id': -1,
       'componentsname': 'Subcomponent',
-      'componentsparents': -5,
+      'componentsparents': [-5, -20],
       'componentstype': 'subcomponent'
     },
     {
       ':db/id': -2,
       'componentsname': 'multipleplaces',
-      'componentsparents': [-1, -5],
+      'componentsparents': [-1, -5, -20],
       'componentstype': 'action',
       'componentsfunction': `({conn, transact}, e) {
         var date = new Date().getTime()
@@ -46,13 +46,14 @@
     {
       ':db/id': -4,
       'componentsname': 'Data Component',
-      'componentsparents': -5,
+      'componentsparents': [-5, -20],
       'componentstype': 'data'
     },
     {
       ':db/id': -5,
       'componentsname': 'Root',
-      'componentstype': 'root'
+      'componentstype': 'root',
+      'componentid': 'core'
     },
     {
       ':db/id': -6,
@@ -80,13 +81,13 @@
     {
       ':db/id': -8,
       'componentsname': 'Third Data Component',
-      'componentsparents': -5,
+      'componentsparents': [-5, -20],
       'componentstype': 'data'
     },
     {
       ':db/id': -9,
       'componentsname': 'fourthaction',
-      'componentsparents': -5,
+      'componentsparents': [-5, -20],
       'componentstype': 'action',
       'componentsfunction': `({conn, transact}, e) {
         var date = new Date().getTime()
@@ -103,13 +104,13 @@
     {
       ':db/id': -10,
       'componentsname': 'Fourth Data Component',
-      'componentsparents': -5,
+      'componentsparents': [-5, -20],
       'componentstype': 'data'
     },
     {
       ':db/id': -11,
       'componentsname': 'fifthaction',
-      'componentsparents': -5,
+      'componentsparents': [-5, -20],
       'componentstype': 'action',
       'componentsfunction': `({conn, transact}, e) {
         var date = new Date().getTime()
@@ -126,7 +127,7 @@
     {
       ':db/id': -12,
       'componentsname': 'Fifth Data Component (fourth in the main)',
-      'componentsparents': -5,
+      'componentsparents': [-5, -20],
       'componentstype': 'data'
     },
     { ':db/id': -13,
@@ -187,6 +188,12 @@
       moduleactionsets: -16,
       rootcomponent: -14,
       routes: -17
+    },
+    {
+      ':db/id': -20,
+      'componentsname': 'Server Root',
+      'componentstype': 'root',
+      'componentid': 'servercore'
     },
   ]
 

@@ -20,10 +20,10 @@ const Schema = {
       ':db/valueType': ':db.type/ref'
     },
     'sortfields': {
-      ':db/cardinality': ':db.cardinality/many'
+      ':db/cardinality': ':db.cardinality/one'
     },
     'sortorders': {
-      ':db/cardinality': ':db.cardinality/many'
+      ':db/cardinality': ':db.cardinality/one'
     },
 }
 

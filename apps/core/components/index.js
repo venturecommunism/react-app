@@ -16,6 +16,7 @@ import CreateTask from '../../tasks/components/createtask'
 const Root = ({result}) => (
   <div>
     <CreateTask />
+    <Module moduleid={"createtask"} />
     <Module moduleid={"core"} />
     <Module moduleid={"servercore"} />
   </div>
