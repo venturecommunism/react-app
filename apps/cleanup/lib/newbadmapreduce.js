@@ -14,18 +14,28 @@ const badmapreduce = function (result, actions, components) {
     filledcomponents.push(singlecomponent)
   }
 
+  // this list can be added to in order to debug more fields or datoms
+  var arr = ["1.1", "1.2", "1.3"]
+
   var switchelements =
     filledcomponents.map( function(item, pIndex) {
       return item.map( function(singlecomponent, sIndex) {
         var key = pIndex + "." + sIndex
 
         switch(item[sIndex].componentstype) {
+          case undefined:
+          case null:
+arr.includes(key) ? console.log("SWITCH1 key is:", key, item[sIndex]) : void(0)
+            return <div key={key}>{item[sIndex]}</div>
           case "action":
-            return <button onClick={actions[item[sIndex].componentsname]} >{item[sIndex].componentsname}</button>
+arr.includes(key) ? console.log("SWITCH1 key is:", key, item[sIndex]) : void(0)
+            return <button key={key} onClick={actions[item[sIndex].componentsname]} >{item[sIndex].componentsname}</button>
           case item[sIndex].componentsname:
-            return <div>{item[sIndex].componentsname}</div>
+arr.includes(key) ? console.log("SWITCH2 key is:", key, item[sIndex]) : void(0)
+            return <div key={key}>{item[sIndex].componentsname}</div>
           default:
-            return <div>{item[sIndex]}</div>
+arr.includes(key) ? console.log("SWITCH3 key is:", key, item[sIndex]) : void(0)
+            return <div key={key}>{item[sIndex].componentsname}</div>
         }
 
       })
@@ -37,12 +47,15 @@ const badmapreduce = function (result, actions, components) {
         var key = pIndex + "." + sIndex
 
         if (item[sIndex].componentstype == 'action') {
-          return <button onClick={actions[item[sIndex].componentsname]} >{item[sIndex].componentsname}</button>
+arr.includes(key) ? console.log("MAIN1 key is:", key, item[sIndex]) : void(0)
+          return <button key={key} onClick={actions[item[sIndex].componentsname]} >{item[sIndex].componentsname}</button>
         }
         else if (item[sIndex].componentsname) {
-          return <div>{item[sIndex].componentsname}</div>
+arr.includes(key) ? console.log("MAIN2 key is:", key, item[sIndex]) : void(0)
+          return <div key={key}>{item[sIndex].componentsname}</div>
         } else {
-          return <div>{item[sIndex]}</div>
+arr.includes(key) ? console.log("MAIN3 key is:", key, item[sIndex]) : void(0)
+          return <div key={key}>{item[sIndex]}</div>
         }
 
       })
