@@ -4,6 +4,7 @@ import DataContainer from '../../core/containers/appbuilder'
 import ActionsMapper from '../containers/actionsmapper'
 import RecursiveComponent from '../../cleanup/component'
 const Module = DataContainer(ActionsMapper('general', RecursiveComponent))
+const CreateTaskModule = DataContainer(ActionsMapper('createtaskactions', RecursiveComponent))
 
 import CreateTask from '../../tasks/components/createtask'
 
@@ -16,7 +17,7 @@ import CreateTask from '../../tasks/components/createtask'
 const Root = ({result}) => (
   <div>
     <CreateTask />
-    <Module moduleid={"createtask"} />
+    <CreateTaskModule moduleid={"createtask"} />
     <Module moduleid={"core"} />
     <Module moduleid={"servercore"} />
   </div>

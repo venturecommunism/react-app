@@ -39,13 +39,13 @@
       }`
     },
     {
-      ':db/id': -1,
+      ':db/id': -5,
       'componentsname': 'Subcomponent',
       'componentsparents': -2,
       'componentstype': 'subcomponent'
     },
     {
-      ':db/id': -4,
+      ':db/id': -6,
       'componentsname': 'textareatocreatetask',
       'componentsparents': -2,
       'componentstype': 'textarea',
