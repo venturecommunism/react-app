@@ -2,7 +2,7 @@ import React from 'react'
 import {mount} from 'react-mounter'
 import { DBConnProvider } from '../../config/lib/helpers/legacy/react-datascript'
 
-import MainLayout from '../layout/components/main_layout'
+import MainLayout from './layout/components/main_layout'
 
 export default function (injectDeps, context, actions) {
   const conn = context.conn

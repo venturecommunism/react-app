@@ -13,7 +13,6 @@ const badmapreduce = function (result, actions, moduleroot) {
         // just return the component's name in subcomponents for now
         return <div key={key}>{component.componentsname}</div>
       case "textarea":
-console.log(component.placeholder)
         return <textarea key={key} placeholder={component.placeholder} />
       default:
         // we didn't find a component type but it's not a string. consider this an error

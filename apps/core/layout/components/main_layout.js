@@ -2,7 +2,7 @@ import React from 'react'
 import './styles/app.css'
 import './styles/index.css'
 
-import Feed from '../../core/components/index'
+import Feed from '../../components/index'
 
 import fullScreenQuery from '../queries/fullscreen'
 

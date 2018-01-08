@@ -1,6 +1,6 @@
 import React from 'react'
 
-import badmapreduce from './lib/newbadmapreduce'
+import badmapreduce from '../lib/newbadmapreduce'
 
 const RecursiveResultComponent = ({ result, actions, moduleroot, title }) => (
   <div>

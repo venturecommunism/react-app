@@ -1,4 +1,4 @@
-import { withDatascriptQuery } from '../../../config/lib/helpers/legacy/react-datascript'
+import { withDatascriptQuery } from '../../../../config/lib/helpers/legacy/react-datascript'
 
 /**
  * A higher order component that declares a query for returning names

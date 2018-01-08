@@ -1,5 +1,5 @@
 import { useDeps, composeAll } from 'mantra-core'
-import composeWithMobx from '../libs/with_mobx'
+import composeWithMobx from '../lib/with_mobx'
 import datascript from 'datascript'
 import moment from 'moment'
 

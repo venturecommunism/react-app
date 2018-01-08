@@ -19,37 +19,38 @@
     { ':db/id': -3,
       actionsetid: 'createtaskactions',
       modulename: 'Create task actions',
-      moduleactions: -4
+      moduleactions: -5
     },
     {
       ':db/id': -4,
-      'componentsname': 'createtask',
+      'componentsname': 'textareatocreatetask',
+      'componentsparents': -2,
+      'componentstype': 'textarea',
+      'placeholder': "Enter your task content."
+    },
+    {
+      ':db/id': -5,
+      'componentsname': 'Add_New',
       'componentsparents': -2,
       'componentstype': 'action',
       'componentsfunction': `({conn, transact}, e) {
+        var text = e.target.parentNode.childNodes[2].value
         var date = new Date().getTime()
         transact(conn, [{
           ':db/id': -1,
-          description: 'create task test',
+          description: text,
           date: date,
           status: 'pending',
           uuid: 'uuid-' + date
         }])
-        e.target.value = ""
+        e.target.parentNode.childNodes[2].value = ""
       }`
     },
     {
-      ':db/id': -5,
+      ':db/id': -6,
       'componentsname': 'Subcomponent',
       'componentsparents': -2,
       'componentstype': 'subcomponent'
-    },
-    {
-      ':db/id': -6,
-      'componentsname': 'textareatocreatetask',
-      'componentsparents': -2,
-      'componentstype': 'textarea',
-      'placeholder': "Enter your text here."
     },
   ]
 
