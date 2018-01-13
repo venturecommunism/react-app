@@ -7,13 +7,4 @@ defmodule Exmacaroons do
         {:error, err}
     end
   end
-
-  def createtoken(a,b,c) do
-    case RustMacaroons.createtoken(a,b,c) do
-      {:ok, result} ->
-        {:ok, result}
-      {:error, err} ->
-        {:error, err}
-    end
-  end
 end

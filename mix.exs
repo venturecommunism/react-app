@@ -3,9 +3,10 @@ defmodule ReactApp.Mixfile do
 
   def project do
     [apps_path: "apps",
-     apps: [:phoenix_interface, :auth, :datomic, :web_agent],
+     apps: [:phoenix_interface, :auth, :datomic, :web_agent, :browser, :exmacaroons],
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
+     rustler_crates: rustler_crates(),
      deps: deps()]
   end
 
@@ -23,5 +24,18 @@ defmodule ReactApp.Mixfile do
   # and cannot be accessed from applications inside the apps folder
   defp deps do
     []
+  end
+
+  def rustler_crates do
+    [
+      rustmacaroons: [
+        path: "apps/exmacaroons/native/rustmacaroons",
+        cargo: :system,
+        default_features: false,
+        features: [],
+        # mode: :release,
+        mode: (if Mix.env == :prod, do: :release, else: :debug),
+      ]
+    ]
   end
 end

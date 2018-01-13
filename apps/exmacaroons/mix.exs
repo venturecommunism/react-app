@@ -13,7 +13,7 @@ defmodule Exmacaroons.Mixfile do
      start_permanent: Mix.env == :prod,
      compilers: [:rustler] ++ Mix.compilers(),
      rustler_crates: rustler_crates(),
-     deps: deps]
+     deps: deps()]
   end
 
   def rustler_crates do
@@ -23,8 +23,8 @@ defmodule Exmacaroons.Mixfile do
         cargo: :system,
         default_features: false,
         features: [],
-        # mode: :release,
-        mode: (if Mix.env == :prod, do: :release, else: :debug),
+        mode: :release,
+        # mode: (if Mix.env == :prod, do: :release, else: :debug),
       ]
     ]
   end
@@ -51,7 +51,7 @@ defmodule Exmacaroons.Mixfile do
   # Type "mix help deps" for more examples and options
   defp deps do
     [
-      {:rustler, "~> 0.9.0"}
+      {:rustler, git: "https://github.com/hansihe/rustler", ref: "4259c7edc3cdb7f9327378d011f3be6dd1a948b0", compile: false}
     ]
   end
 end
