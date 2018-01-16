@@ -4,6 +4,7 @@ run_it () {
 ### server
 ###
 
+cd ~
 wget https://packages.erlang-solutions.com/erlang-solutions_1.0_all.deb && sudo dpkg -i erlang-solutions_1.0_all.deb
 sudo apt-get update && sudo apt-get install -y git curl esl-erlang elixir build-essential docker.io leiningen inotify-tools
 echo "***** Finished apt-get update and installed git, curl, erlang, elixir, build-essential (for cmake), inotify-tools (for :watcher / FileSystem)"
@@ -16,6 +17,18 @@ mkdir -p ~/.m2/repository/org/erlang/otp/jinterface
 git clone https://github.com/venturecommunism/jinterface-1.5.9.git ~/.m2/repository/org/erlang/otp/jinterface/1.5.9
 git clone https://github.com/venturecommunism/react-app.git ~/react-app
 echo "***** Git cloned repository"
+
+###
+### Install goon for browser
+###
+
+cd ~/react-app/apps/browser/priv
+mkdir goon
+cd goon
+wget https://github.com/alco/goon/releases/download/v1.1.1/goon_linux_amd64.tar.gz
+tar xvf goon_linux_amd64.tar.gz
+ln -s /root/react-app/apps/browser/priv/goon/goon /usr/bin/goon
+cd ~
 
 ###
 ### phantomjs for :web_agent

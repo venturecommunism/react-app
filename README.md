@@ -53,3 +53,9 @@ You can stop the NodeJS server that serves the client by hitting Ctrl-C.
 
     cd apps/phoenix_interface
     yarn install
+
+9) The connection string to a production datomic should look something like:
+
+    "datomic:sql://test?jdbc:postgresql://localhost:5432/datomic?user=datomic\\&password=datomic"
+
+Make sure to have the two backslashes \\ in front of the ampersand &
