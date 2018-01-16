@@ -9,9 +9,13 @@ fi
 
 sudo add-apt-repository -y ppa:openjdk-r/ppa
 sudo apt-get update
-sudo apt-get install -y openjdk-8-jdk
+sudo apt-get install -y openjdk-8-jdk unzip
 sudo update-alternatives --config java
 sudo update-alternatives --config javac
+
+cd ~/react-app/priv
+unzip datomic-pro*.zip
+mv datomic-pro*.zip zipfile-datomic-pro.zip
 
 cd ~/react-app/priv/datomic-pro*
 psql -f bin/sql/postgres-db.sql --host=localhost --username=postgres
