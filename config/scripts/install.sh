@@ -6,7 +6,7 @@ run_it () {
 
 cd ~
 wget https://packages.erlang-solutions.com/erlang-solutions_1.0_all.deb && sudo dpkg -i erlang-solutions_1.0_all.deb
-sudo apt-get update && sudo apt-get install -y git curl esl-erlang elixir build-essential docker.io leiningen inotify-tools
+sudo apt-get update && sudo apt-get install -y git curl esl-erlang elixir build-essential docker.io inotify-tools
 echo "***** Finished apt-get update and installed git, curl, erlang, elixir, build-essential (for cmake), inotify-tools (for :watcher / FileSystem)"
 
 sudo docker pull akiel/datomic-free:0.9.5544
@@ -43,6 +43,15 @@ nvm use 8.9.3
 echo "***** Installing phantomjs"
 cd ~/react-app
 git clone https://github.com/Medium/phantomjs && cd phantomjs && npm i && node install.js && cd .. && cp phantomjs/lib/phantom/bin/phantomjs /bin/phantomjs && rm -r phantomjs
+
+###
+### make sure a good leiningen is installed
+###
+
+wget https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein
+mv lein /usr/bin/
+chmod a+x /usr/bin/lein
+
 
 ###
 ### the app itself
