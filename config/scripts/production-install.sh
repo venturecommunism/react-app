@@ -40,6 +40,10 @@ rm -r target
 lein install
 lein compile
 
+echo ""
+echo ""
+echo ""
+echo "Don't forget mix deps.compile datomic_gen_server from the top level of the umbrella"
 echo "No suitable driver means you may have used the wrong leiningen"
 echo "Either way, Should not store datomic-pro under deps"
 echo "Unsupported protocol sql means you're still running the free version"
@@ -48,6 +52,7 @@ echo "Tried changing the connection strings in Elixir (including with \\)"
 echo "Tried restarting postgresql service"
 echo "Tried uncommenting data-dir and log-dir in transactor.properties"
 echo ""
+echo "Unable to validate user could mean you still have the docker running"
 echo "At any rate must automate db creation"
 echo "Remember, two backslashes for connection string is only in Elixir, not when creating db in Clojure"
 echo "Remember the password for postgres user is postgres"
