@@ -51,7 +51,7 @@ defmodule Exmacaroons.Mixfile do
   # Type "mix help deps" for more examples and options
   defp deps do
     [
-      {:rustler, git: "https://github.com/hansihe/rustler", ref: "4259c7edc3cdb7f9327378d011f3be6dd1a948b0", compile: false}
+      {:rustler, "~> 0.10.1"}
     ]
   end
 end

@@ -29,6 +29,6 @@ defmodule Browser do
   end
 end
 
-Application.ensure_all_started(:porcelain)
-proc = Browser.start("cd ~/react-app/apps/browser/priv/es6-prompt && npm start")
-Browser.loop(proc)
+#Application.ensure_all_started(:porcelain)
+#proc = Browser.start("cd ~/react-app/apps/browser/priv/es6-prompt && npm start")
+#Browser.loop(proc)
