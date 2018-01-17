@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if ls ~/react-app/priv/datomic-pro* 1> /dev/null 2>&1; then
+if ls ~/react-app/priv/datomic/datomic-pro* 1> /dev/null 2>&1; then
   echo "Starting install part 2..."
 else
   echo "This is part 2 of a multi-part script"
@@ -10,10 +10,10 @@ fi
 ##
 ## check if this is necessary
 ##
-# cd ~/react-app/priv/datomic-pro*
+# cd ~/react-app/priv/datomic/datomic-pro*
 # sed -i -e s/host=localhost/host=0.0.0.0\\nalt-host=127.0.0.1/i transactor.properties
 
-cd ~/react-app/priv/datomic-pro*
+cd ~/react-app/priv/datomic/datomic-pro*
 sudo apt-get install -y maven
 bin/maven-install
 
@@ -42,5 +42,5 @@ echo "Use a special connection string:"
 echo 'e.g. "datomic:sql://test?jdbc:postgresql://localhost:5432/datomic?user=datomic\\&password=datomic"'
 echo "NOTICE THE TWO BACKSLASHES \\ BEFORE THE AMPERSAND &"
 echo ""
-echo "cd ~/react-app/deps/datomic_gen_server/priv/datomic-pro* && bin/transactor transactor.properties"
+echo "cd ~/react-app/priv/datomic/datomic-pro* && bin/transactor transactor.properties"
 

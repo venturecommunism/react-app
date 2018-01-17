@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if ls ~/react-app/priv/datomic-pro* 1> /dev/null 2>&1; then
+if ls ~/react-app/priv/datomic/datomic-pro* 1> /dev/null 2>&1; then
   echo "Starting install..."
 else
   echo "First make sure you have installed the development version of the Umbrella app (Rihanna)"
@@ -16,10 +16,13 @@ sudo update-alternatives --config java
 sudo update-alternatives --config javac
 
 cd ~/react-app/priv
+mkdir datomic
+mv datomic-pro*.zip datomic
+cd datomic
 unzip datomic-pro*.zip
 mv datomic-pro*.zip zipfile-datomic-pro.zip
 
-cd ~/react-app/priv/datomic-pro*
+cd ~/react-app/priv/datomic/datomic-pro*
 echo "The password is 'postgres'"
 psql -f bin/sql/postgres-db.sql --host=localhost --username=postgres
 echo "The password is 'postgres'"
@@ -27,7 +30,7 @@ psql -f bin/sql/postgres-table.sql -U postgres -d datomic --host=localhost --use
 echo "The password is 'postgres'"
 psql -f bin/sql/postgres-user.sql -U postgres -d datomic --host=localhost --username=postgres
 
-cd ~/react-app/priv/datomic-pro*
+cd ~/react-app/priv/datomic/datomic-pro*
 cp config/samples/sql-transactor-template.properties transactor.properties
 
 echo ""
@@ -43,5 +46,5 @@ echo 'remove              [com.datomic/datomic-free "0.9.5544"]'
 echo 'add                 [com.datomic/datomic-pro "0.9.5656"]'
 echo 'add                 [org.postgresql/postgresql "9.3-1102-jdbc41"]'
 echo ""
-echo "install the license key at deps/datomic_gen_server/priv/datomic-pro*/transactor.properties"
+echo "install the license key at ~/react-app/priv/datomic/datomic-pro*/transactor.properties"
 

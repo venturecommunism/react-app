@@ -15,6 +15,9 @@ npm-debug.log
 
 /apps/auth/priv/keys
 /apps/phoenix_interface/priv/keys
+/priv/datomic/datomic-license.txt
+/priv/datomic/datomic-pro*
+/priv/datomic/zipfile-datomic-pro.zip
 
 # The directory Mix will write compiled artifacts to.
 /_build

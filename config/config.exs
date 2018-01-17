@@ -17,3 +17,5 @@ import_config "../apps/*/config/config.exs"
 #       metadata: [:user_id]
 
 config :phoenix_interface, ecto_repos: []
+
+config :datomic, database: "datomic:sql://test?jdbc:postgresql://localhost:5432/datomic?user=datomic\\&password=datomic"
