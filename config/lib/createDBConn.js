@@ -8,8 +8,9 @@ import ModuleSchema from '../../apps/core/datoms/schema/moduleschema'
 import taskscategories from '../../apps/core/datoms/seeds/taskscategories'
 import secretdatoms from '../../apps/core/datoms/seeds/secretdatoms'
 import followerdatoms from '../../apps/core/datoms/seeds/followerdatoms'
-import componentdatoms from '../../apps/core/datoms/seeds/componentdatoms'
 
+import clientroot from '../../apps/core/datoms/seeds/clientroot'
+import serverroot from '../../apps/core/datoms/seeds/serverroot'
 import createtask from '../../apps/core/datoms/seeds/createtask'
 
 const maindb = () => {
@@ -39,8 +40,9 @@ const componentdb = () => {
    * Transact in the data, to be stored and indexed by datascript for performant
    * querying.
    */
-  datascript.transact(conn_db, componentdatoms)
   datascript.transact(conn_db, createtask)
+  datascript.transact(conn_db, clientroot)
+  datascript.transact(conn_db, serverroot)
   return conn_db
 }
 
