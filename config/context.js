@@ -11,7 +11,7 @@ function transact(conn, data_to_add, meta) {
 }
 
 // Elixir / Phoenix Channels things
-var clientonly = false
+var clientonly = true
 import {go, chan, take, put, timeout, putAsync} from 'js-csp'
 import Channel from './channel'
 import url from './url'

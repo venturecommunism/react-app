@@ -9,6 +9,7 @@ import taskscategories from '../../apps/core/datoms/seeds/taskscategories'
 import secretdatoms from '../../apps/core/datoms/seeds/secretdatoms'
 import followerdatoms from '../../apps/core/datoms/seeds/followerdatoms'
 
+import newroot from '../../apps/core/datoms/seeds/newroot'
 import clientroot from '../../apps/core/datoms/seeds/clientroot'
 import serverroot from '../../apps/core/datoms/seeds/serverroot'
 import createtask from '../../apps/core/datoms/seeds/createtask'
@@ -40,6 +41,7 @@ const componentdb = () => {
    * Transact in the data, to be stored and indexed by datascript for performant
    * querying.
    */
+  datascript.transact(conn_db, newroot)
   datascript.transact(conn_db, createtask)
   datascript.transact(conn_db, clientroot)
   datascript.transact(conn_db, serverroot)
