@@ -169,12 +169,28 @@ datascript.listen(conn, {channel}, function(report) {
   channel.send({data: report.tx_data, meta: report.tx_meta})
 })
 
+
+import Meteor from 'react-native-meteor';
+import { AppRegistry } from 'react-native';
+import {
+  Router,
+  Scene,
+  Actions,
+} from 'react-native-router-flux';
+
 // The actual context. This is the first argument to actions.
 export const initContext = () => {
   return {
     conn: conn,
     transact: transact,
     log: log,
-    conn_components: conn_components
-  }
+    conn_components: conn_components,
+    meta: meta,
+    Meteor,
+    Router,
+    Scene,
+    Actions,
+    AppRegistry,
+    me,
+  };
 }
