@@ -31,6 +31,7 @@ var peers = []
 var channel
 let chData = chan()
 let chAuth = chan()
+var key
 
 // Fires when we receive a message on the Elixir data channel
 const receiveDataMessage = (conn, message) => {
@@ -113,7 +114,7 @@ if (clientonly) {
   // Data Communicating Sequential Processes. Takes JWT from the Auth CSP and sets up the Elixir channel (server only)
   go(function* () {
     localStorage.removeItem('key')
-    var key = yield localStorage.getItem('key') || take(chData)
+    key = yield localStorage.getItem('key') || take(chData)
     console.log('key is:', key)
 
     var user = me
@@ -192,5 +193,7 @@ export const initContext = () => {
     Actions,
     AppRegistry,
     me,
+    chData,
+    key
   };
 }

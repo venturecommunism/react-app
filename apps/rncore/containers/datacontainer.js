@@ -4,11 +4,13 @@ import datascript from 'datascript'
 import React from 'react'
 import {Text} from 'react-native'
 import Channel from '../../../config/channel'
+import url from '../../../config/url'
 
 const transact = datascript.transact
 
 const dataComposer = ({ context, query }, onData) => {
-  const {conn, me} = context()
+  const {conn, me, chData, key} = context()
+  const user = me
   //  let result = datascript.datoms(datascript.db(conn), ':eavt')
   var qArgs = [query, datascript.db(conn)]
   let result = datascript.q(...qArgs)
@@ -39,7 +41,7 @@ const dataComposer = ({ context, query }, onData) => {
     }
   }
 
-  const channel = Channel(conn, me, receiveChatMessage)
+  const channel = Channel(url, "rooms:datomic", user, receiveChatMessage, chData, conn, key)
 
   datascript.listen(conn, function(report) {
     const qArgs = [query, datascript.db(conn)]

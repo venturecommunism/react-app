@@ -1,0 +1,43 @@
+{
+  "name": "RCTWebRTCDemo",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node node_modules/react-native/local-cli/cli.js start"
+  },
+  "dependencies": {
+    "history": "^3.0.0",
+    "js-csp": "^0.9.3",
+    "mobx": "2.6.3",
+    "moment": "2.18.1",
+    "muicss": "^0.9.17",
+    "simple-peer": "^8.1.0",
+    "stellar-sdk": "chatch/js-stellar-sdk#patched",
+    "whatwg-fetch": "^1.0.0",
+
+    "datascript": "0.15.5",
+    "es6-symbol": "3.1.0",
+    "eslint-plugin-react-native": "1.2.1",
+    "mantra-core": "1.7.0",
+    "mantra-plus": "2.0.7",
+    "mantra-redux": "1.0.5",
+    "phoenix": "1.2.1",
+    "react": "15.4.2",
+    "react-komposer": "2.0.0-beta-4",
+    "react-komposer-plus": "2.2.3",
+    "react-native": "0.40.0",
+    "react-native-controlled-listview": "0.1.0",
+    "react-native-drawer-layout": "1.1.1",
+    "react-native-material-kit": "0.3.4",
+    "react-native-meteor": "1.0.3",
+    "react-native-router-flux": "3.37.0",
+    "react-native-scrollable-tab-view": "0.4.4",
+    "react-native-vector-icons": "2.1.0",
+    "react-native-webrtc": "1.54.7",
+    "react-simple-di": "1.2.0",
+    "redux": "3.6.0",
+    "redux-logger": "2.8.1",
+    "redux-thunk": "2.2.0",
+    "socket.io-client": "1.7.3"
+  }
+}
