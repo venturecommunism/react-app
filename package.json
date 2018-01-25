@@ -24,6 +24,26 @@
     "stellar-sdk": "chatch/js-stellar-sdk#patched",
     "whatwg-fetch": "^1.0.0"
   },
+  "dependenciesComments": {
+    "datascript": "client side database",
+    "history": "[not sure]",
+    "js-csp": "communicating sequential processes for coordinating remote data sources without race conditions in config/context.js",
+    "mantra-core": "maintains the state as an argument to the whole app",
+    "mobx": "observables. so far used in the time travel data container",
+    "moment": "manipulating dates, times and durations",
+    "muicss": "[should be removed]",
+    "phoenix": "opens a socket to an elixir/phoenix data channel",
+    "react": "diffs the dom",
+    "react-app": "javascript bundler/environment",
+    "react-dom": "[]",
+    "react-komposer": "composes react containers",
+    "react-mounter": "mounts react components",
+    "react-redux": "[should probably be removed]",
+    "redux": "[should probably be removed]",
+    "simple-peer": "[webrtc data channels]",
+    "stellar-sdk": "[stellar consensus protocol]",
+    "whatwg-fetch": "[]"
+  },
   "devDependencies": {
     "react-app-tools": "git+https://github.com/venturecommunism/react-app-tools.git"
   },
