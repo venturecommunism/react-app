@@ -1,15 +1,10 @@
 import {createApp} from './config/lib/mantra'
-import {initContext} from './config/context'
+import {initContext} from './config/context-web'
 
 const app = createApp(initContext())
 
-// import coreModule from './apps/core'
-import rnCoreModule from './apps/rncore'
-import rnDemoModule from './apps/rndemo'
-import rnTwitterplusModule from './apps/rntwitterplus'
+import coreModule from './apps/core'
 
-// app.loadModule(coreModule)
-app.loadModule(rnCoreModule)
-app.loadModule(rnDemoModule)
-app.loadModule(rnTwitterplusModule)
+app.loadModule(coreModule)
+
 app.init()
