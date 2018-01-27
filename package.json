@@ -50,18 +50,18 @@
     "moment": "manipulating dates, times and durations",
     "muicss": "[should be removed]",
     "phoenix": "opens a socket to an elixir/phoenix data channel",
-    "react": "diffs the dom",
+    "react": "pinned to get rid of isMounted error. diffs the dom",
     "react-app": "javascript bundler/environment",
     "react-dom": "[]",
     "react-komposer": "composes react containers",
     "react-mounter": "mounts react components",
-    "react-redux": "[should probably be removed]",
     "redux": "[should probably be removed]",
     "simple-peer": "[webrtc data channels]",
     "stellar-sdk": "[stellar consensus protocol]",
     "whatwg-fetch": "[]"
   },
   "devDependencies": {
+    "electron": "^1.4.13",
     "react-app-tools": "git+https://github.com/venturecommunism/react-app-tools.git"
   },
   "eslintConfig": {
@@ -71,6 +71,7 @@
   "scripts": {
     "lint": "eslint actions components core routes test utils main.js",
     "build": "react-app build",
-    "start": "react-app run"
+    "start": "react-app run",
+    "electron-start": "node_modules/.bin/electron main-desktop.js"
   }
 }
