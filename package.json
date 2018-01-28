@@ -6,16 +6,11 @@
   },
   "dependencies": {
     "datascript": "^0.16.3",
-    "es6-symbol": "3.1.0",
-    "eslint-plugin-react-native": "1.2.1",
-    "history": "^3.0.0",
     "js-csp": "^0.9.3",
     "mantra-core": "^1.7.0",
     "mantra-plus": "2.0.7",
-    "mantra-redux": "1.0.5",
     "mobx": "2.6.3",
     "moment": "2.18.1",
-    "muicss": "^0.9.17",
     "phoenix": "^1.2.1",
     "react": "15.4.2",
     "react-app": "^1.1.2",
@@ -33,43 +28,40 @@
     "react-native-vector-icons": "2.1.0",
     "react-native-webrtc": "1.54.7",
     "react-simple-di": "1.2.0",
-    "redux": "^3.5.2",
-    "redux-logger": "2.8.1",
-    "redux-thunk": "2.2.0",
     "simple-peer": "^8.1.0",
     "socket.io-client": "1.7.3",
-    "stellar-sdk": "chatch/js-stellar-sdk#patched",
-    "whatwg-fetch": "^1.0.0"
+    "stellar-sdk": "chatch/js-stellar-sdk#patched"
   },
   "dependenciesComments": {
     "datascript": "client side database",
     "history": "[not sure]",
     "js-csp": "communicating sequential processes for coordinating remote data sources without race conditions in config/context.js",
     "mantra-core": "maintains the state as an argument to the whole app",
+    "mantra-plus": "[mobile]",
     "mobx": "observables. so far used in the time travel data container",
     "moment": "manipulating dates, times and durations",
-    "muicss": "[should be removed]",
     "phoenix": "opens a socket to an elixir/phoenix data channel",
     "react": "pinned to get rid of isMounted error. diffs the dom",
     "react-app": "javascript bundler/environment",
     "react-dom": "[]",
     "react-komposer": "composes react containers",
+    "react-komposer-plus": "[mobile]",
     "react-mounter": "mounts react components",
-    "redux": "[should probably be removed]",
     "simple-peer": "[webrtc data channels]",
-    "stellar-sdk": "[stellar consensus protocol]",
-    "whatwg-fetch": "[]"
+    "stellar-sdk": "[stellar consensus protocol]"
+  },
+  "dependenciesToDeduplicate": {
+    "mantra-core": "^1.7.0",
+    "mantra-plus": "2.0.7",
+    "react-komposer": "2.0.0-beta-4",
+    "react-komposer-plus": "2.2.3",
+    "socket.io-client": "1.7.3"
   },
   "devDependencies": {
     "electron": "^1.4.13",
     "react-app-tools": "git+https://github.com/venturecommunism/react-app-tools.git"
   },
-  "eslintConfig": {
-    "parser": "babel-eslint",
-    "extends": "airbnb"
-  },
   "scripts": {
-    "lint": "eslint actions components core routes test utils main.js",
     "build": "react-app build",
     "start": "react-app run",
     "electron-start": "node_modules/.bin/electron main-desktop.js"
