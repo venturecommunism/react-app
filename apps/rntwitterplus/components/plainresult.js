@@ -2,10 +2,11 @@ import React from 'react'
 
 import {
   View,
-  Text
+  Text,
+  ListView
 } from 'react-native'
 
-import ListView from 'react-native-controlled-listview'
+// import ListView from 'react-native-controlled-listview'
 
 function Comparator(a, b) {
    if (a[0] < b[0]) return 1
