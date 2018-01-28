@@ -171,7 +171,7 @@ datascript.listen(conn, {channel}, function(report) {
 })
 
 
-import Meteor from 'react-native-meteor';
+const Meteor = 'remove'
 import { AppRegistry } from 'react-native';
 import {
   Router,
