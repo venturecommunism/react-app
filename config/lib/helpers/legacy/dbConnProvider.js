@@ -1,12 +1,13 @@
 import React from 'react';
+import PropTypes from 'prop-types'
 
 export default class DBConnProvider extends React.Component {
   static childContextTypes = {
-    conn: React.PropTypes.object
+    conn: PropTypes.object
   };
 
   static propTypes = {
-    conn: React.PropTypes.object
+    conn: PropTypes.object
   };
 
   getChildContext() {

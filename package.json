@@ -7,12 +7,12 @@
   "dependencies": {
     "datascript": "^0.16.3",
     "js-csp": "^0.9.3",
-    "mantra-core": "^1.7.0",
-    "mantra-plus": "2.0.7",
+    "mantra-core": "git://github.com/venturecommunism/mantra-core",
+    "mantra-plus": "git://github.com/venturecommunism/mantra-plus",
     "mobx": "2.6.3",
     "moment": "2.18.1",
     "phoenix": "^1.2.1",
-    "react": "15.4.2",
+    "react": "15.5.4",
     "react-app": "^1.1.2",
     "react-dom": "^15.3.0",
     "react-komposer": "2.0.0-beta-4",
@@ -27,7 +27,6 @@
     "react-native-scrollable-tab-view": "0.4.4",
     "react-native-vector-icons": "2.1.0",
     "react-native-webrtc": "1.54.7",
-    "react-simple-di": "1.2.0",
     "simple-peer": "^8.1.0",
     "socket.io-client": "1.7.3",
     "stellar-sdk": "chatch/js-stellar-sdk#patched"
@@ -51,8 +50,8 @@
     "stellar-sdk": "[stellar consensus protocol]"
   },
   "dependenciesToDeduplicate": {
-    "mantra-core": "^1.7.0",
-    "mantra-plus": "2.0.7",
+    "mantra-core": "from git",
+    "mantra-plus": "from git",
     "react-komposer": "2.0.0-beta-4",
     "react-komposer-plus": "2.2.3",
     "socket.io-client": "1.7.3"

@@ -2,18 +2,19 @@ import React from 'react';
 import shallowEqual from './shallowEqual';
 import datascript from 'datascript';
 import parseQueryAttributes from './parseQueryAttributes';
+import PropTypes from 'prop-types'
 
 export default ({ query, pull, rules, dbConn, initialParams }) =>
   BaseComponent => {
     return class extends React.Component {
       static contextTypes = {
-        conn: React.PropTypes.object
+        conn: PropTypes.object
       };
 
       static propTypes = {
-        entityIds: React.PropTypes.array,
-        params: React.PropTypes.array,
-        conn: React.PropTypes.object
+        entityIds: PropTypes.array,
+        params: PropTypes.array,
+        conn: PropTypes.object
       };
 
       constructor(props, context) {
