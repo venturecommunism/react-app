@@ -1,7 +1,7 @@
 import DrawerLayout from '../components/DrawerLayout';
 import Loading from '../components/Loading';
 import ErrorCom from '../components/Error';
-import { compose, composeAll } from 'react-komposer-plus';
+import { compose, composeAll } from 'react-komposer';
 import { useDeps } from 'react-simple-di';
 
 const mapDataToProps = ({ context }, onData) => {

@@ -1,5 +1,5 @@
 import SignInPage from '../components/SignInPage';
-import { composeAll } from 'react-komposer-plus';
+import { composeAll } from 'react-komposer';
 import { useDeps } from 'react-simple-di';
 
 const mapDepsToProps = (context) => ({

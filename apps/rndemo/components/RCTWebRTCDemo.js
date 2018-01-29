@@ -1,6 +1,8 @@
 'use strict';
 
 import React, { Component } from 'react';
+import createReactClass from 'create-react-class';
+
 import {
   AppRegistry,
   StyleSheet,
@@ -235,7 +237,7 @@ function getStats() {
 
 let container;
 
-const RCTWebRTCDemo = React.createClass({
+const RCTWebRTCDemo = createReactClass({
   getInitialState: function() {
     this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => true});
     return {

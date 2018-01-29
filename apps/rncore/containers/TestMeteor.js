@@ -1,5 +1,5 @@
 import TestMeteor from '../components/TestMeteor';
-import { composeAll } from 'react-komposer-plus';
+import { composeAll } from 'react-komposer';
 import { useDeps } from 'react-simple-di';
 
 const mapDepsToProps = (context, actions) => ({

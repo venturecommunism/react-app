@@ -4047,10 +4047,6 @@ image-size@^0.6.0:
   version "0.6.2"
   resolved "https://registry.yarnpkg.com/image-size/-/image-size-0.6.2.tgz#8ee316d4298b028b965091b673d5f1537adee5b4"
 
-immutable-is@^3.7.6:
-  version "3.7.6"
-  resolved "https://registry.yarnpkg.com/immutable-is/-/immutable-is-3.7.6.tgz#efad8bcf21443392402e10fa08b7aa91b65f6c30"
-
 immutable@3.8.2, immutable@^3.7.6:
   version "3.8.2"
   resolved "https://registry.yarnpkg.com/immutable/-/immutable-3.8.2.tgz#c2439951455bb39913daf281376f1530e104adf3"
@@ -6594,7 +6590,7 @@ promise@^7.1.1:
   dependencies:
     asap "~2.0.3"
 
-prop-types@^15.5.10, prop-types@^15.5.8, prop-types@^15.6.0:
+prop-types@^15.5.10, prop-types@^15.5.6, prop-types@^15.5.8, prop-types@^15.6.0:
   version "15.6.0"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.6.0.tgz#ceaf083022fc46b4a35f69e13ef75aed0d639856"
   dependencies:
@@ -6680,9 +6676,9 @@ querystringify@0.0.x:
   version "0.0.4"
   resolved "https://registry.yarnpkg.com/querystringify/-/querystringify-0.0.4.tgz#0cf7f84f9463ff0ae51c4c4b142d95be37724d9c"
 
-ramda@~0.21.0:
-  version "0.21.0"
-  resolved "https://registry.yarnpkg.com/ramda/-/ramda-0.21.0.tgz#a001abedb3ff61077d4ff1d577d44de77e8d0a35"
+ramda@^0.24.1:
+  version "0.24.1"
+  resolved "https://registry.yarnpkg.com/ramda/-/ramda-0.24.1.tgz#c3b7755197f35b8dc3502228262c4c91ddb6b857"
 
 random-bytes@~1.0.0:
   version "1.0.0"
@@ -6862,12 +6858,6 @@ react-mounter@^1.2.0:
     babel-runtime "6.x.x"
     domready "1.x.x"
 
-react-native-controlled-listview@0.1.0:
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/react-native-controlled-listview/-/react-native-controlled-listview-0.1.0.tgz#1b7773af3c5b4f142b5b296ba414d7cea8fd9791"
-  dependencies:
-    immutable-is "^3.7.6"
-
 react-native-drawer-layout@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/react-native-drawer-layout/-/react-native-drawer-layout-2.0.0.tgz#8ce1e4027bd3f3a09045afdb46080e18346be232"
@@ -6883,11 +6873,12 @@ react-native-experimental-navigation@^0.29.1:
     fbjs "^0.8.1"
     prop-types "^15.5.10"
 
-react-native-material-kit@^0.4.0:
-  version "0.4.1"
-  resolved "https://registry.yarnpkg.com/react-native-material-kit/-/react-native-material-kit-0.4.1.tgz#bdfc4727e4146980e129ee5bbeb7565db6a918cc"
+"react-native-material-kit@git://github.com/xinthink/react-native-material-kit":
+  version "0.5.1"
+  resolved "git://github.com/xinthink/react-native-material-kit#0c8178be3371d253166a2022b53639a64a09b642"
   dependencies:
-    ramda "~0.21.0"
+    prop-types "^15.5.10"
+    ramda "^0.24.1"
 
 react-native-router-flux@^3.39.1:
   version "3.43.0"
@@ -6900,10 +6891,12 @@ react-native-router-flux@^3.39.1:
     react-native-tabs "^1.0.9"
     react-static-container "^1.0.2"
 
-react-native-scrollable-tab-view@^0.6.7:
-  version "0.6.7"
-  resolved "https://registry.yarnpkg.com/react-native-scrollable-tab-view/-/react-native-scrollable-tab-view-0.6.7.tgz#3a5fe8a4bd5bc7eb023f306099323bbd9cc284a2"
+"react-native-scrollable-tab-view@git://github.com/skv-headless/react-native-scrollable-tab-view":
+  version "0.8.0"
+  resolved "git://github.com/skv-headless/react-native-scrollable-tab-view#74a0b3fc3f5b69b49b93e0e5f9b0d9089da757c5"
   dependencies:
+    create-react-class "^15.6.2"
+    prop-types "^15.6.0"
     react-timer-mixin "^0.13.3"
 
 react-native-tabs@^1.0.9:
@@ -7057,14 +7050,15 @@ react-transform-hmr@^1.0.4:
     global "^4.3.0"
     react-proxy "^1.1.7"
 
-react@^16.0.0:
-  version "16.2.0"
-  resolved "https://registry.yarnpkg.com/react/-/react-16.2.0.tgz#a31bd2dab89bff65d42134fa187f24d054c273ba"
+react@16.0.0-alpha.12:
+  version "16.0.0-alpha.12"
+  resolved "https://registry.yarnpkg.com/react/-/react-16.0.0-alpha.12.tgz#8c59485281485df319b6f77682d8dd0621c08194"
   dependencies:
-    fbjs "^0.8.16"
+    create-react-class "^15.5.2"
+    fbjs "^0.8.9"
     loose-envify "^1.1.0"
-    object-assign "^4.1.1"
-    prop-types "^15.6.0"
+    object-assign "^4.1.0"
+    prop-types "^15.5.6"
 
 read-cache@^1.0.0:
   version "1.0.0"

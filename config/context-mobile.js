@@ -171,7 +171,16 @@ datascript.listen(conn, {channel}, function(report) {
 })
 
 
-const Meteor = 'remove'
+const Meteor = {}
+Meteor.loggingIn = () => {
+  return false
+}
+Meteor.userId = () => {
+  return 1
+}
+Meteor.user = () => {
+  return {}
+}
 import { AppRegistry } from 'react-native';
 import {
   Router,
