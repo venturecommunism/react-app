@@ -24,7 +24,9 @@
     "react-native-router-flux": "^3.39.1",
     "react-native-scrollable-tab-view": "git://github.com/skv-headless/react-native-scrollable-tab-view",
     "react-native-vector-icons": "^4.5.0",
+    "react-native-web": "^0.3.4",
     "react-native-webrtc": "^1.58.3",
+    "react-scripts": "^1.1.0",
     "simple-peer": "^8.1.0",
     "socket.io-client": "^1.7.3",
     "stellar-sdk": "chatch/js-stellar-sdk#patched"
@@ -55,12 +57,13 @@
     "socket.io-client": "1.7.3"
   },
   "devDependencies": {
-    "electron": "^1.4.13",
-    "react-app-tools": "git+https://github.com/venturecommunism/react-app-tools.git"
+    "electron": "^1.4.13"
   },
   "scripts": {
-    "build": "react-app build",
-    "start": "react-app run",
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject",
     "electron-start": "node_modules/.bin/electron main-desktop.js"
   }
 }
