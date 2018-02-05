@@ -1310,10 +1310,6 @@ babylon@^6.17.0, babylon@^6.18.0:
   version "6.18.0"
   resolved "https://registry.yarnpkg.com/babylon/-/babylon-6.18.0.tgz#af2f3b88fa6f5c1e4c634d1a0f8eac4f55b395e3"
 
-babylon@~7.0.0-beta.16:
-  version "7.0.0-beta.16"
-  resolved "https://registry.yarnpkg.com/babylon/-/babylon-7.0.0-beta.16.tgz#448ceedeec0a5ef56b62812e3556bf36c5bb9781"
-
 backo2@1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/backo2/-/backo2-1.0.2.tgz#31ab1ac8b129363463e35b3ebb69f4dfcfba7947"
@@ -1412,7 +1408,7 @@ block-stream@*:
   dependencies:
     inherits "~2.0.0"
 
-bluebird@^3.1.5, bluebird@~3.5.0:
+bluebird@^3.1.5:
   version "3.5.0"
   resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-3.5.0.tgz#791420d7f551eea2897453a8a77653f96606d67c"
 
@@ -1747,12 +1743,6 @@ case-sensitive-paths-webpack-plugin@2.1.1:
 caseless@~0.12.0:
   version "0.12.0"
   resolved "https://registry.yarnpkg.com/caseless/-/caseless-0.12.0.tgz#1b681c21ff84033c826543090689420d187151dc"
-
-catharsis@~0.8.9:
-  version "0.8.9"
-  resolved "https://registry.yarnpkg.com/catharsis/-/catharsis-0.8.9.tgz#98cc890ca652dd2ef0e70b37925310ff9e90fc8b"
-  dependencies:
-    underscore-contrib "~0.3.0"
 
 center-align@^0.1.1:
   version "0.1.3"
@@ -2930,7 +2920,7 @@ escape-html@~1.0.3:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/escape-html/-/escape-html-1.0.3.tgz#0258eae4d3d0c0974de1c169188ef0051d1d1988"
 
-escape-string-regexp@1.0.5, escape-string-regexp@^1.0.2, escape-string-regexp@^1.0.5, escape-string-regexp@~1.0.5:
+escape-string-regexp@1.0.5, escape-string-regexp@^1.0.2, escape-string-regexp@^1.0.5:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/escape-string-regexp/-/escape-string-regexp-1.0.5.tgz#1b61c0562190a8dff6ae3bb2cf0200ca130b86d4"
 
@@ -4814,9 +4804,9 @@ js-tokens@^3.0.2:
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/js-tokens/-/js-tokens-3.0.2.tgz#9866df395102130e38f7f996bceb65443209c25b"
 
-js-xdr@chatch/js-xdr#master:
-  version "1.0.0"
-  resolved "https://codeload.github.com/chatch/js-xdr/tar.gz/d015fac0f270aab615b18d5703fe13197e5a6c41"
+js-xdr@^1.0.0:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/js-xdr/-/js-xdr-1.0.1.tgz#8255072659f237a43b37bced5d87815ecb4d753f"
   dependencies:
     babel-runtime "^4.7.16"
     cursor "^0.1.5"
@@ -4838,32 +4828,9 @@ js-yaml@~3.7.0:
     argparse "^1.0.7"
     esprima "^2.6.0"
 
-js2xmlparser@~3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/js2xmlparser/-/js2xmlparser-3.0.0.tgz#3fb60eaa089c5440f9319f51760ccd07e2499733"
-  dependencies:
-    xmlcreate "^1.0.1"
-
 jsbn@~0.1.0:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/jsbn/-/jsbn-0.1.1.tgz#a5e654c2e5a2deb5f201d96cefbca80c0ef2f513"
-
-jsdoc@^3.4.1:
-  version "3.5.3"
-  resolved "https://registry.yarnpkg.com/jsdoc/-/jsdoc-3.5.3.tgz#c8bb6a452548e3c778d4eff38f66ac20df2cac87"
-  dependencies:
-    babylon "~7.0.0-beta.16"
-    bluebird "~3.5.0"
-    catharsis "~0.8.9"
-    escape-string-regexp "~1.0.5"
-    js2xmlparser "~3.0.0"
-    klaw "~2.0.0"
-    marked "~0.3.6"
-    mkdirp "~0.5.1"
-    requizzle "~0.2.1"
-    strip-json-comments "~2.0.1"
-    taffydb "2.6.2"
-    underscore "~1.8.3"
 
 jsdom@^9.12.0:
   version "9.12.0"
@@ -4986,12 +4953,6 @@ klaw@^1.0.0:
   version "1.3.1"
   resolved "https://registry.yarnpkg.com/klaw/-/klaw-1.3.1.tgz#4088433b46b3b1ba259d78785d8e96f73ba02439"
   optionalDependencies:
-    graceful-fs "^4.1.9"
-
-klaw@~2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/klaw/-/klaw-2.0.0.tgz#59c128e0dc5ce410201151194eeb9cbf858650f6"
-  dependencies:
     graceful-fs "^4.1.9"
 
 latest-version@^3.0.0:
@@ -5305,10 +5266,6 @@ makeerror@1.0.x:
 map-obj@^1.0.0, map-obj@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/map-obj/-/map-obj-1.0.1.tgz#d933ceb9205d82bdcf4886f6742bdc2b4dea146d"
-
-marked@~0.3.6:
-  version "0.3.6"
-  resolved "https://registry.yarnpkg.com/marked/-/marked-0.3.6.tgz#b2c6c618fccece4ef86c4fc6cb8a7cbf5aeda8d7"
 
 math-expression-evaluator@^1.2.14:
   version "1.2.17"
@@ -7343,7 +7300,7 @@ request@2.81.0:
     tunnel-agent "^0.6.0"
     uuid "^3.0.0"
 
-request@^2.45.0, request@^2.79.0:
+request@^2.45.0, request@^2.79.0, request@^2.83.0:
   version "2.83.0"
   resolved "https://registry.yarnpkg.com/request/-/request-2.83.0.tgz#ca0b65da02ed62935887808e6f510381034e3356"
   dependencies:
@@ -7392,12 +7349,6 @@ require-uncached@^1.0.3:
 requires-port@1.0.x, requires-port@1.x.x, requires-port@~1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/requires-port/-/requires-port-1.0.0.tgz#925d2601d39ac485e091cf0da5c6e694dc3dcaff"
-
-requizzle@~0.2.1:
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/requizzle/-/requizzle-0.2.1.tgz#6943c3530c4d9a7e46f1cddd51c158fc670cdbde"
-  dependencies:
-    underscore "~1.6.0"
 
 resolve-cwd@^2.0.0:
   version "2.0.0"
@@ -7954,32 +7905,31 @@ statuses@~1.3.1:
   version "1.3.1"
   resolved "https://registry.yarnpkg.com/statuses/-/statuses-1.3.1.tgz#faf51b9eb74aaef3b3acf4ad5f61abf24cb7b93e"
 
-stellar-base@chatch/js-stellar-base#master:
-  version "0.7.4"
-  resolved "https://codeload.github.com/chatch/js-stellar-base/tar.gz/30831b45388068c5db405b21d4bc7002bbd27479"
+stellar-base@^0.7.6:
+  version "0.7.6"
+  resolved "https://registry.yarnpkg.com/stellar-base/-/stellar-base-0.7.6.tgz#9ecbd124310dcd9b215ac528f33b488f62a02be4"
   dependencies:
     base32.js "~0.1.0"
     bignumber.js "^4.0.0"
     crc "^3.3.0"
-    js-xdr chatch/js-xdr#master
-    lodash "^4.0.1"
+    js-xdr "^1.0.0"
+    lodash "^4.17.4"
     sha.js "^2.3.6"
     tweetnacl "^0.14.5"
   optionalDependencies:
     ed25519 "0.0.4"
 
-stellar-sdk@chatch/js-stellar-sdk#patched:
-  version "0.7.3"
-  resolved "https://codeload.github.com/chatch/js-stellar-sdk/tar.gz/5cbbafecc9396bd9e0f8ba79eb8ba875dcfefa63"
+stellar-sdk@0.8.0:
+  version "0.8.0"
+  resolved "https://registry.yarnpkg.com/stellar-sdk/-/stellar-sdk-0.8.0.tgz#8a9f251896bb9bf435b50893323d2294a47d0023"
   dependencies:
     axios "^0.12.0"
     bluebird "^3.1.5"
     es6-promise "^3.0.2"
     event-source-polyfill "0.0.7"
     eventsource "^0.2.1"
-    jsdoc "^3.4.1"
     lodash "^4.0.1"
-    stellar-base chatch/js-stellar-base#master
+    stellar-base "^0.7.6"
     toml "^2.3.0"
     urijs "1.18.4"
 
@@ -8187,10 +8137,6 @@ table@^4.0.1:
     lodash "^4.17.4"
     slice-ansi "1.0.0"
     string-width "^2.1.1"
-
-taffydb@2.6.2:
-  version "2.6.2"
-  resolved "https://registry.yarnpkg.com/taffydb/-/taffydb-2.6.2.tgz#7cbcb64b5a141b6a2efc2c5d2c67b4e150b2a268"
 
 tapable@^0.2.7:
   version "0.2.8"
@@ -8443,20 +8389,6 @@ ultron@1.0.x:
 ultron@~1.1.0:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/ultron/-/ultron-1.1.1.tgz#9fe1536a10a664a65266a1e3ccf85fd36302bc9c"
-
-underscore-contrib@~0.3.0:
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/underscore-contrib/-/underscore-contrib-0.3.0.tgz#665b66c24783f8fa2b18c9f8cbb0e2c7d48c26c7"
-  dependencies:
-    underscore "1.6.0"
-
-underscore@1.6.0, underscore@~1.6.0:
-  version "1.6.0"
-  resolved "https://registry.yarnpkg.com/underscore/-/underscore-1.6.0.tgz#8b38b10cacdef63337b8b24e4ff86d45aea529a8"
-
-underscore@~1.8.3:
-  version "1.8.3"
-  resolved "https://registry.yarnpkg.com/underscore/-/underscore-1.8.3.tgz#4f3fb53b106e6097fcf9cb4109f2a5e9bdfa5022"
 
 uniq@^1.0.1:
   version "1.0.1"
@@ -8925,10 +8857,6 @@ xmlbuilder@4.0.0:
 xmlbuilder@8.2.2:
   version "8.2.2"
   resolved "https://registry.yarnpkg.com/xmlbuilder/-/xmlbuilder-8.2.2.tgz#69248673410b4ba42e1a6136551d2922335aa773"
-
-xmlcreate@^1.0.1:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/xmlcreate/-/xmlcreate-1.0.2.tgz#fa6bf762a60a413fb3dd8f4b03c5b269238d308f"
 
 xmldoc@^0.4.0:
   version "0.4.0"

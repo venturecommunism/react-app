@@ -1,3 +1,6 @@
+import StellarSdk from 'stellar-sdk'
+import request from 'request'
+
 // Datascript things
 import datascript from 'datascript'
 import {maindb, componentdb} from './lib/createDBConn'
@@ -183,6 +186,9 @@ import {
 // The actual context. This is the first argument to actions.
 export const initContext = () => {
   return {
+    StellarSdk,
+    request,
+    datascript: datascript,
     conn: conn,
     transact: transact,
     log: log,
