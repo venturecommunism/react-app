@@ -1,5 +1,6 @@
 import StellarSdk from 'stellar-sdk'
 import request from 'request'
+import axios from 'axios'
 
 // Datascript things
 import datascript from 'datascript'
@@ -186,9 +187,10 @@ import {
 // The actual context. This is the first argument to actions.
 export const initContext = () => {
   return {
-    StellarSdk,
-    request,
+    StellarSdk: StellarSdk,
+    request: request,
     datascript: datascript,
+    axios: axios,
     conn: conn,
     transact: transact,
     log: log,

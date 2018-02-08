@@ -19,7 +19,7 @@
     { ':db/id': -3,
       actionsetid: 'createtaskactions',
       modulename: 'Create task actions',
-      moduleactions: [-5, -7]
+      moduleactions: [-5, -7, -8, -9]
     },
     {
       ':db/id': -4,
@@ -147,6 +147,85 @@ console.log(csbResult)
 
       }`
     },
+    {
+      ':db/id': -8,
+      'componentsname': 'get_stellar_sequence',
+      'componentsparents': -2,
+      'componentstype': 'action',
+      'componentsfunction': `({StellarSdk, request, axios, transact, datascript, conn}) {
+
+StellarSdk.Network.useTestNetwork()
+const ASSET_CODE = 'XXX'
+var server = new StellarSdk.Server('https://horizon-testnet.stellar.org')
+
+const issQuery = \`[:find ?u ?pub ?priv
+                    :where [?u "publickey" ?pub]
+                           [?u "privatekey" ?priv]
+                           [?u "stellar_account_name" "issuer"]]\`
+
+const recQuery = \`[:find ?u ?pub ?priv
+                    :where [?u "publickey" ?pub]
+                           [?u "privatekey" ?priv]
+                           [?u "stellar_account_name" "issuer"]]\`
+
+const db = datascript.db(conn)
+
+const issArgs = [issQuery, db]
+const recArgs = [recQuery, db]
+
+const issResult = datascript.q(...issArgs)
+const recResult = datascript.q(...recArgs)
+
+const issuerpublickey = issResult[0][1]
+
+const ASSET = new StellarSdk.Asset(ASSET_CODE, issuerpublickey)
+
+const receiverpublickey = recResult[0][1]
+const receiverprivatekey = recResult[0][2]
+
+const receiving = StellarSdk.Keypair.fromSecret(receiverprivatekey)
+
+request.get({
+  url: 'https://horizon-testnet.stellar.org' + '/accounts/' + issuerpublickey,
+  json: true
+}, function (error, response, body) {
+  if (error || response.statusCode !== 200) {
+    console.error('ERROR!', error || body);
+    console.error()
+    return
+  }
+  var newsequence = body.sequence + 1
+  console.log('Next item in sequence is', newsequence);
+
+  transact(conn, [{
+    ':db/id': -1,
+    stellar_account_name: 'authorization',
+    next_sequence: newsequence
+  }])
+
+  })
+
+      }`
+    },
+    {
+      ':db/id': -9,
+      'componentsname': 'create_stellar_asset',
+      'componentsparents': -2,
+      'componentstype': 'action',
+      'componentsfunction': `({StellarSdk, request, axios, transact, datascript, conn}) {
+
+const issQuery = \`[:find ?u ?pub ?priv
+                    :where [?u "publickey" ?pub]
+                           [?u "privatekey" ?priv]
+                           [?u "stellar_account_name" "issuer"]]\`
+
+const db = datascript.db(conn)
+const issArgs = [issQuery, db]
+const issResult = datascript.q(...issArgs)
+const issuerpublickey = issResult && issResult[0] ? issResult[0][1] : alert("issResult doesn't exist")
+
+      }`
+    }
   ]
 
 export default componentdatoms
