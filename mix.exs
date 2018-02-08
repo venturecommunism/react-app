@@ -22,8 +22,12 @@ defmodule ReactApp.Mixfile do
   #
   # Dependencies listed here are available only for this project
   # and cannot be accessed from applications inside the apps folder
+
+  # need calendar dependency pinned since exdn has an older incompatible version of calendar. might want to pull that in to a repo at some point 
   defp deps do
-    []
+    [
+      {:calendar, "~> 0.17.4", override: true}
+    ]
   end
 
   def rustler_crates do
