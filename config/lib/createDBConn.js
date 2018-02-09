@@ -13,6 +13,7 @@ import newroot from '../../apps/core/datoms/seeds/newroot'
 import clientroot from '../../apps/core/datoms/seeds/clientroot'
 import serverroot from '../../apps/core/datoms/seeds/serverroot'
 import createtask from '../../apps/core/datoms/seeds/createtask'
+import stellardemo from '../../apps/core/datoms/seeds/stellardemo'
 
 const maindb = () => {
   const Schema = {
@@ -45,6 +46,7 @@ const componentdb = () => {
   datascript.transact(conn_db, createtask)
   datascript.transact(conn_db, clientroot)
   datascript.transact(conn_db, serverroot)
+  datascript.transact(conn_db, stellardemo)
   return conn_db
 }
 

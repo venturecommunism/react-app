@@ -5,6 +5,7 @@ import ActionsMapper from '../containers/actionsmapper'
 import RecursiveComponent from './component'
 const Module = DataContainer(ActionsMapper('general', RecursiveComponent))
 const CreateTaskModule = DataContainer(ActionsMapper('createtaskactions', RecursiveComponent))
+const StellarDemoModule = DataContainer(ActionsMapper('stellardemoactions', RecursiveComponent))
 
 import CreateTask from '../../tasks/components/createtask'
 
@@ -18,6 +19,7 @@ const Root = ({result}) => (
   <div>
     <Module moduleid={"newrootcore"} />
     <CreateTaskModule moduleid={"createtask"} />
+    <StellarDemoModule moduleid={"stellardemo"} />
     <Module moduleid={"core"} />
     <Module moduleid={"servercore"} />
   </div>

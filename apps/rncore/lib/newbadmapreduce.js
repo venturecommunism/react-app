@@ -88,19 +88,19 @@ const badmapreduce = function (result, actions, moduleroot) {
       case undefined:
       case null:
         // this better be a string
-        return <View><Text>{component}</Text></View>
+        return <View key={key}><Text>{component}</Text></View>
       case "action":
-        return <Inputs actions={actions} component={component} />
-//        return <Button title={component.componentsname} key={key} onPress={actions[component.componentsname]} accessibilityLabel={component.componentsname} />
+        return <Inputs key={key} actions={actions} component={component} />
+//        return <Button key={key} title={component.componentsname} key={key} onPress={actions[component.componentsname]} accessibilityLabel={component.componentsname} />
       case "subcomponent":
         // just return the component's name in subcomponents for now
         return <Text key={key} style={styles.titleText}>{component.componentsname}</Text>
       case "textarea":
-        return <TextInput multiline={true} numberOfLines={4} key={key} placeholder={component.placeholder} />
+        return <TextInput key={key} multiline={true} numberOfLines={4} key={key} placeholder={component.placeholder} />
       default:
         // we didn't find a component type but it's not a string. consider this an error
         console.warn("Unhandled component type in switch statement at apps/core/libs/badmapreduce.js (or where ever it is)")
-        return <View><Text>Error: {JSON.stringify(component, null, 2)}</Text></View>
+        return <View key={key}><Text>Error: {JSON.stringify(component, null, 2)}</Text></View>
     }
   }
 

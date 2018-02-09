@@ -11,7 +11,7 @@
     "mantra-plus": "git://github.com/venturecommunism/mantra-plus",
     "mobx": "^2.6.3",
     "moment": "^2.18.1",
-    "phoenix": "^1.2.1",
+    "phoenix": "1.2.1",
     "react": "16.0.0-alpha.12",
     "react-app": "^1.1.2",
     "react-dom": "^16.0.0",
