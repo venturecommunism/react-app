@@ -5,8 +5,9 @@ index 718b898..8e06580 100644
 @@ -52,9 +52,11 @@ module.exports = {
    appBuild: resolveApp('build'),
    appPublic: resolveApp('public'),
-   appHtml: resolveApp('public/index.html'),
+-  appHtml: resolveApp('public/index.html'),
 -  appIndexJs: resolveApp('src/index.js'),
++  appHtml: resolveApp('index.html'),
 +  appIndexJs: resolveApp('main.js'),
    appPackageJson: resolveApp('package.json'),
    appSrc: resolveApp('src'),
@@ -18,8 +19,9 @@ index 718b898..8e06580 100644
 @@ -72,9 +74,11 @@ module.exports = {
    appBuild: resolveApp('build'),
    appPublic: resolveApp('public'),
-   appHtml: resolveApp('public/index.html'),
+-  appHtml: resolveApp('public/index.html'),
 -  appIndexJs: resolveApp('src/index.js'),
++  appHtml: resolveApp('index.html'),
 +  appIndexJs: resolveApp('main.js'),
    appPackageJson: resolveApp('package.json'),
    appSrc: resolveApp('src'),

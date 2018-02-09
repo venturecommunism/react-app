@@ -66,6 +66,6 @@
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "electron-start": "node_modules/.bin/electron main-desktop.js",
-    "postinstall": "cp config/scripts/create-react-app.patch node_modules/react-scripts && cd node_modules/react-scripts && git init && git apply create-react-app.patch && ./config/scripts/stellar-patch.sh"
+    "postinstall": "cp config/scripts/create-react-app.patch node_modules/react-scripts && cd node_modules/react-scripts && git init && git apply create-react-app.patch && cd ../.. && ./config/scripts/stellar-patch.sh"
   }
 }
