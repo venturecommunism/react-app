@@ -58,7 +58,8 @@
     "socket.io-client": "1.7.3"
   },
   "devDependencies": {
-    "electron": "^1.4.13"
+    "electron": "^1.4.13",
+    "react-app-tools": "git+https://github.com/venturecommunism/react-app-tools.git"
   },
   "scripts": {
     "start": "react-scripts start",
