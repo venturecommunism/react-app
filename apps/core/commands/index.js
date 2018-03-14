@@ -1,7 +1,9 @@
 import general from './general'
+import createtaskactions from './createtaskactions'
 
 const actions = {
-  general
+  general,
+  createtaskactions
 }
 
 export default actions
