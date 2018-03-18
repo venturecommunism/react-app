@@ -19,9 +19,11 @@ const Root = ({result}) => (
   <div>
     <Module moduleid={"newrootcore"} />
     <CreateTaskModule moduleid={"createtask"} />
+{/*
     <StellarDemoModule moduleid={"stellardemo"} />
     <Module moduleid={"core"} />
-    <Module moduleid={"servercore"} />
+    <Module moduleid={"servercore"} /> 
+*/}
   </div>
 )
 

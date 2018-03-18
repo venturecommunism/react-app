@@ -79,21 +79,24 @@ export default class App {
 
     const actions = module.actions || {}
 
-/*
     for (var i = 0; i < query.length; i++) {
       if (!actions[query[i][1]]) {
         actions[query[i][1]] = {}
       }
+      // intended to only use the code version if there is no database version
       actions[query[i][1]][query[i][2]] = new Function(`return function ` + query[i][2] + query[i][3])()
     }
-*/
+
     this.actions = {
       ...this.actions,
       ...actions
     }
 
-    console.log(Object.keys(this.actions))
-    console.log(Object.keys(this.actions.general))
+    // console.log(Object.keys(this.actions))
+    // console.log(Object.keys(this.actions.general))
+    // console.log(Object.keys(this.actions.createtaskactions))
+    // console.log(Object.keys(this.actions.stellardemoactions))
+    // console.log(this.actions.createtaskactions.create_task)
 
     if (module.load) {
       if (typeof module.load !== 'function') {
