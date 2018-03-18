@@ -5,41 +5,9 @@
   const componentdatoms = [
     {
       ':db/id': -1,
-      'componentsname': 'Subcomponent',
+      'componentsname': 'newroot.js Subcomponent',
       'componentsparents': [-5, -18],
       'componentstype': 'subcomponent'
-    },
-    {
-      ':db/id': -2,
-      'componentsname': 'multipleplaces',
-      'componentsparents': [-1, -5, -18],
-      'componentstype': 'action',
-      'componentsfunction': `({conn, transact}, e) {
-        var date = new Date().getTime()
-        transact(conn, [{
-          ':db/id': -1,
-          description: 'multipleplaces test',
-          date: date,
-          status: 'pending',
-          uuid: 'uuid-' + date
-        }])
-      }`
-    },
-    {
-      ':db/id': -3,
-      'componentsname': 'anotheraction',
-      'componentsparents': -1,
-      'componentstype': 'action',
-      'componentsfunction': `({conn, transact}, e) {
-        var date = new Date().getTime()
-        transact(conn, [{
-          ':db/id': -1,
-          description: 'anotheraction test',
-          date: date,
-          status: 'pending',
-          uuid: 'uuid-' + date
-        }])
-      }`
     },
     {
       ':db/id': -4,
@@ -49,7 +17,7 @@
     },
     {
       ':db/id': -5,
-      'componentsname': 'NewRoot',
+      'componentsname': 'newroot.js NewRoot',
       'componentstype': 'root',
       'componentid': 'newrootcore'
     },
@@ -60,65 +28,16 @@
       'componentstype': 'data'
     },
     {
-      ':db/id': -7,
-      'componentsname': 'thirdaction',
-      'componentsparents': -1,
-      'componentstype': 'action',
-      'componentsfunction': `({conn, transact}, e) {
-        var date = new Date().getTime()
-        transact(conn, [{
-          ':db/id': -1,
-          description: 'thirdaction test',
-          date: date,
-          status: 'pending',
-          uuid: 'uuid-' + date
-        }])
-      }`
-    },
-    {
       ':db/id': -8,
       'componentsname': 'Third Data Component',
       'componentsparents': [-5, -18],
       'componentstype': 'data'
     },
     {
-      ':db/id': -9,
-      'componentsname': 'fourthaction',
-      'componentsparents': [-5, -18],
-      'componentstype': 'action',
-      'componentsfunction': `({conn, transact}, e) {
-        var date = new Date().getTime()
-        transact(conn, [{
-          ':db/id': -1,
-          description: 'fourthaction test',
-          date: date,
-          status: 'pending',
-          uuid: 'uuid-' + date
-        }])
-      }`
-    },
-    {
       ':db/id': -10,
       'componentsname': 'Fourth Data Component',
       'componentsparents': [-5, -18],
       'componentstype': 'data'
-    },
-    {
-      ':db/id': -11,
-      'componentsname': 'killthestate',
-      'componentsparents': [-5, -18],
-      'componentstype': 'action',
-      'componentsfunction': `({conn, transact}, e) {
-        var date = new Date().getTime()
-        transact(conn, [{
-          ':db/id': -1,
-          alert: 'dostuff_happened',
-          description: 'fifthaction test',
-          date: date,
-          status: 'pending',
-          uuid: 'uuid-' + date
-        }])
-      }`
     },
     {
       ':db/id': -12,
@@ -140,7 +59,7 @@
     { ':db/id': -14,
       actionsetid: 'general',
       modulename: 'General actions',
-      moduleactions: [-16, -2, -9, -11]
+      moduleactions: -16
     },
     { ':db/id': -15,
       routeid: 'home',

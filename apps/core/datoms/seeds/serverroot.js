@@ -10,38 +10,6 @@
       'componentstype': 'subcomponent'
     },
     {
-      ':db/id': -2,
-      'componentsname': 'multipleplaces',
-      'componentsparents': [-1, -5, -18],
-      'componentstype': 'action',
-      'componentsfunction': `({conn, transact}, e) {
-        var date = new Date().getTime()
-        transact(conn, [{
-          ':db/id': -1,
-          description: 'multipleplaces test',
-          date: date,
-          status: 'pending',
-          uuid: 'uuid-' + date
-        }])
-      }`
-    },
-    {
-      ':db/id': -3,
-      'componentsname': 'anotheraction',
-      'componentsparents': -1,
-      'componentstype': 'action',
-      'componentsfunction': `({conn, transact}, e) {
-        var date = new Date().getTime()
-        transact(conn, [{
-          ':db/id': -1,
-          description: 'anotheraction test',
-          date: date,
-          status: 'pending',
-          uuid: 'uuid-' + date
-        }])
-      }`
-    },
-    {
       ':db/id': -4,
       'componentsname': 'Data Component',
       'componentsparents': [-5, -18],
@@ -60,64 +28,16 @@
       'componentstype': 'data'
     },
     {
-      ':db/id': -7,
-      'componentsname': 'thirdaction',
-      'componentsparents': -1,
-      'componentstype': 'action',
-      'componentsfunction': `({conn, transact}, e) {
-        var date = new Date().getTime()
-        transact(conn, [{
-          ':db/id': -1,
-          description: 'thirdaction test',
-          date: date,
-          status: 'pending',
-          uuid: 'uuid-' + date
-        }])
-      }`
-    },
-    {
       ':db/id': -8,
       'componentsname': 'Third Data Component',
       'componentsparents': [-5, -18],
       'componentstype': 'data'
     },
     {
-      ':db/id': -9,
-      'componentsname': 'fourthaction',
-      'componentsparents': [-5, -18],
-      'componentstype': 'action',
-      'componentsfunction': `({conn, transact}, e) {
-        var date = new Date().getTime()
-        transact(conn, [{
-          ':db/id': -1,
-          description: 'fourthaction test',
-          date: date,
-          status: 'pending',
-          uuid: 'uuid-' + date
-        }])
-      }`
-    },
-    {
       ':db/id': -10,
       'componentsname': 'Fourth Data Component',
       'componentsparents': [-5, -18],
       'componentstype': 'data'
-    },
-    {
-      ':db/id': -11,
-      'componentsname': 'fifthaction',
-      'componentsparents': [-5, -18],
-      'componentstype': 'action',
-      'componentsfunction': `({conn, transact}, e) {
-        var date = new Date().getTime()
-        transact(conn, [{
-          ':db/id': -1,
-          description: 'fifthaction test',
-          date: date,
-          status: 'pending',
-          uuid: 'uuid-' + date
-        }])
-      }`
     },
     {
       ':db/id': -12,

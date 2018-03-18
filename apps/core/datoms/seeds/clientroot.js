@@ -90,7 +90,7 @@
         var date = new Date().getTime()
         transact(conn, [{
           ':db/id': -1,
-          description: 'fourthaction test',
+          description: 'core clientroot - fourthaction test',
           date: date,
           status: 'pending',
           uuid: 'uuid-' + date
