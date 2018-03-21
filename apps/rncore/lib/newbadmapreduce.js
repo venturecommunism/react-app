@@ -23,16 +23,15 @@ class TestThing extends React.Component {
 class Inputs extends React.Component {
   constructor(props) {
     super(props)
+    this.state = { formvalue: "" }
   }
 
-  state = {
-    formvalue: ''
-  }
   handleInput = (text) => {
     this.setState({ formvalue: text })
   }
   submittask = (formvalue) => {
     this.props.actions[this.props.component.componentsname](formvalue)
+    this.setState({ formvalue: "" })
   }
   render(){
     return (
@@ -43,15 +42,10 @@ class Inputs extends React.Component {
           placeholder = "Enter your task here."
           placeholderTextColor = "#9a73ef"
           autoCapitalize = "none"
-          onChangeText = {this.handleInput}/>
-
-        <TouchableOpacity
-          style = {styles.submitButton}
-          onPress = {
-            () => this.submittask(this.state.formvalue)
-          }>
-          <Text style = {styles.submitButtonText}> Submit </Text>
-        </TouchableOpacity>
+          value = {this.state.formvalue}
+          onSubmitEditing = {() => this.submittask(this.state.formvalue)}
+          onChangeText = {this.handleInput}
+        />
       </View>
     )
   }
