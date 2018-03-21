@@ -7,7 +7,7 @@ import TwitterPlus from '../../rntwitterplus/components/index'
 // import WebRTCVideo from '../../webrtcvideo/components/index'
 
 import DataContainer from '../../rncore/containers/appbuilder'
-import ActionsMapper from '../containers/actionsmapper'
+import ActionsMapper from '../../core/containers/actionsmapper'
 import RecursiveComponent from './component'
 const CreateTaskModule = DataContainer(ActionsMapper('createtaskactions', RecursiveComponent))
 
@@ -48,10 +48,11 @@ const styles = StyleSheet.create({
   },
   footer: {
     position: 'absolute',
+    width: 200,
     right: 10,
     bottom: 10,
-    backgroundColor:'green',
-    height: 300
+    backgroundColor:'#f5f5dc',
+    height: 80
   },
 });
 

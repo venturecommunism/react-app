@@ -4,7 +4,7 @@ import {
 } from 'react-native'
 
 import DataContainer from '../../rncore/containers/appbuilder'
-import ActionsMapper from '../containers/actionsmapper'
+import ActionsMapper from '../../core/containers/actionsmapper'
 import RecursiveComponent from './component'
 const Module = DataContainer(ActionsMapper('general', RecursiveComponent))
 const CreateTaskModule = DataContainer(ActionsMapper('createtaskactions', RecursiveComponent))
@@ -12,9 +12,10 @@ const CreateTaskModule = DataContainer(ActionsMapper('createtaskactions', Recurs
 const Root = ({result}) => (
   <View>
     <Module moduleid={"newrootcore"} />
-    <CreateTaskModule moduleid={"createtask"} />
+{/*    <CreateTaskModule moduleid={"createtask"} />
     <Module moduleid={"core"} />
     <Module moduleid={"servercore"} />
+*/}
   </View>
 )
 

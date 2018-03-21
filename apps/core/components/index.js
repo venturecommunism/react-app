@@ -2,7 +2,7 @@ import React from 'react'
 
 import DataContainer from '../../core/containers/appbuilder'
 import ActionsMapper from '../containers/actionsmapper'
-import RecursiveComponent from './component'
+import RecursiveComponent from '../../rncore/components/component'
 const Module = DataContainer(ActionsMapper('general', RecursiveComponent))
 const CreateTaskModule = DataContainer(ActionsMapper('createtaskactions', RecursiveComponent))
 const StellarDemoModule = DataContainer(ActionsMapper('stellardemoactions', RecursiveComponent))

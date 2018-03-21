@@ -53,7 +53,7 @@
                       [?u "date" ?date]
                       [?u "status" ?status]
                       [?u "uuid" ?uuid]]`,
-      sortfields: `[2, 0]`,
+      sortfields: `[1, 0]`,
       sortorders: `[DESC, ASC]`
     },
     { ':db/id': -14,

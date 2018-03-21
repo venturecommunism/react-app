@@ -1,6 +1,6 @@
 import React from 'react'
 
-import ActionsMapper from '../../rncore/containers/actionsmapper'
+import ActionsMapper from '../../core/containers/actionsmapper'
 
 import JWT from '../../clientjwt/components/jwt.jsx'
 

@@ -5,7 +5,7 @@ import {
 } from 'react-native'
 
 import DataContainer from '../../rncore/containers/datacontainer'
-import ActionsMapper from '../../rncore/containers/actionsmapper'
+import ActionsMapper from '../../core/containers/actionsmapper'
 
 import allTweetsQuery from '../queries/alltweets'
 

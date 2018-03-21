@@ -14,19 +14,12 @@
     { ':db/id': -2,
       'componentsname': 'Create task Root component',
       'componentstype': 'root',
-      'componentid': 'createtask',
+      'componentid': 'createtask'
     },
     { ':db/id': -3,
       actionsetid: 'createtaskactions',
       modulename: 'Create task actions',
       moduleactions: -5
-    },
-    {
-      ':db/id': -4,
-      'componentsname': 'textareatocreatetask',
-      'componentsparents': -2,
-      'componentstype': 'textarea',
-      'placeholder': "Enter your task content."
     },
     {
       ':db/id': -5,
@@ -43,12 +36,6 @@
           uuid: 'uuid-' + date
         }])
       }`
-    },
-    {
-      ':db/id': -6,
-      'componentsname': 'Subcomponent',
-      'componentsparents': -2,
-      'componentstype': 'subcomponent'
     },
   ]
 

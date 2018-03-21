@@ -2,7 +2,7 @@ import React from 'react'
 import {View, Text} from 'react-native'
 
 import DataContainer from '../../rncore/containers/datacontainer'
-import ActionsMapper from '../../rncore/containers/actionsmapper'
+import ActionsMapper from '../../core/containers/actionsmapper'
 
 /*
 import JWT from '../../clientjwt/components/jwt.jsx'

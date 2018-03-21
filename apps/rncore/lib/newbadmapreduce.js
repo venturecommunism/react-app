@@ -11,15 +11,6 @@ import {
 
 // https://javascriptplayground.com/functional-stateless-components-react/
 
-
-class TestThing extends React.Component {
-  render(){
-    return (
-      <Text>Okay</Text>
-    )
-  }
-}
-
 class Inputs extends React.Component {
   constructor(props) {
     super(props)
@@ -36,7 +27,6 @@ class Inputs extends React.Component {
   render(){
     return (
       <View style = {styles.container}>
-        <Text>Okay</Text>
         <TextInput style = {styles.input}
           underlineColorAndroid = "transparent"
           placeholder = "Enter your task here."
@@ -71,6 +61,7 @@ const styles = StyleSheet.create({
     color: 'white'
   },
   titleText: {
+    display: 'none',
     fontSize: 20,
     fontWeight: 'bold',
   },
@@ -100,10 +91,10 @@ const badmapreduce = function (result, actions, moduleroot) {
 
   var elements =
     moduleroot.map( function(onesetofdatafilledcomponents, pIndex) {
-      return onesetofdatafilledcomponents.map( function(component, sIndex) {
+      return <View key={pIndex} style={{paddingBottom: 10}}>{onesetofdatafilledcomponents.map( function(component, sIndex) {
         var key = pIndex + "." + sIndex
         return doswitch(key, component)
-      })
+      })}</View>
     })
   return <View>{elements}</View>
 }
