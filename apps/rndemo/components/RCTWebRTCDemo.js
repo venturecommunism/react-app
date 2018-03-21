@@ -15,7 +15,11 @@ import {
 
 import io from 'socket.io-client';
 
-const socket = io.connect('https://react-native-webrtc.herokuapp.com', {transports: ['websocket']});
+// this and the large comment for socket.on are disabled to disable the react-native yellowbox warning
+const socket = {}
+// const socket = io.connect('https://react-native-webrtc.herokuapp.com', {transports: ['websocket'], timeout: 30000, pingTimeout: 30000, pingInterval: 30000});
+
+
 
 import {
   RTCPeerConnection,
@@ -195,6 +199,7 @@ function leave(socketId) {
   container.setState({info: 'One peer leave!'});
 }
 
+/*
 socket.on('exchange', function(data){
   exchange(data);
 });
@@ -210,7 +215,7 @@ socket.on('connect', function(data) {
     container.setState({status: 'ready', info: 'Please enter or create room ID'});
   });
 });
-
+*/
 function logError(error) {
   console.log("logError", error);
 }

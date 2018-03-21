@@ -6,6 +6,11 @@ import Demo from '../../rndemo/components/index'
 import TwitterPlus from '../../rntwitterplus/components/index'
 // import WebRTCVideo from '../../webrtcvideo/components/index'
 
+import DataContainer from '../../rncore/containers/appbuilder'
+import ActionsMapper from '../containers/actionsmapper'
+import RecursiveComponent from './component'
+const CreateTaskModule = DataContainer(ActionsMapper('createtaskactions', RecursiveComponent))
+
 import {
   View,
   Text,
@@ -41,6 +46,13 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.5,
     shadowRadius: 3,
   },
+  footer: {
+    position: 'absolute',
+    right: 10,
+    bottom: 10,
+    backgroundColor:'green',
+    height: 300
+  },
 });
 
 class MainPage extends Component {
@@ -72,6 +84,9 @@ class MainPage extends Component {
             <TwitterPlus />
           </ScrollableTabCard>
         </ScrollableTabContainer>
+        <View style={styles.footer}>
+          <CreateTaskModule moduleid="createtask" />
+        </View>
       </TopPad>
     );
   }

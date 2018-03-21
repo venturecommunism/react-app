@@ -1,3 +1,6 @@
+had an aapt error preventing gradle from building. fixed it with:
+sudo apt-get install lib32stdc++6 lib32z1
+
 https://facebook.github.io/react-native/docs/getting-started.html
 
 - Install Node 6 or higher https://nodejs.org/en/download/package-manager/#debian-and-ubuntu-based-linux-distributions
