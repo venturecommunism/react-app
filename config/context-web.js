@@ -15,7 +15,7 @@ function transact(conn, data_to_add, meta) {
 }
 
 // Elixir / Phoenix Channels things
-var clientonly = true
+var clientonly = false
 import {go, chan, take, put, timeout, putAsync} from 'js-csp'
 import Channel from './channel'
 import url from './url'
@@ -158,6 +158,9 @@ datascript.listen(conn, {channel}, function(report) {
   meta.push(report.tx_meta)
 
   if (report.tx_meta && (report.tx_meta.remoteuser || report.tx_meta.secrets)) return
+  if (!report.tx_meta) {
+    report.tx_meta = "test"
+  }
 
 //  console.log('META', report.tx_meta)
 //  console.log('listened tempid', datascript.resolve_tempid(report.tempids, -1))

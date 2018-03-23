@@ -27,11 +27,11 @@
       'componentsparents': -2,
       'componentstype': 'action',
       'componentsfunction': `({conn, transact}, text) {
-        var date = new Date().getTime()
+        var date = new Date().getTime().toString()
         transact(conn, [{
           ':db/id': -1,
           description: text,
-          date: date,
+          entry: date,
           status: 'pending',
           uuid: 'uuid-' + date
         }])

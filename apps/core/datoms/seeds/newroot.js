@@ -50,7 +50,7 @@
       componentsname: 'New Root component (cleanup)',
       query: `[:find ?desc ?date ?status ?uuid
                :where [?u "description" ?desc]
-                      [?u "date" ?date]
+                      [?u "entry" ?date]
                       [?u "status" ?status]
                       [?u "uuid" ?uuid]]`,
       sortfields: `[1, 0]`,

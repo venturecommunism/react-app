@@ -1,4 +1,7 @@
 import React from 'react'
+import {
+  View
+} from 'react-native'
 
 import DataContainer from '../../core/containers/appbuilder'
 import ActionsMapper from '../containers/actionsmapper'
@@ -16,15 +19,15 @@ import CreateTask from '../../tasks/components/createtask'
 **/
 
 const Root = ({result}) => (
-  <div>
+  <View>
     <Module moduleid={"newrootcore"} />
     <CreateTaskModule moduleid={"createtask"} />
 {/*
     <StellarDemoModule moduleid={"stellardemo"} />
     <Module moduleid={"core"} />
-    <Module moduleid={"servercore"} /> 
+    <Module moduleid={"servercore"} />
 */}
-  </div>
+  </View>
 )
 
 export default Root

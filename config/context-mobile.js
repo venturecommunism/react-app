@@ -11,7 +11,7 @@ function transact(conn, data_to_add, meta) {
 }
 
 // Elixir / Phoenix Channels things
-var clientonly = true
+var clientonly = false
 import {go, chan, take, put, timeout, putAsync} from 'js-csp'
 import Channel from './channel'
 import url from './url'
@@ -113,8 +113,7 @@ if (clientonly) {
 } else {
   // Data Communicating Sequential Processes. Takes JWT from the Auth CSP and sets up the Elixir channel (server only)
   go(function* () {
-    localStorage.removeItem('key')
-    key = yield localStorage.getItem('key') || take(chData)
+    key = yield take(chData)
     console.log('key is:', key)
 
     var user = me
@@ -134,7 +133,7 @@ if (clientonly) {
       console.log('message', message)
       putAsync(chAuth, message)
     }
-    if (!localStorage.getItem('key')) {
+    if (1 != 2) {
       var user = me
       var msg = {email: 'john@phoenix-trello.com', password: '12345678'}
       const ex_auth_channel = Channel(url, "rooms:auth", user, receiveAuthMessage, chAuth, conn)
@@ -142,8 +141,7 @@ if (clientonly) {
       ex_auth_channel.send(msg)
       console.log('yield take chAuth', yield take(chAuth))
       var value = yield take(chAuth)
-      localStorage.setItem('key', value.jwt)
-      yield put(chData, localStorage.getItem('key'))
+      yield put(chData, value.jwt)
     }
   })
 }
@@ -154,6 +152,10 @@ datascript.listen(conn, {channel}, function(report) {
   meta.push(report.tx_meta)
 
   if (report.tx_meta && (report.tx_meta.remoteuser || report.tx_meta.secrets)) return
+  if (!report.tx_meta) {
+    report.tx_meta = "test"
+  }
+
 
 //  console.log('META', report.tx_meta)
 //  console.log('listened tempid', datascript.resolve_tempid(report.tempids, -1))
