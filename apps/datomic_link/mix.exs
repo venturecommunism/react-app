@@ -34,9 +34,12 @@ defmodule DatomicLink.Mixfile do
   #   {:myapp, in_umbrella: true}
   #
   # Type "mix help deps" for more examples and options
+
+  # need calendar dependency pinned since exdn has an older incompatible version of calendar
   defp deps do
     [
-      {:datomic_gen_server, github: "venturecommunism/datomic_gen_server"}
+      {:datomic_gen_server, github: "venturecommunism/datomic_gen_server"},
+      {:calendar, "~> 0.17.4", override: true}
     ]
   end
 end
