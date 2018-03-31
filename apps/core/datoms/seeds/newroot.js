@@ -48,11 +48,12 @@
      { ':db/id': -13,
       componentid: 'newrootcomponentcleanup',
       componentsname: 'New Root component (cleanup)',
-      query: `[:find ?desc ?date ?status ?uuid
+      query: `[:find ?desc ?date ?status ?uuid ?confirmid
                :where [?u "description" ?desc]
                       [?u "entry" ?date]
                       [?u "status" ?status]
-                      [?u "uuid" ?uuid]]`,
+                      [?u "uuid" ?uuid]
+                      [(get-else $ ?u "confirmationid" "none") ?confirmid]]`,
       sortfields: `[1, 0]`,
       sortorders: `[DESC, ASC]`
     },

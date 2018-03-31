@@ -68,7 +68,8 @@ const styles = StyleSheet.create({
 })
 
 const badmapreduce = function (result, actions, moduleroot) {
-  const doswitch = function (key, component) {
+  const doswitch = function (pIndex, sIndex, component) {
+    var key = pIndex + "." + sIndex
     switch(component.componentstype) {
       case undefined:
       case null:
@@ -91,10 +92,9 @@ const badmapreduce = function (result, actions, moduleroot) {
 
   var elements =
     moduleroot.map( function(onesetofdatafilledcomponents, pIndex) {
-      return <View key={pIndex} style={{paddingBottom: 10}}>{onesetofdatafilledcomponents.map( function(component, sIndex) {
-        var key = pIndex + "." + sIndex
-        return doswitch(key, component)
-      })}</View>
+      return <View key={pIndex} style={{paddingBottom: 10}}><View style={result[pIndex][4] != 'none' ? {'backgroundColor': 'red'} : ''}>{onesetofdatafilledcomponents.map( function(component, sIndex) {
+        return doswitch(pIndex, sIndex, component)
+      })}</View></View>
     })
   return <View>{elements}</View>
 }

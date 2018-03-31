@@ -9,10 +9,7 @@ const conn = maindb()
 const conn_components = componentdb()
 // const transact = datascript.transact
 // Transaction function maintains the log (for time travel, undo, etc.)
-function transact(conn, data_to_add, meta) {
-  var tx_report = datascript.transact(conn, data_to_add, meta)
-//  console.log('resolved tempid', datascript.resolve_tempid(tx_report.tempids, -1))
-}
+import transact from './transact'
 
 // Elixir / Phoenix Channels things
 var clientonly = false
@@ -158,9 +155,9 @@ datascript.listen(conn, {channel}, function(report) {
   meta.push(report.tx_meta)
 
   if (report.tx_meta && (report.tx_meta.remoteuser || report.tx_meta.secrets)) return
-  if (!report.tx_meta) {
-    report.tx_meta = "test"
-  }
+//  if (!report.tx_meta) {
+//    report.tx_meta = "test"
+//  }
 
 //  console.log('META', report.tx_meta)
 //  console.log('listened tempid', datascript.resolve_tempid(report.tempids, -1))
