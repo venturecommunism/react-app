@@ -1,16 +1,16 @@
 import React from 'react'
 import {
-  View
+  View,
+  ScrollView
 } from 'react-native'
 
+import TopPad from '../../rncore/components/TopPad'
 import DataContainer from '../../core/containers/appbuilder'
 import ActionsMapper from '../containers/actionsmapper'
 import RecursiveComponent from '../../rncore/components/component'
 const Module = DataContainer(ActionsMapper('general', RecursiveComponent))
 const CreateTaskModule = DataContainer(ActionsMapper('createtaskactions', RecursiveComponent))
 const StellarDemoModule = DataContainer(ActionsMapper('stellardemoactions', RecursiveComponent))
-
-import CreateTask from '../../tasks/components/createtask'
 
 /**
 **  MAKING A NEW MODULE
@@ -19,15 +19,20 @@ import CreateTask from '../../tasks/components/createtask'
 **/
 
 const Root = ({result}) => (
-  <View>
-    <Module moduleid={"newrootcore"} />
-    <CreateTaskModule moduleid={"createtask"} />
+  <TopPad>
+    <ScrollView>
+      <Module moduleid={"newrootcore"} />
+    </ScrollView>
+    <View style={{position: 'fixed', right: 5, bottom: 5, width: 200}}>
+      <CreateTaskModule moduleid="createtask" />
+    </View>
+
 {/*
     <StellarDemoModule moduleid={"stellardemo"} />
     <Module moduleid={"core"} />
     <Module moduleid={"servercore"} />
 */}
-  </View>
+  </TopPad>
 )
 
 export default Root
