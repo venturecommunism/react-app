@@ -42,3 +42,6 @@ Download and install Android Studio. Choose a "Custom" setup when prompted to se
 Then, click "Next" to install all of these components.
 
 sudo apt-get install -y android-tools-adb
+
+ENOSPC errors fixed with:
+echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p

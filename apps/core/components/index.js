@@ -4,13 +4,12 @@ import {
   ScrollView
 } from 'react-native'
 
+import Login from './loginpage'
 import TopPad from '../../rncore/components/TopPad'
-import DataContainer from '../../core/containers/appbuilder'
-import ActionsMapper from '../containers/actionsmapper'
-import RecursiveComponent from '../../rncore/components/component'
-const Module = DataContainer(ActionsMapper('general', RecursiveComponent))
-const CreateTaskModule = DataContainer(ActionsMapper('createtaskactions', RecursiveComponent))
-const StellarDemoModule = DataContainer(ActionsMapper('stellardemoactions', RecursiveComponent))
+import Module from '../../core/containers/module'
+const Mod = Module()
+const CreateTaskModule = Module('createtaskactions')
+const StellarDemoModule = Module('stellardemoactions')
 
 /**
 **  MAKING A NEW MODULE
@@ -20,17 +19,14 @@ const StellarDemoModule = DataContainer(ActionsMapper('stellardemoactions', Recu
 
 const Root = ({result}) => (
   <TopPad>
-    <ScrollView>
-      <Module moduleid={"newrootcore"} />
-    </ScrollView>
+    <Login />
     <View style={{position: 'fixed', right: 5, bottom: 5, width: 200}}>
       <CreateTaskModule moduleid="createtask" />
     </View>
-
 {/*
     <StellarDemoModule moduleid={"stellardemo"} />
-    <Module moduleid={"core"} />
-    <Module moduleid={"servercore"} />
+    <Mod moduleid={"core"} />
+    <Mod moduleid={"servercore"} />
 */}
   </TopPad>
 )

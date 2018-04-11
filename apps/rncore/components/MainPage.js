@@ -6,10 +6,8 @@ import Demo from '../../rndemo/components/index'
 import TwitterPlus from '../../rntwitterplus/components/index'
 // import WebRTCVideo from '../../webrtcvideo/components/index'
 
-import DataContainer from '../../rncore/containers/appbuilder'
-import ActionsMapper from '../../core/containers/actionsmapper'
-import RecursiveComponent from './component'
-const CreateTaskModule = DataContainer(ActionsMapper('createtaskactions', RecursiveComponent))
+import Module from '../../rncore/containers/module'
+const CreateTaskModule = Module('createtaskactions')
 
 import {
   View,
