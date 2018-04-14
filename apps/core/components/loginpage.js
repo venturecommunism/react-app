@@ -8,7 +8,7 @@ const Mod = Module(undefined, undefined)
 
 const Root = ({result}) => (
   <View>
-    <Mod moduleid={"newrootcore"} />
+    <Mod moduleid={"loginpage"} />
   </View>
 )
 

@@ -15,6 +15,8 @@ import serverroot from '../../apps/core/datoms/seeds/serverroot'
 import createtask from '../../apps/core/datoms/seeds/createtask'
 import stellardemo from '../../apps/core/datoms/seeds/stellardemo'
 
+import localdb from '../../apps/core/datoms/seeds/localdb'
+
 const maindb = () => {
   const Schema = {
     ...CoreAppSchema,
@@ -47,8 +49,22 @@ const componentdb = () => {
   datascript.transact(conn_db, clientroot)
   datascript.transact(conn_db, serverroot)
   datascript.transact(conn_db, stellardemo)
+  datascript.transact(conn_db, localdb)
+  return conn_db
+}
+
+const localstatedb = () => {
+  const SchemaComp = {
+  }
+  const conn_db = datascript.create_conn(SchemaComp)
+
+  /**
+   * Transact in the data, to be stored and indexed by datascript for performant
+   * querying.
+   */
   return conn_db
 }
 
 
-export {maindb, componentdb}
+
+export {maindb, componentdb, localstatedb}

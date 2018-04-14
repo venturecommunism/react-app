@@ -4,9 +4,10 @@ import axios from 'axios'
 
 // Datascript things
 import datascript from 'datascript'
-import {maindb, componentdb} from './lib/createDBConn'
+import {maindb, componentdb, localstatedb} from './lib/createDBConn'
 const conn = maindb()
 const conn_components = componentdb()
+const conn_localstate = localstatedb()
 // const transact = datascript.transact
 // Transaction function maintains the log (for time travel, undo, etc.)
 import transact from './transact'
@@ -195,6 +196,7 @@ export const initContext = () => {
     transact: transact,
     log: log,
     conn_components: conn_components,
+    conn_localstate: conn_localstate,
     meta: meta,
   };
 }
