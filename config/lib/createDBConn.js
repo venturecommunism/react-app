@@ -53,18 +53,4 @@ const componentdb = () => {
   return conn_db
 }
 
-const localstatedb = () => {
-  const SchemaComp = {
-  }
-  const conn_db = datascript.create_conn(SchemaComp)
-
-  /**
-   * Transact in the data, to be stored and indexed by datascript for performant
-   * querying.
-   */
-  return conn_db
-}
-
-
-
-export {maindb, componentdb, localstatedb}
+export {maindb, componentdb}

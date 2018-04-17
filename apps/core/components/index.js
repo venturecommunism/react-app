@@ -1,15 +1,20 @@
 import React from 'react'
 import {
-  View,
-  ScrollView
+  View
 } from 'react-native'
 
 import Login from './loginpage'
 import TopPad from '../../rncore/components/TopPad'
 import Module from '../../core/containers/module'
 const Mod = Module()
-const CreateTaskModule = Module('createtaskactions')
-const StellarDemoModule = Module('stellardemoactions')
+
+const loginstate = `
+  [:find ?e ?v
+   :where [?e "localstate/state" ?v]]`
+
+import SmallContainer from '../../core/containers/datacontainer'
+
+const LoginContainer = Module('loginactions', Login, SmallContainer)
 
 /**
 **  MAKING A NEW MODULE
@@ -19,15 +24,7 @@ const StellarDemoModule = Module('stellardemoactions')
 
 const Root = ({result}) => (
   <TopPad>
-    <Login />
-    <View style={{position: 'fixed', right: 5, bottom: 5, width: 200}}>
-      <CreateTaskModule moduleid="createtask" />
-    </View>
-{/*
-    <StellarDemoModule moduleid={"stellardemo"} />
-    <Mod moduleid={"core"} />
-    <Mod moduleid={"servercore"} />
-*/}
+    <LoginContainer query={loginstate} />
   </TopPad>
 )
 

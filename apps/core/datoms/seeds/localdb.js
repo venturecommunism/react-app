@@ -26,14 +26,11 @@
       'componentsname': 'login_page',
       'componentsparents': -2,
       'componentstype': 'action',
-      'componentsfunction': `({conn_localstate, transact}, text) {
+      'componentsfunction': `({conn, transact}, text) {
         var date = new Date().getTime().toString()
         transact(conn, [{
           ':db/id': -1,
-          description: text,
-          entry: date,
-          status: 'pending',
-          uuid: 'uuid-' + date
+          'localstate/state': date
         }])
       }`
     },

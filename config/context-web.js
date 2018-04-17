@@ -4,16 +4,15 @@ import axios from 'axios'
 
 // Datascript things
 import datascript from 'datascript'
-import {maindb, componentdb, localstatedb} from './lib/createDBConn'
+import {maindb, componentdb} from './lib/createDBConn'
 const conn = maindb()
 const conn_components = componentdb()
-const conn_localstate = localstatedb()
 // const transact = datascript.transact
 // Transaction function maintains the log (for time travel, undo, etc.)
 import transact from './transact'
 
 // Elixir / Phoenix Channels things
-var clientonly = false
+var clientonly = true
 import {go, chan, take, put, timeout, putAsync} from 'js-csp'
 import Channel from './channel'
 import url from './url'
@@ -196,7 +195,6 @@ export const initContext = () => {
     transact: transact,
     log: log,
     conn_components: conn_components,
-    conn_localstate: conn_localstate,
     meta: meta,
   };
 }
