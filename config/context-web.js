@@ -12,7 +12,7 @@ const conn_components = componentdb()
 import transact from './transact'
 
 // Elixir / Phoenix Channels things
-var clientonly = true
+var clientonly = false
 import {go, chan, take, put, timeout, putAsync} from 'js-csp'
 import Channel from './channel'
 import url from './url'
@@ -32,6 +32,7 @@ var peers = []
 var channel
 let chData = chan()
 let chAuth = chan()
+let chUnPass = chan()
 var key
 
 // Fires when we receive a message on the Elixir data channel
@@ -126,6 +127,11 @@ if (clientonly) {
     console.log('yield take chData', yield take(chData))
     console.log('end data go function')
     channel = ex_data_channel
+
+    transact(conn, [{
+      ':db/id': -1,
+      'localstate/state': 'loggingin'
+    }])
   })
 
   // Authentication Communicating Sequential Process. Puts a JWT on the Data CSP.
@@ -136,8 +142,11 @@ if (clientonly) {
       putAsync(chAuth, message)
     }
     if (!localStorage.getItem('key')) {
+console.log('step 1')
       var user = me
-      var msg = {email: 'john@phoenix-trello.com', password: '12345678'}
+      var msg = yield take(chUnPass)
+      console.log('yield take chUnPass', msg)
+//      var msg = {email: 'john@phoenix-trello.com', password: '12345678'}
       const ex_auth_channel = Channel(url, "rooms:auth", user, receiveAuthMessage, chAuth, conn)
       yield timeout(10000)
       ex_auth_channel.send(msg)
@@ -194,6 +203,8 @@ export const initContext = () => {
     conn: conn,
     transact: transact,
     log: log,
+    putAsync: putAsync,
+    chUnPass: chUnPass,
     conn_components: conn_components,
     meta: meta,
   };

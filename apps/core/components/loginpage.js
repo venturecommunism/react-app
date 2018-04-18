@@ -1,32 +1,40 @@
-import React from 'react'
+import React, {Component} from 'react'
 import {
+  ScrollView,
+  Text,
+  TextInput,
   View,
-  Text
+  Button,
+  Alert,
+  ActivityIndicator
 } from 'react-native'
 
 import Module from '../../core/containers/module'
 const Mod = Module()
 const CreateTaskModule = Module('createtaskactions')
 const StellarDemoModule = Module('stellardemoactions')
+import LoginComponent from './logincomponent'
+const Login = Module('loginactions', LoginComponent, 'none')
 
 const Root = ({result, actions}) => (
   <View>
-    <Text onClick={actions.login_page} >test:
-      <ul>
-      {result.map(([e, v]) => (
-        <li key={e + v}>{`${e} and localstate/state and ${v}`}</li>
-      ))}
-      </ul>
-    </Text>
-{/*
-    <Mod moduleid={"loginpage"} />
-    <View style={{position: 'fixed', right: 5, bottom: 5, width: 200}}>
-      <CreateTaskModule moduleid="createtask" />
+    { (!result[0] || result[0][0] != 11) ?
+    <View>
+      <Login />
     </View>
-    <StellarDemoModule moduleid={"stellardemo"} />
-    <Mod moduleid={"core"} />
-    <Mod moduleid={"servercore"} />
-*/}
+    :
+    <View> 
+      <View style={{position: 'fixed', right: 5, bottom: 5, width: 200}}>
+        <CreateTaskModule moduleid="createtask" />
+      </View>
+      <Mod moduleid={"newrootcore"} />
+      {/*
+      <StellarDemoModule moduleid={"stellardemo"} />
+      <Mod moduleid={"core"} />
+      <Mod moduleid={"servercore"} />
+      */}
+    </View>
+    }
   </View>
 )
 

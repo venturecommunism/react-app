@@ -26,12 +26,13 @@
       'componentsname': 'login_page',
       'componentsparents': -2,
       'componentstype': 'action',
-      'componentsfunction': `({conn, transact}, text) {
-        var date = new Date().getTime().toString()
-        transact(conn, [{
-          ':db/id': -1,
-          'localstate/state': date
-        }])
+      'componentsfunction': `({conn, transact, putAsync, chUnPass}, username, password) {
+        putAsync(chUnPass, {email: username, password: password})
+        console.log("did it")
+//        transact(conn, [{
+//          ':db/id': -1,
+//          'localstate/state': 'loggingin'
+//        }])
       }`
     },
   ]
