@@ -24,10 +24,12 @@ const Root = ({result, actions}) => (
     </View>
     :
     <View> 
+      <ScrollView>
+        <Mod moduleid={"newrootcore"} />
+      </ScrollView>
       <View style={{position: 'fixed', right: 5, bottom: 5, width: 200}}>
         <CreateTaskModule moduleid="createtask" />
       </View>
-      <Mod moduleid={"newrootcore"} />
       {/*
       <StellarDemoModule moduleid={"stellardemo"} />
       <Mod moduleid={"core"} />

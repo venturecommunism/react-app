@@ -2,8 +2,8 @@ defmodule PhoenixInterface.DatomicChannel do
   use PhoenixInterface.Web, :channel
   use Guardian.Channel
 
-  def join("rooms:datomic", _params, socket) do
-    Datomic.Channel.join(socket)
+  def join("datomic:" <> user_unique_id, _params, socket) do
+    Datomic.Channel.join(socket, user_unique_id)
   end
 
   def handle_in("new:msg", %{"body" => %{"syncpoint" => latest_tx}, "user" => user}, socket) do

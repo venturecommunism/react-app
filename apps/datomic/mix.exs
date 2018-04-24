@@ -21,7 +21,8 @@ defmodule Datomic.Mixfile do
     [applications:
       [
         :logger,
-        :tzdata
+        :tzdata,
+        :gproc
       ],
      mod: {Datomic, []}]
   end
@@ -42,7 +43,8 @@ defmodule Datomic.Mixfile do
   defp deps do
     [
       {:datomic_gen_server, github: "venturecommunism/datomic_gen_server"},
-      {:exdn, "~> 2.1.2"}
+      {:exdn, "~> 2.1.2"},
+      {:gproc, "0.3.1"}
     ]
   end
 end
