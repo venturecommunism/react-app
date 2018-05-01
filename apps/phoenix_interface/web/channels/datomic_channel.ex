@@ -21,15 +21,10 @@ defmodule PhoenixInterface.DatomicChannel do
   end
 
   def handle_in("new:msg", %{"body" => %{"data" => data, "meta" => meta}, "user" => user}, socket) do
-    IO.inspect "transact"
+    %{topic: topic} = socket
     msg = %{"body" => %{"data" => data, "meta" => meta}, "user" => user}
-
-    IO.inspect msg
-    IO.puts 'data'
-    IO.inspect data
+    %{"confirmationid" => confirmationid} = meta
     some_data = Datomic.ParseDatascriptTransaction.first(data)
-    IO.puts 'some_data'
-    IO.inspect some_data
 
     data_to_add = """
       [ { :db/id #db/id[:db.part/db]
@@ -39,13 +34,13 @@ defmodule PhoenixInterface.DatomicChannel do
           :db/doc \"A person's name\"
           :db.install/_attribute :db.part/db}]
     """
-    {:ok, transaction_result} = DatomicGenServer.transact(DatomicGenServerLink, some_data, [:options, {:client_timeout, 100_000}])
+    {:ok, transaction_result} = DatomicGenServer.transact({:via, :gproc, {:n, :l, {:topic, topic}}}, some_data, [:options, {:client_timeout, 100_000}])
 
     IO.puts transaction_result
 
     # push socket, "join", %{status: "connected"}
     # broadcast! socket, "new:msg", %{user: user, body: %{"syncpoint": false, "user": user}}
-    {:reply, {:ok, %{msg: %{"syncpoint": false, "user": user}}}, assign(socket, :user, user)}
+     {:reply, {:ok, %{msg: %{"syncpoint": false, "user": user, "confirmationid": confirmationid}}}, assign(socket, :user, user)}
   end
 
   def handle_in("new:msg", msg, socket) do

@@ -40,7 +40,7 @@ export default (url, room, user, onChat, cspChan, conn, guardian_token) => {
   // a function to send a message
   const send = (message) => {
     chan.push('new:msg', {body: message, user}, TIMEOUT)
-      .receive('ok', (msg) => console.log('sent'))
+      .receive('ok', (msg) => onChat && onChat(conn, {ok: msg}))
       .receive('error', (reasons) => console.log('flop', reasons))
       .receive('timeout', () => console.log('slow much?'))
     putAsync(cspChan, message)

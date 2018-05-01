@@ -9,13 +9,17 @@ const uuid = () => {
 
 const transact = (conn, data_to_add, meta) => {
 // disable metadata to test transactions locally
-//  if (!meta) {
-//    var meta = "basic transaction"
-//  }
+  var confid = uuid()
+  if (!meta) {
+    var meta = {
+      type: "basic transaction",
+      confirmationid: confid
+    }
+  }
   console.log('data_to_add', data_to_add)
   console.log('zeroing in', data_to_add[0].uuid)
   data_to_add.map(datom => {
-    datom.confirmationid = uuid()
+    datom.confirmationid = confid
     datom
   })
   console.log('confirmationid', data_to_add[0].confirmationid)

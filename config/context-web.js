@@ -37,6 +37,21 @@ var key
 
 // Fires when we receive a message on the Elixir data channel
 const receiveDataMessage = (conn, message) => {
+  if ('ok' in message && 'confirmationid' in message.ok.msg) {
+    var confirmationid = message['ok']['msg']['confirmationid']
+    var stringconfirmationid = JSON.stringify(confirmationid)
+
+    var confirmedquery = `[:find ?e
+                           :where [?e "confirmationid" ${stringconfirmationid}]]`
+    var confirmeddb = datascript.db(conn)
+    const confirmedqArgs = [confirmedquery, confirmeddb]
+    var result = datascript.q(...confirmedqArgs)
+    var confirmedent = result[0][0]
+
+    var report_id_confirmed_tx = [[':db/retract', confirmedent, 'confirmationid', confirmationid]]
+    transact(conn, report_id_confirmed_tx, {'remoteuser': 'server confirmation'})
+  }
+  if ('ok' in message) return
   const user = message.user
   const isMe = (someUser) => me === someUser
   console.log('ELIXIR MSG', JSON.stringify(message))
@@ -180,7 +195,14 @@ datascript.listen(conn, {channel}, function(report) {
   var result = datascript.q(...qArgs)
 //  console.log('RESULT', result)
 
-  channel.send({data: report.tx_data, meta: report.tx_meta})
+var tx_data_modded = report.tx_data.filter( s => {
+  return s.a != 'confirmationid'
+})
+
+console.log(tx_data_modded)
+console.log(report.tx_meta)
+
+  channel.send({data: tx_data_modded, meta: report.tx_meta, confirmationid: report.tx_data.confirmationid})
 })
 
 /*
