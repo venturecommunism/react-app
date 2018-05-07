@@ -60,7 +60,7 @@
     { ':db/id': -14,
       actionsetid: 'general',
       modulename: 'General actions',
-      moduleactions: -16
+      moduleactions: [-16, -19]
     },
     { ':db/id': -15,
       routeid: 'home',
@@ -88,6 +88,23 @@
       moduleactionsets: -14,
       rootcomponent: -13,
       routes: -15
+    },
+    { ':db/id': -19,
+      componentsname: 'makeproject',
+      componentstype: 'action',
+      componentsparents: -5,
+      componentsfunction: `({conn, transact}, e) {
+        if (e.which === 13) {
+          var date = new Date().getTime()
+          transact(conn, [{
+            ':db/id': -1,
+            description: 'keyup addtask test',
+            date: date,
+            status: 'pending',
+            uuid: 'uuid-' + date
+          }])
+        }
+      }`
     },
   ]
 
