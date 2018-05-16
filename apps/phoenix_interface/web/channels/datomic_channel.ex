@@ -9,6 +9,9 @@ defmodule PhoenixInterface.DatomicChannel do
   def handle_in("new:msg", %{"body" => %{"syncpoint" => latest_tx}, "user" => user}, socket) do
     IO.inspect latest_tx
     Datomic.Channel.sync(latest_tx, socket)
+    |> Enum.sort_by(fn(datom) ->
+      datom
+    end)
     |> Enum.each(fn({_, x}) ->
       IO.puts push socket, "new:msg", %{"user" => "system", "body" => x} 
       Process.sleep(60)

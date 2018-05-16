@@ -35,7 +35,7 @@ const dataComposer = ({ context, moduleid }, onData) => {
     // pull query to pull components off of something with components name Root
 
     const pullfields = `
-      "componentsname", "componentstype", "componentsfunction", "placeholder"
+      "componentsname", "componentstype", "componentsfunction", "actiontype", "placeholder"
     `
     const pullquery = `
       [:find (pull $x ?e [` + pullfields + `, {"_componentsparents" ...}])

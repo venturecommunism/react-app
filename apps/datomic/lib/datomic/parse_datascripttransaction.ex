@@ -16,8 +16,25 @@ defmodule ParseDatascriptSublistToMap do
     # second(tail, newmap)
   end
 
+  def first([], list) do
+    IO.inspect Exdn.from_elixir! (list)
+  end
+
   def first([], map) do
     IO.inspect Exdn.from_elixir! ([map])
+  end
+
+  def first([%{"e" => e, "a" => a, "v" => v, "tx" => tx, "added" => added} = head | tail], list) do
+    case head do
+      %{"added" => true} ->
+        IO.puts "added was true"
+        datom = [":db/add", e, String.to_atom(a), v]
+      %{"added" => false} ->
+        IO.puts "added was false"
+        datom = [":db/retract", e, String.to_atom(a), v]
+    end
+    IO.puts "got another datom"
+    first(tail, [datom] ++ list)
   end
 
   def first([head | tail], map) do
@@ -27,6 +44,19 @@ defmodule ParseDatascriptSublistToMap do
     IO.inspect newmap
     nextmap = Map.merge(map, newmap)
     first(tail, nextmap)
+  end
+
+  def first([%{"e" => e, "a" => a, "v" => v, "tx" => tx, "added" => added} = head | tail]) do
+    case head do
+      %{"added" => true} ->
+        IO.puts "added was true"
+        datom = [":db/add", e, String.to_atom(a), v]
+      %{"added" => false} ->
+        IO.puts "added was false"
+        datom = [":db/retract", e, String.to_atom(a), v]
+    end
+    IO.puts "got first datom"
+    first(tail, [datom])
   end
 
   def first([head | tail]) do

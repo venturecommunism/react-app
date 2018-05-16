@@ -28,7 +28,7 @@
       'componentstype': 'action',
       'componentsfunction': `({conn, transact, putAsync, chUnPass}, username, password) {
         putAsync(chUnPass, {email: username, password: password})
-        console.log("did it")
+//        console.log("did it")
 //        transact(conn, [{
 //          ':db/id': -1,
 //          'localstate/state': 'loggingin'

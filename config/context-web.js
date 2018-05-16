@@ -54,13 +54,18 @@ const receiveDataMessage = (conn, message) => {
   if ('ok' in message) return
   const user = message.user
   const isMe = (someUser) => me === someUser
-  console.log('ELIXIR MSG', JSON.stringify(message))
+  console.log('ELIXIR OBJECT', message)
+//  console.log('ELIXIR MSG', JSON.stringify(message))
 
   if (isMe(user)) return // prevent echoing yourself (TODO: server could handle this i guess?)
 
     if (message.user === 'system') {
       function org_transaction(s) {
         return [':db/add', s.e, s.a, s.v]
+      }
+
+      function add_remoteeids(s) {
+        return [':db/add', s.e, 'dat.sync.remote.db/id', s.e]
       }
 
       function sort_func(a, b) {
@@ -74,7 +79,10 @@ const receiveDataMessage = (conn, message) => {
       message.body.map( s => s.tx !== tx_id ? bool_val = false : '')
       if (bool_val === true) {
         var single_tx = [[':db/add', 0, 'app/sync', tx_id]]
-        message.body.map(s => single_tx.push(org_transaction(s)) )
+        message.body.map(s => {
+          single_tx.push(org_transaction(s))
+          single_tx.push(add_remoteeids(s))
+        })
         transact(conn, single_tx, {'remoteuser': message.user})
         return
       }
@@ -132,7 +140,7 @@ if (clientonly) {
   go(function* () {
     localStorage.removeItem('key')
     key = yield localStorage.getItem('key') || take(chData)
-    console.log('key is:', key)
+    // console.log('key is:', key)
 
     var user = me
     var msg = {jwt: key, syncpoint: 'none'}
@@ -140,7 +148,7 @@ if (clientonly) {
     yield timeout(10000)
     ex_data_channel.send(msg)
     console.log('yield take chData', yield take(chData))
-    console.log('end data go function')
+    // console.log('end data go function')
     channel = ex_data_channel
 
     transact(conn, [{
@@ -153,11 +161,11 @@ if (clientonly) {
   go(function* () {
     // putAsync is more Communicating Sequential Processes but from outside Go functions
     const receiveAuthMessage = (conn, message) => {
-      console.log('message', message)
+      // console.log('message', message)
       putAsync(chAuth, message)
     }
     if (!localStorage.getItem('key')) {
-console.log('step 1')
+      // console.log('step 1')
       var user = me
       var msg = yield take(chUnPass)
       console.log('yield take chUnPass', msg)
@@ -199,8 +207,8 @@ var tx_data_modded = report.tx_data.filter( s => {
   return s.a != 'confirmationid'
 })
 
-console.log(tx_data_modded)
-console.log(report.tx_meta)
+// console.log(tx_data_modded)
+// console.log(report.tx_meta)
 
   channel.send({data: tx_data_modded, meta: report.tx_meta, confirmationid: report.tx_data.confirmationid})
 })

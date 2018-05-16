@@ -75,7 +75,7 @@ export default class App {
 
     // alert(query)
 
-    console.log("module.actions", module.actions)
+    // console.log("module.actions", module.actions)
 
     const actions = module.actions || {}
 

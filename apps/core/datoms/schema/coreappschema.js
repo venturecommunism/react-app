@@ -10,6 +10,14 @@
 
 
 const Schema = {
+    "dat.sync.remote.db/id": {
+      ':db/cardinality': ':db.cardinality/one',
+      ':db/unique': ':db.unique/identity'
+    },
+    uuid: {
+      ':db/cardinality': ':db.cardinality/one',
+      ':db/unique': ':db.unique/identity'
+    },
     name: {
       ':db/cardinality': ':db.cardinality/one',
       ':db/unique': ':db.unique/identity'

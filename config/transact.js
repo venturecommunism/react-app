@@ -16,14 +16,18 @@ const transact = (conn, data_to_add, meta) => {
       confirmationid: confid
     }
   }
-  console.log('data_to_add', data_to_add)
-  console.log('zeroing in', data_to_add[0].uuid)
+
+if (meta.type != "basic transaction") console.log(meta)
+
+//  console.log('data_to_add', data_to_add)
+//  console.log('zeroing in', data_to_add[0].uuid)
   data_to_add.map(datom => {
     datom.confirmationid = confid
     datom
   })
-  console.log('confirmationid', data_to_add[0].confirmationid)
+//  console.log('confirmationid', data_to_add[0].confirmationid)
   var tx_report = datascript.transact(conn, data_to_add, meta)
+  console.log(tx_report)
   // console.log('tmpid', tx_report.tempids)
   //  console.log('resolved tempid', datascript.resolve_tempid(tx_report.tempids, -1))
 }
