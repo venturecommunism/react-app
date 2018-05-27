@@ -2,6 +2,17 @@ defmodule DatomicSchemaImport do
 IO.puts "test"
   IO.inspect DatomicLink.start
 
+# one off schema were not in the original data imported from previous versions of the task manager but are being used to build new features
+one_off_schema = """
+
+[{                         :db/ident :wait
+                           :db/valueType :db.type/string
+                           :db/cardinality :db.cardinality/one
+                           :db/doc "Hides a task until the wait period is over"}
+]
+
+"""
+
 schema_to_add = """
 [{                         :db/ident :description
                            :db/valueType :db.type/string

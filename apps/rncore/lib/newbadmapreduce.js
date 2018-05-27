@@ -61,9 +61,8 @@ const styles = StyleSheet.create({
     color: 'white'
   },
   titleText: {
-    display: 'none',
+    display: 'block',
     fontSize: 20,
-    fontWeight: 'bold',
   },
 })
 

@@ -25,7 +25,8 @@ const Root = ({result, actions}) => (
     :
     <View> 
       <ScrollView>
-        <Mod moduleid={"newrootcore"} />
+        <Mod moduleid={"inbox"} />
+        <Mod moduleid={"somedaymaybe"} />
       </ScrollView>
       <View style={{position: 'fixed', right: 5, bottom: 5, width: 200}}>
         <CreateTaskModule moduleid="createtask" />

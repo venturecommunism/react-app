@@ -5,72 +5,72 @@
   const componentdatoms = [
     {
       ':db/id': -1,
-      'componentsname': 'newroot.js Subcomponent',
+      'componentsname': 'newroot.js Subcomponent2',
       'componentsparents': [-5, -18],
       'componentstype': 'subcomponent'
     },
     {
       ':db/id': -4,
-      'componentsname': 'Data Component',
+      'componentsname': 'Data Component2',
       'componentsparents': [-5, -18],
       'componentstype': 'data'
     },
     {
       ':db/id': -5,
-      'componentsname': 'newroot.js NewRoot',
+      'componentsname': 'Someday-Maybe',
       'componentstype': 'root',
-      'componentid': 'newrootcore'
+      'componentid': 'somedaymaybe'
     },
     {
       ':db/id': -6,
-      'componentsname': 'Second Data Component',
+      'componentsname': 'Second Data Component2',
       'componentsparents': [-5, -18],
       'componentstype': 'data'
     },
     {
       ':db/id': -8,
-      'componentsname': 'Third Data Component',
+      'componentsname': 'Third Data Component2',
       'componentsparents': [-5, -18],
       'componentstype': 'data'
     },
     {
       ':db/id': -10,
-      'componentsname': 'Fourth Data Component',
+      'componentsname': 'Fourth Data Component2',
       'componentsparents': [-5, -18],
       'componentstype': 'data'
     },
     {
       ':db/id': -12,
-      'componentsname': 'Fifth Data Component (fourth in the main)',
+      'componentsname': 'Fifth Data Component (fourth in the main)2',
       'componentsparents': [-5, -18],
       'componentstype': 'data'
     },
      { ':db/id': -13,
-      componentid: 'newrootcomponentcleanup',
-      componentsname: 'New Root component (cleanup)',
-      query: `[:find ?desc ?date ?status ?uuid ?confirmid ?remoteid ?u
+      componentid: 'somedaymaybequery2',
+      componentsname: 'New Root component (cleanup)2',
+      query: `[:find ?desc ?date ?status ?uuid ?confirmid ?remoteid ?wait
                :where [?u "description" ?desc]
                       [?u "entry" ?date]
                       [?u "status" ?status]
                       [?u "status" "pending"]
                       [?u "uuid" ?uuid]
-                      [(missing? $ ?u "wait")]
+                      [?u "wait" ?wait]
                       [(get-else $ ?u "confirmationid" "none") ?confirmid]
                       [(get-else $ ?u "dat.sync.remote.db/id" "none") ?remoteid]]`,
       sortfields: `[1, 0]`,
       sortorders: `[DESC, ASC]`
     },
     { ':db/id': -14,
-      actionsetid: 'general',
-      modulename: 'General actions',
+      actionsetid: 'general2',
+      modulename: 'General actions2',
       moduleactions: [-16, -19, -22]
     },
     { ':db/id': -15,
       routeid: 'home',
-      modulename: 'Core module'
+      modulename: 'Core module2'
     },
     { ':db/id': -16,
-      componentsname: 'keyupaddtask',
+      componentsname: 'keyupaddtask2',
       componentstype: 'action',
       componentsfunction: `({conn, transact}, e) {
         if (e.which === 13) {
@@ -86,14 +86,14 @@
       }`
     },
     { ':db/id': -17,
-      moduleid: 'newrootcore',
-      modulename: 'Root Core module',
+      moduleid: 'somedaymaybe',
+      modulename: 'Root Core module2',
       moduleactionsets: -14,
       rootcomponent: -13,
       routes: -15
     },
     { ':db/id': -19,
-      componentsname: 'taskcompletedbutton',
+      componentsname: 'taskcompletedbutton2',
       componentstype: 'action',
       componentsparents: -5,
       actiontype: 'simplebutton',
@@ -109,18 +109,18 @@ console.log(e)
     },
     {
       ':db/id': -20,
-      'componentsname': 'Sixth Data Component',
+      'componentsname': 'Sixth Data Component2',
       'componentsparents': [-5, -18],
       'componentstype': 'data'
     },
     {
       ':db/id': -21,
-      'componentsname': 'Seventh Data Component',
+      'componentsname': 'Seventh Data Component2',
       'componentsparents': [-5, -18],
       'componentstype': 'data'
     },
     { ':db/id': -22,
-      componentsname: 'tasksomedaymaybebutton',
+      componentsname: 'tasksomedaymaybebutton2',
       componentstype: 'action',
       componentsparents: -5,
       actiontype: 'simplebutton',
