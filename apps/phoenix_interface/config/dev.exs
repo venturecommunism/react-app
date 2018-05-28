@@ -1,3 +1,4 @@
+
 use Mix.Config
 
 # For development, we disable any cache and enable
@@ -11,8 +12,8 @@ config :phoenix_interface, PhoenixInterface.Endpoint,
   http: [port: 80],
   https: [port: 443,
           otp_app: :phoenix_interface,
-          keyfile: "priv/keys/localhost.key",
-          certfile: "priv/keys/localhost.cert"],
+          keyfile: System.get_env("SSL_KEYFILE"),
+          certfile: System.get_env("SSL_CERTFILE")],
   debug_errors: true,
   code_reloader: true,
   check_origin: false,

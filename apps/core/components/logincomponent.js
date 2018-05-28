@@ -1,3 +1,5 @@
+import config from '../../../config/config'
+
 import React, {Component} from 'react'
 import {
   ScrollView,
@@ -16,8 +18,8 @@ export default class Login extends Component {
   }
 
     state = {
-        username: '',
-        password: '',
+        username: config.username || '',
+        password: config.password || '',
         isLoggingIn: false,
         message: ''
     }

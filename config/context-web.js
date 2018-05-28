@@ -15,7 +15,7 @@ import transact from './transact'
 var clientonly = false
 import {go, chan, take, put, timeout, putAsync} from 'js-csp'
 import Channel from './channel'
-import url from './url'
+import config from './config'
 
 // Generates random-ish names
 const NAMES = ['Girl', 'Boy', 'Horse', 'Foo', 'Face', 'Giant', 'Super', 'Bug', 'Captain', 'Lazer']
@@ -144,7 +144,7 @@ if (clientonly) {
 
     var user = me
     var msg = {jwt: key, syncpoint: 'none'}
-    const ex_data_channel = Channel(url, "datomic:" + user, user, receiveDataMessage, chData, conn, key)
+    const ex_data_channel = Channel(config.url, "datomic:" + user, user, receiveDataMessage, chData, conn, key)
     yield timeout(10000)
     ex_data_channel.send(msg)
     console.log('yield take chData', yield take(chData))
@@ -170,7 +170,7 @@ if (clientonly) {
       var msg = yield take(chUnPass)
       console.log('yield take chUnPass', msg)
 //      var msg = {email: 'john@phoenix-trello.com', password: '12345678'}
-      const ex_auth_channel = Channel(url, "auth:" + user, user, receiveAuthMessage, chAuth, conn)
+      const ex_auth_channel = Channel(config.url, "auth:" + user, user, receiveAuthMessage, chAuth, conn)
       yield timeout(10000)
       ex_auth_channel.send(msg)
       console.log('yield take chAuth', yield take(chAuth))

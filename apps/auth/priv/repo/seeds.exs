@@ -2,7 +2,7 @@ alias Auth.{Repo, User}
 
 [
   %{
-    email: "john@phoenix-trello.com",
+    email: "user@example.com",
     password: "12345678"
   },
 ]

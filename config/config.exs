@@ -18,4 +18,5 @@ import_config "../apps/*/config/config.exs"
 
 config :phoenix_interface, ecto_repos: []
 
-config :datomic, database: "datomic:sql://production?jdbc:postgresql://localhost:5432/datomic?user=datomic\\&password=datomic"
+# the connection string probably looks weird because of the \\ being used to escape
+config :datomic, database: "datomic:sql://" <> System.get_env("DATOMIC_DB") <> "?jdbc:postgresql://localhost:5432/?user=" <> System.get_env("DATOMIC_USERNAME") <> "\\&password=" <> System.get_env("DATOMIC_PASSWORD")

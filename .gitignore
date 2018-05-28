@@ -1,6 +1,6 @@
 ### CLIENT ###
 
-config/url.js
+config/config.js
 
 # Compiled output
 public/dist
@@ -49,6 +49,8 @@ buck-out/
 android/keystores/debug.keystore
 
 ### SERVER ###
+
+.env
 
 /apps/auth/priv/keys
 /apps/phoenix_interface/priv/keys

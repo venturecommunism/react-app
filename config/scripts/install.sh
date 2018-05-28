@@ -80,10 +80,10 @@ echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/source
 sudo apt-get update && sudo apt-get install -y git curl yarn
 git clone https://github.com/venturecommunism/react-app.git ~
 cd ~/react-app
-echo "***** Setting IP in config config/url.js"
-cp ~/react-app/config/example-url.js ~/react-app/config/url.js
+echo "***** Setting IP in config config/config.js"
+cp ~/react-app/config/example-config.js ~/react-app/config/config.js
 OUTPUT=`ifconfig eth0 |grep 'inet addr' |awk '{print $2}' |awk -F: '{print $2}'`
-sed -i "/xx.xxx.xxx.xxx/c\const url='wss://$OUTPUT:443/socket'" ~/react-app/config/url.js
+sed -i "/xx.xxx.xxx.xxx/c\const url='wss://$OUTPUT:443/socket'" ~/react-app/config/config.js
 
 ###
 ### final
