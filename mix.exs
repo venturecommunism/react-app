@@ -3,7 +3,7 @@ defmodule ReactApp.Mixfile do
 
   def project do
     [apps_path: "apps",
-     apps: [:phoenix_interface, :auth, :datomic, :web_agent, :browser, :exmacaroons],
+     apps: [:phoenix_interface, :web_agent, :browser, :exmacaroons],
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
      rustler_crates: rustler_crates(),
@@ -26,7 +26,6 @@ defmodule ReactApp.Mixfile do
   # need calendar dependency pinned since exdn has an older incompatible version of calendar. might want to pull that in to a repo at some point 
   defp deps do
     [
-      {:calendar, "~> 0.17.4", override: true}
     ]
   end
 

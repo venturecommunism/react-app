@@ -71,6 +71,11 @@ mix ecto.create && mix ecto.migrate
 mix run apps/auth/priv/repo/seeds.exs
 echo "***** Inserted up seed data"
 
+# memcached for datomic
+sudo apt-get install -y memcached
+
+# should also sed the transactor.properties to use memcached
+
 ###
 ### client
 ###
