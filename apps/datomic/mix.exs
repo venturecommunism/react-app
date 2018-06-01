@@ -42,6 +42,7 @@ defmodule Datomic.Mixfile do
   # Type "mix help deps" for more examples and options
   defp deps do
     [
+      {:calendar, "~> 0.17.4", override: true},
       {:datomic_gen_server, github: "venturecommunism/datomic_gen_server"},
       {:exdn, "~> 2.1.2"},
       {:gproc, "0.3.1"}

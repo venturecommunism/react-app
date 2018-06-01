@@ -2,7 +2,7 @@ defmodule PhoenixInterface.DatomicChannel do
   use PhoenixInterface.Web, :channel
   use Guardian.Channel
 
-  def join("datomic:" <> user_unique_id, _params, socket) do
+  def join("datomic:" <> user_unique_id, _params = %{:claims => _claims, :resource => _resource}, socket) do
     Datomic.Channel.join(socket, user_unique_id)
   end
 
@@ -25,11 +25,11 @@ defmodule PhoenixInterface.DatomicChannel do
 
   def handle_in("new:msg", %{"body" => %{"data" => data, "meta" => meta}, "user" => user}, socket) do
     %{topic: topic} = socket
-    msg = %{"body" => %{"data" => data, "meta" => meta}, "user" => user}
+    _msg = %{"body" => %{"data" => data, "meta" => meta}, "user" => user}
     %{"confirmationid" => confirmationid} = meta
     some_data = Datomic.ParseDatascriptTransaction.first(data)
 
-    data_to_add = """
+    _data_to_add = """
       [ { :db/id #db/id[:db.part/db]
           :db/ident :person/name
           :db/valueType :db.type/string
@@ -46,7 +46,7 @@ defmodule PhoenixInterface.DatomicChannel do
      {:reply, {:ok, %{msg: %{"syncpoint": false, "user": user, "confirmationid": confirmationid}}}, assign(socket, :user, user)}
   end
 
-  def handle_in("new:msg", msg, socket) do
+  def handle_in("new:msg", _msg, socket) do
     IO.inspect "no message"
     {:noreply, socket}
   end
