@@ -1,10 +1,29 @@
 defmodule PhoenixInterface.DatomicChannel do
   use PhoenixInterface.Web, :channel
-  use Guardian.Channel
+  import Guardian.Phoenix.Socket
 
-  def join("datomic:" <> user_unique_id, _params = %{:claims => _claims, :resource => _resource}, socket) do
-    Datomic.Channel.join(socket, user_unique_id)
+  def join("datomic:" <> user_unique_id, params = %{"guardian_token" => jwt}, socket) do
+    # might want to add :claims and :resource back in to the pattern match
+    # this nil key should be the default based on Guardian.Channel (guardian/lib/guardian/channel.ex)
+    # decide what you want to do with the join_params
+    case sign_in(socket, jwt, params, key: nil) do
+      {:ok, authed_socket, guardian_params} ->
+        _join_params = params
+        |> Map.drop(["guardian_token"])
+        |> Map.merge(guardian_params)
+
+        Datomic.Channel.join(authed_socket, user_unique_id)
+      {:error, reason} -> handle_guardian_auth_failure(reason)
+    end
   end
+
+  def join("datomic:" <> _user_unique_id, _params, _socket) do
+    {:error, %{reply: "missing JWT"}}
+  end
+
+  def handle_guardian_auth_failure(reason), do: {:error, %{error: reason}}
+
+  defoverridable [handle_guardian_auth_failure: 1]
 
   def handle_in("new:msg", %{"body" => %{"syncpoint" => latest_tx}, "user" => user}, socket) do
     IO.inspect latest_tx
