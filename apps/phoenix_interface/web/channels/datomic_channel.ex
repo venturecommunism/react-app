@@ -1,6 +1,7 @@
 defmodule PhoenixInterface.DatomicChannel do
   use PhoenixInterface.Web, :channel
   import Guardian.Phoenix.Socket
+  require Logger
 
   def join("datomic:" <> user_unique_id, params = %{"guardian_token" => jwt}, socket) do
     # might want to add :claims and :resource back in to the pattern match
@@ -26,15 +27,15 @@ defmodule PhoenixInterface.DatomicChannel do
   defoverridable [handle_guardian_auth_failure: 1]
 
   def handle_in("new:msg", %{"body" => %{"syncpoint" => latest_tx}, "user" => user}, socket) do
-    IO.inspect latest_tx
+    Logger.debug "latest_tx: " <> latest_tx
     Datomic.Channel.sync(latest_tx, socket)
     |> Enum.sort_by(fn(datom) ->
       datom
     end)
     |> Enum.each(fn({_, x}) ->
-      IO.puts push socket, "new:msg", %{"user" => "system", "body" => x} 
-      Process.sleep(60)
-      IO.puts Enum.random([1,2,3,4,5,6,7,8,9])
+      push socket, "new:msg", %{"user" => "system", "body" => x}
+#      Process.sleep(60)
+#      IO.puts Enum.random([1,2,3,4,5,6,7,8,9])
     end)
 
     push socket, "join", %{status: "connected"}

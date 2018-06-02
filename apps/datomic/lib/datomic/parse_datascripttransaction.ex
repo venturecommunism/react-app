@@ -1,6 +1,8 @@
 defmodule Datomic.ParseDatascriptTransaction do
+  require Logger
+
   def first(arg) do
-    IO.puts 'arg 1'
+    Logger.debug 'arg 1'
     IO.inspect arg
     newlist = ParseDatascriptSublistToMap.first(arg)
   end

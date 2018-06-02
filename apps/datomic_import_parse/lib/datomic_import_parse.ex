@@ -1,5 +1,7 @@
 defmodule ImportData do
-IO.puts "test"
+  require Logger
+
+  Logger.debug "test"
   def stringit(arg) when is_list(arg) do
     IO.puts "beginning stringit"
     IO.inspect arg
@@ -11,7 +13,7 @@ IO.puts "test"
             head when is_number(head) ->
               ~s("#{head}")
             _ ->
-IO.puts "CONDITION ONE"
+Logger.debug "CONDITION ONE"
 IO.inspect        ~s("#{head}")
 IO.inspect        hopefullygettingridofescapeproblems = Exdn.from_elixir! head
 IO.inspect hopefullygettingridofescapeproblems === ~s("#{head}")
