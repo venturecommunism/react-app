@@ -3,6 +3,8 @@ defmodule DatomicLinkTest do
   doctest DatomicLink
 
   test "the truth" do
-    assert 1 + 1 == 2
+    {status, reply} = DatomicLink.start
+    assert status == :ok
+    assert is_pid(reply)
   end
 end

@@ -1,9 +1,38 @@
 defmodule DatomicQuery do
-  DatomicLink.start
+  import Datomic.Channel
+  require Logger
 
-  query = "[:find ?e ?aname ?v ?tx ?op :where [?e ?a ?v ?tx ?op] [?e :project ?aname]]"
+  def query(query) do
+    DatomicLink.start
+    case DatomicGenServer.q(via_tuple("someproc"), query, [], [:options, {:client_timeout, 100_000}]) do
+      {:ok, edn} ->
+        {:ok, edn}
+      {:error, response} ->
+        Logger.debug response
+        {:error, response}
+    end
+  end
 
-#  {:error, edn} = DatomicGenServer.q(DatomicGenServerLink, query, [], [:options, {:client_timeout, 100_000}])
-  {:ok, edn} = DatomicGenServer.q(DatomicGenServerLink, query, [], [:options, {:client_timeout, 100_000}])
-  edn
+  def mock do
+    {_status, pid} = DatomicLink.start
+    case DatomicGenServer.mock(pid, :somealiasthingie, [:options, {:client_timeout, 100_000}]) do
+      {:ok, response} ->
+#        DatomicGenServer.q(via_tuple("someproc"), query, [], [:options, {:client_timeout, 100_000}])
+        {:ok, response}
+      {:error, response} ->
+        Logger.debug response
+        {:error, response}
+    end
+  end
+
+  def unmock do
+    case DatomicGenServer.unmock(via_tuple("someproc"), [:options, {:client_timeout, 100_000}]) do
+      {:ok, response} ->
+#        DatomicGenServer.q(via_tuple("someproc"), query, [], [:options, {:client_timeout, 100_000}])
+        {:ok, response}
+      {:error, response} ->
+        Logger.debug response
+        {:error, response}
+    end
+  end
 end

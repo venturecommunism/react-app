@@ -18,7 +18,7 @@ defmodule DatomicTransact.Mixfile do
   #
   # Type "mix help compile.app" for more information
   def application do
-    [applications: [:logger]]
+    [applications: [:logger, :gproc]]
   end
 
   # Dependencies can be Hex packages:
@@ -36,7 +36,8 @@ defmodule DatomicTransact.Mixfile do
   # Type "mix help deps" for more examples and options
   defp deps do
     [
-      {:datomic_link, [path: "../datomic_link", from_umbrella: true, env: :dev, manager: :mix]}
+      {:datomic_link, [path: "../datomic_link", from_umbrella: true, env: :dev, manager: :mix]},
+      {:datomic_query, [path: "../datomic_query", from_umbrella: true, env: :dev, manager: :mix]},
     ]
   end
 end

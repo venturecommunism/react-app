@@ -1,3 +1,4 @@
+Mon Jun  4 23:12:13 UTC 2018 - imports from Datomic.Channel to a lot of submodules and DatomicQuery to DatomicTransact may be importing too much and might want to break that up
 Fri Jun  1 03:08:31 UTC 2018 - need to secure PhoenixInterface.DatomicChannel based on Guardian.Channel
 Thu May 31 21:13:57 UTC 2018 - without the app dependencies for auth/datomic these don't compile automatically so need either a new solution to do that or a way to add these back into app
 Thu May 31 05:11:59 UTC 2018 - putting calendar version pin and other dependencies for auth/datomic in phoenix_interface instead of the top level umbrella because there seems to be fewer conflicts this way and it makes some logical sense
