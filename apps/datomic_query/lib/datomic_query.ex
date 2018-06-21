@@ -15,7 +15,7 @@ defmodule DatomicQuery do
 
   def mock do
     {_status, pid} = DatomicLink.start
-    case DatomicGenServer.mock(pid, :somealiasthingie, [:options, {:client_timeout, 100_000}]) do
+    case DatomicGenServer.mock(pid, :somealias, [:options, {:client_timeout, 100_000}]) do
       {:ok, response} ->
 #        DatomicGenServer.q(via_tuple("someproc"), query, [], [:options, {:client_timeout, 100_000}])
         {:ok, response}

@@ -16,17 +16,83 @@ defmodule DatomicQueryTest do
     assert is_binary(response)
   end
 
-  test "valid mock queries do mock good things" do
-#    query = "[:find ?e ?aname ?v ?tx ?op :where [?e ?a ?v ?tx ?op] [?e :description ?aname]]"
-#    {status, response} = DatomicQuery.mock(query)
-#    assert Application.get_env(:datomic_gen_server, :allow_datomic_mocking?) == true
-#    assert status == :ok
-#    assert is_binary(response)
-#    parsed_response = Exdn.to_elixir! response
-#    assert match?(%MapSet{}, parsed_response)
-#    assert MapSet.size(parsed_response) == 255
-#    list_parsed_response = MapSet.to_list(parsed_response)
-#    IO.inspect list_parsed_response
-#    assert is_list(list_parsed_response)
+  test "datoms query" do
+    query = "[:find ?e ?aname ?v ?tx ?op :where [?e ?a ?v ?tx ?op] [?a :db/ident ?aname]]"
+    {status, response} = DatomicQuery.query(query)
+    assert status == :ok
+    assert is_binary(response)
+  end
+
+  test "datoms query filtered by some other query" do
+    query = """
+             [:find ?e ?aname ?v ?tx ?op
+              :where [?e ?a ?v ?tx ?op]
+                     [?a :db/ident ?aname]
+                     [?e ":description" ?desc]
+                     [?e ":entry" ?date]
+                     [?e ":status" ?status]
+                     [?e ":status" "pending"]
+                     [?e ":uuid" ?uuid]
+                     [(missing? $ ?e ":wait")]]
+    """
+    {status, response} = DatomicQuery.query(query)
+    assert status == :ok
+    assert is_binary(response)
+  end
+
+  test "inbox query" do
+    _datascriptquery = """
+      [:find ?desc ?date ?status ?uuid ?confirmid ?remoteid ?u
+       :where [?u "description" ?desc]
+              [?u "entry" ?date]
+              [?u "status" ?status]
+              [?u "status" "pending"]
+              [?u "uuid" ?uuid]
+              [(missing? $ ?u "wait")]
+              [(get-else $ ?u ":confirmationid" "none") ?confirmid]
+              [(get-else $ ?u "dat.sync.remote.db/id" "none") ?remoteid]]
+    """
+    query = """
+      [:find ?desc ?date ?status ?uuid ?u
+       :where [?u ":description" ?desc]
+              [?u ":entry" ?date]
+              [?u ":status" ?status]
+              [?u ":status" "pending"]
+              [?u ":uuid" ?uuid]
+              [(missing? $ ?u ":wait")]]
+    """
+    _sortfields = "1,0"
+    _sortorders = "DESC, ASC"
+    {status, response} = DatomicQuery.query(query)
+    assert status == :ok
+    assert is_binary(response)
+  end
+
+  test "somedaymaybe query" do
+    _datascriptquery = """
+      [:find ?desc ?date ?status ?uuid ?confirmid ?remoteid ?wait
+       :where [?u "description" ?desc]
+              [?u "entry" ?date]
+              [?u "status" ?status]
+              [?u "status" "pending"]
+              [?u "uuid" ?uuid]
+              [?u "wait" ?wait]
+              [(get-else $ ?u "confirmationid" "none") ?confirmid]
+              [(get-else $ ?u "dat.sync.remote.db/id" "none") ?remoteid]]
+    """
+    query = """
+      [:find ?desc ?date ?status ?uuid ?wait
+       :where [?u ":description" ?desc]
+              [?u ":entry" ?date]
+              [?u ":status" ?status]
+              [?u ":status" "pending"]
+              [?u ":uuid" ?uuid]
+              [?u ":wait" ?wait]]
+    """
+    _sortfields = "1,0"
+    _sortorders = "DESC, ASC"
+    {status, response} = DatomicQuery.query(query)
+    assert status == :ok
+    assert is_binary(response)
   end
 end
