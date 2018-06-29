@@ -19,7 +19,7 @@
         transact(conn, [{
           ':db/id': -1,
           description: 'multipleplaces test',
-          date: date,
+          entry: date,
           status: 'pending',
           uuid: 'uuid-' + date
         }])
@@ -35,7 +35,7 @@
         transact(conn, [{
           ':db/id': -1,
           description: 'anotheraction test',
-          date: date,
+          entry: date,
           status: 'pending',
           uuid: 'uuid-' + date
         }])
@@ -69,7 +69,7 @@
         transact(conn, [{
           ':db/id': -1,
           description: 'thirdaction test',
-          date: date,
+          entry: date,
           status: 'pending',
           uuid: 'uuid-' + date
         }])
@@ -91,7 +91,7 @@
         transact(conn, [{
           ':db/id': -1,
           description: 'core clientroot - fourthaction test',
-          date: date,
+          entry: date,
           status: 'pending',
           uuid: 'uuid-' + date
         }])
@@ -113,7 +113,7 @@
         transact(conn, [{
           ':db/id': -1,
           description: 'fifthaction test',
-          date: date,
+          entry: date,
           status: 'pending',
           uuid: 'uuid-' + date
         }])
@@ -129,12 +129,13 @@
       componentid: 'rootcomponentcleanup',
       componentsname: 'Root component (cleanup)',
       query: `[:find ?desc ?date ?status ?uuid
-               :where [?u "description" ?desc]
-                      [?u "date" ?date]
-                      [?u "status" ?status]
-                      [?u "uuid" ?uuid]]`,
+               :where [?e "description" ?desc]
+                      [?e "entry" ?date]
+                      [?e "status" ?status]
+                      [?e "uuid" ?uuid]]`,
       sortfields: `[2, 0]`,
-      sortorders: `[DESC, ASC]`
+      sortorders: `[DESC, ASC]`,
+      limit: 10
     },
     { ':db/id': -14,
       actionsetid: 'general',
@@ -154,7 +155,7 @@
           transact(conn, [{
             ':db/id': -1,
             description: 'keyup test',
-            date: date,
+            entry: date,
             status: 'pending',
             uuid: 'uuid-' + date
           }])

@@ -26,9 +26,10 @@ defmodule PhoenixInterface.DatomicChannel do
 
   defoverridable [handle_guardian_auth_failure: 1]
 
-  def handle_in("new:msg", %{"body" => %{"syncpoint" => latest_tx}, "user" => user}, socket) do
+  def handle_in("new:msg", %{"body" => %{"syncpoint" => latest_tx, "subscription" => subscription}, "user" => user}, socket) do
     Logger.debug "latest_tx: " <> latest_tx
-    Datomic.Channel.sync(latest_tx, socket)
+
+    Datomic.Channel.sync(latest_tx, subscription, socket)
     |> Enum.sort_by(fn(datom) ->
       datom
     end)

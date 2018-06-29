@@ -21,8 +21,8 @@
       ':db/id': -4,
       name: 'Stringified Result',
       query: `[:find ?user
- :where [?u "name"]
-        [?u "name" ?user]]`
+ :where [?e "name"]
+        [?e "name" ?user]]`
     },
   ]
 

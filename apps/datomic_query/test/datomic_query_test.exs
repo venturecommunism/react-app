@@ -63,6 +63,7 @@ defmodule DatomicQueryTest do
     """
     _sortfields = "1,0"
     _sortorders = "DESC, ASC"
+    _limit = 10
     {status, response} = DatomicQuery.query(query)
     assert status == :ok
     assert is_binary(response)
@@ -91,6 +92,7 @@ defmodule DatomicQueryTest do
     """
     _sortfields = "1,0"
     _sortorders = "DESC, ASC"
+    _limit = 10
     {status, response} = DatomicQuery.query(query)
     assert status == :ok
     assert is_binary(response)

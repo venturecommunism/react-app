@@ -7,6 +7,9 @@ defmodule PhoenixInterface.DatomicChannelTest do
   setup do
     randomid = "GirlLazerGirl"
 
+    subscription = System.get_env("TEST_SUBSCRIPTION")
+    subscription = [["[:find ?desc ?date ?status ?uuid ?confirmid ?remoteid ?e\n               :where [?e \"description\" ?desc]\n                      [?e \"entry\" ?date]\n                      [?e \"status\" ?status]\n                      [?e \"status\" \"pending\"]\n                      [?e \"uuid\" ?uuid]\n                      [(missing? $ ?e \"wait\")]\n                      [(get-else $ ?e \"confirmationid\" \"none\") ?confirmid]\n                      [(get-else $ ?e \"dat.sync.remote.db/id\" \"none\") ?remoteid]]"],["[:find ?desc ?date ?status ?uuid ?confirmid ?remoteid ?wait\n               :where [?e \"description\" ?desc]\n                      [?e \"entry\" ?date]\n                      [?e \"status\" ?status]\n                      [?e \"status\" \"pending\"]\n                      [?e \"uuid\" ?uuid]\n                      [?e \"wait\" ?wait]\n                      [(get-else $ ?e \"confirmationid\" \"none\") ?confirmid]\n                      [(get-else $ ?e \"dat.sync.remote.db/id\" \"none\") ?remoteid]]"],["[:find ?desc ?date ?status ?uuid\n               :where [?e \"description\" ?desc]\n                      [?e \"date\" ?date]\n                      [?e \"status\" ?status]\n                      [?e \"uuid\" ?uuid]]"],["[:find ?e ?e ?e ?desc\n               :where [?e ?attrib ?desc]]"]]
+
     {:ok, _, socket} =
       socket("user_id", %{some: :assign})
       |> subscribe_and_join(AuthChannel, "auth:" <> randomid)
@@ -20,11 +23,11 @@ defmodule PhoenixInterface.DatomicChannelTest do
       socket("user_id", %{some: :assign})
       |> subscribe_and_join(DatomicChannel, "datomic:" <> randomid, %{"guardian_token" => jwt})
 
-    {:ok, socket: socket, randomid: randomid}
+    {:ok, socket: socket, randomid: randomid, subscription: subscription}
   end
 
-  test "new:msg syncs and fetches data", %{socket: socket, randomid: randomid} do
-    ref = push socket, "new:msg", %{"body" => %{"syncpoint" => "none"}, "user" => randomid}
+  test "new:msg syncs and fetches data", %{socket: socket, randomid: randomid, subscription: subscription} do
+    ref = push socket, "new:msg", %{"body" => %{"syncpoint" => "none", "subscription" => subscription}, "user" => randomid}
     assert_reply ref, :ok, _something, 50_000_000
   end
 end

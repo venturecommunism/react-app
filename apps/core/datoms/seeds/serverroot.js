@@ -48,8 +48,8 @@
     { ':db/id': -13,
       componentid: 'rootcomponentcleanup_serverversion',
       componentsname: 'Root component (with a query that works for Server)',
-      query: `[:find ?u ?u ?u ?desc
-               :where [?u ?attrib ?desc]]`,
+      query: `[:find ?e ?e ?e ?desc
+               :where [?e ?attrib ?desc]]`,
       sortfields: `[2, 0]`,
       sortorders: `[DESC, ASC]`
     },

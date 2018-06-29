@@ -11,6 +11,10 @@ const conn_components = componentdb()
 // Transaction function maintains the log (for time travel, undo, etc.)
 import transact from './transact'
 
+const querieslist = datascript.q(`[:find ?query ?sortfields ?sortorders ?limit :where [?e "query" ?query] [?e "sortfields" ?sortfields] [?e "sortorders" ?sortorders] [?e "limit" ?limit]]`, datascript.db(conn_components))
+
+console.log(querieslist)
+
 // Elixir / Phoenix Channels things
 var clientonly = false
 import {go, chan, take, put, timeout, putAsync} from 'js-csp'
@@ -143,7 +147,7 @@ if (clientonly) {
     // console.log('key is:', key)
 
     var user = me
-    var msg = {jwt: key, syncpoint: 'none'}
+    var msg = {jwt: key, syncpoint: 'none', subscription: querieslist}
     const ex_data_channel = Channel(config.url, "datomic:" + user, user, receiveDataMessage, chData, conn, key)
     yield timeout(10000)
     ex_data_channel.send(msg)

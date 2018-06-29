@@ -49,16 +49,17 @@
       componentid: 'somedaymaybequery2',
       componentsname: 'New Root component (cleanup)2',
       query: `[:find ?desc ?date ?status ?uuid ?confirmid ?remoteid ?wait
-               :where [?u "description" ?desc]
-                      [?u "entry" ?date]
-                      [?u "status" ?status]
-                      [?u "status" "pending"]
-                      [?u "uuid" ?uuid]
-                      [?u "wait" ?wait]
-                      [(get-else $ ?u "confirmationid" "none") ?confirmid]
-                      [(get-else $ ?u "dat.sync.remote.db/id" "none") ?remoteid]]`,
+               :where [?e "description" ?desc]
+                      [?e "entry" ?date]
+                      [?e "status" ?status]
+                      [?e "status" "pending"]
+                      [?e "uuid" ?uuid]
+                      [?e "wait" ?wait]
+                      [(get-else $ ?e "confirmationid" "none") ?confirmid]
+                      [(get-else $ ?e "dat.sync.remote.db/id" "none") ?remoteid]]`,
       sortfields: `[1, 0]`,
-      sortorders: `[DESC, ASC]`
+      sortorders: `[DESC, ASC]`,
+      limit: 10
     },
     { ':db/id': -14,
       actionsetid: 'general2',

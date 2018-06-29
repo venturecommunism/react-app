@@ -1,11 +1,7 @@
 defmodule Datomic.TransactionLogQueryLogger do
   def parse(msg) do
-    base_one = byte_size("\#{")
-    <<_::binary-size(base_one), rest::binary>> = msg
-    base_two = byte_size(rest) - byte_size("\}\n")
-    <<inner::binary-size(base_two), _::binary>> = rest
-    final_list = Exdn.to_elixir! "[" <> inner <> "]"
-    MyLogQueryList.chopfirst(final_list)
+    msg_tolist = MapSet.to_list(Exdn.to_elixir!(msg))
+    MyLogQueryList.chopfirst(msg_tolist)
   end
 end
 

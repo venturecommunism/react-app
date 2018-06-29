@@ -50,6 +50,8 @@ android/keystores/debug.keystore
 
 ### SERVER ###
 
+TODOS.txt
+*/TODOS.txt
 .env
 
 /apps/auth/priv/keys

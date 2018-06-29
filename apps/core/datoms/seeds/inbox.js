@@ -48,17 +48,18 @@
      { ':db/id': -13,
       componentid: 'newrootcomponentcleanup',
       componentsname: 'New Root component (cleanup)',
-      query: `[:find ?desc ?date ?status ?uuid ?confirmid ?remoteid ?u
-               :where [?u "description" ?desc]
-                      [?u "entry" ?date]
-                      [?u "status" ?status]
-                      [?u "status" "pending"]
-                      [?u "uuid" ?uuid]
-                      [(missing? $ ?u "wait")]
-                      [(get-else $ ?u "confirmationid" "none") ?confirmid]
-                      [(get-else $ ?u "dat.sync.remote.db/id" "none") ?remoteid]]`,
+      query: `[:find ?desc ?date ?status ?uuid ?confirmid ?remoteid ?e
+               :where [?e "description" ?desc]
+                      [?e "entry" ?date]
+                      [?e "status" ?status]
+                      [?e "status" "pending"]
+                      [?e "uuid" ?uuid]
+                      [(missing? $ ?e "wait")]
+                      [(get-else $ ?e "confirmationid" "none") ?confirmid]
+                      [(get-else $ ?e "dat.sync.remote.db/id" "none") ?remoteid]]`,
       sortfields: `[1, 0]`,
-      sortorders: `[DESC, ASC]`
+      sortorders: `[DESC, ASC]`,
+      limit: 10
     },
     { ':db/id': -14,
       actionsetid: 'general',
