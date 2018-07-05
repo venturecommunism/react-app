@@ -6,6 +6,7 @@ defmodule PhoenixInterface.BadAuthDatomicChannelTest do
 
   setup do
     randomid = "FaceLazerHorse"
+    subscription = [["[:find ?desc ?date ?status ?uuid ?confirmid ?remoteid ?e\n               :where [?e \"description\" ?desc]\n                      [?e \"entry\" ?date]\n                      [?e \"status\" ?status]\n                      [?e \"status\" \"pending\"]\n                      [?e \"uuid\" ?uuid]\n                      [(missing? $ ?e \"wait\")]\n                      [(get-else $ ?e \"confirmationid\" \"none\") ?confirmid]\n                      [(get-else $ ?e \"dat.sync.remote.db/id\" \"none\") ?remoteid]]"],["[:find ?desc ?date ?status ?uuid ?confirmid ?remoteid ?wait\n               :where [?e \"description\" ?desc]\n                      [?e \"entry\" ?date]\n                      [?e \"status\" ?status]\n                      [?e \"status\" \"pending\"]\n                      [?e \"uuid\" ?uuid]\n                      [?e \"wait\" ?wait]\n                      [(get-else $ ?e \"confirmationid\" \"none\") ?confirmid]\n                      [(get-else $ ?e \"dat.sync.remote.db/id\" \"none\") ?remoteid]]"],["[:find ?desc ?date ?status ?uuid\n               :where [?e \"description\" ?desc]\n                      [?e \"entry\" ?date]\n                      [?e \"status\" ?status]\n                      [?e \"uuid\" ?uuid]]"],["[:find ?e ?e ?e ?desc\n               :where [?e ?attrib ?desc]]"]]
 
     {:ok, _, socket} =
       socket("user_id", %{some: :assign})
@@ -18,10 +19,10 @@ defmodule PhoenixInterface.BadAuthDatomicChannelTest do
 
     badjwt = "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJVc2VyOjIiLCJleHAiOjE1MjgwNzYyNTUsImlhdCI6MTUyNzgxNzA1NSwiaXNzIjoiUGhlb25peEF1dGgiLCJqdGkiOiJlNjczZGIxNS1lMWViLTQ1OTAtYWQzZC05ZjY4ZTFmYjRlZjUiLCJwZW0iOnt9LCJzdWIiOiJVc2VyOjIiLCJ0eXAiOiJ0b2tlbiJ9.jqB2PKPnquxUxWK6kLPTW9CMe_p0BnQbydgNgvWz0rtPvVXgysxpuT37jXoWjr80pPIybLosVxfCpJnbUKB5aQ"
 
-    {:ok, socket: socket, randomid: randomid, jwt: jwt, badjwt: badjwt}
+    {:ok, socket: socket, randomid: randomid, jwt: jwt, badjwt: badjwt, subscription: subscription}
   end
 
-  test "successfully joins the data channel with good token", %{randomid: randomid, jwt: jwt} do
+  test "successfully joins the data channel with good token", %{randomid: randomid, jwt: jwt, subscription: subscription} do
     {:ok, _reply, socket} = socket("user_id", %{some: :assign})
     |> subscribe_and_join(
       DatomicChannel,
@@ -29,7 +30,21 @@ defmodule PhoenixInterface.BadAuthDatomicChannelTest do
       %{"guardian_token" => jwt}
     )
 
-    ref = push socket, "new:msg", %{"body" => %{"syncpoint" => "none"}, "user" => randomid}
+    ref = push socket, "new:msg", %{"body" => %{"syncpoint" => "none", "subscription" => subscription}, "user" => randomid}
+
+    # this only looks for the first transaction
+    assert_push "new:msg", %{"user" => "system", "body" => somedatoms}, 5_000_000
+
+    assert is_list(somedatoms)
+    Enum.map(somedatoms, fn(x) ->
+      # not sure what to make these but this is the data structure right now
+      assert !is_list(x)
+      assert is_map(x)
+    end)
+
+    assert_push "join", %{status: "connected"}, 5_000_000
+    assert_broadcast "new:msg", %{user: user, body: %{"syncpoint": false, "user": user}}, 5_000_000
+
     assert_reply ref, :ok, _something, 50_000_000
   end
 
