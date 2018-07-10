@@ -29,16 +29,14 @@ defmodule Datomic.Channel do
     # recurse through this instead
     firstsub = Enum.at(datomicsubscription, 0)
     secondsub = Enum.at(datomicsubscription, 1)
-    thirdsub = Enum.at(datomicsubscription, 2)
 
-    intermedmapset = MapSet.union(firstsub, secondsub)
-    finaloutput = MapSet.union(intermedmapset, thirdsub)
+    finaloutput = MapSet.union(firstsub, secondsub)
     {:ok, finaloutput} = Exdn.from_elixir finaloutput
 
 #    {:error, edn} = DatomicGenServer.q(DatomicGenServerLink, query, [], [:options, {:client_timeout, 100_000}])
-    {:ok, edn} = DatomicGenServer.q(via_tuple(topic), query, [], [:options, {:client_timeout, 100_000}])
+#    {:ok, edn} = DatomicGenServer.q(via_tuple(topic), query, [], [:options, {:client_timeout, 100_000}])
     # IO.inspect is_binary(edn), label: "edn returns a string"
-    Logger.debug fn -> edn end
+#    Logger.debug fn -> edn end
     _grouped_tx = Datomic.TransactionLogQueryLogger.parse(finaloutput) |> Enum.group_by( fn(x) -> x["tx"] end )
   end
 

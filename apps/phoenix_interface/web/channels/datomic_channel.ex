@@ -29,7 +29,7 @@ defmodule PhoenixInterface.DatomicChannel do
   def handle_in("new:msg", %{"body" => %{"syncpoint" => latest_tx, "subscription" => subscription}, "user" => user}, socket) do
     Logger.debug "latest_tx: " <> latest_tx
 
-    Datomic.Channel.sync(latest_tx, subscription, socket)
+    Datomic.Channel.sync(latest_tx, Enum.at(subscription,0), socket)
     |> Enum.sort_by(fn(datom) ->
       datom
     end)

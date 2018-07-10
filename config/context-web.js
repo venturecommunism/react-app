@@ -11,7 +11,10 @@ const conn_components = componentdb()
 // Transaction function maintains the log (for time travel, undo, etc.)
 import transact from './transact'
 
-const querieslist = datascript.q(`[:find ?query ?sortfields ?sortorders ?limit :where [?e "query" ?query] [?e "sortfields" ?sortfields] [?e "sortorders" ?sortorders] [?e "limit" ?limit]]`, datascript.db(conn_components))
+var querieslist = []
+const ql = datascript.q(`[:find ?query ?sortfields ?sortorders ?limit :where [?e "query" ?query] [?e "sortfields" ?sortfields] [?e "sortorders" ?sortorders] [?e "limit" ?limit]]`, datascript.db(conn_components))
+querieslist[0] = [ql[0], ql[1]]
+querieslist[1] = [ql[2]]
 
 console.log(querieslist)
 
