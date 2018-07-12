@@ -1,4 +1,9 @@
 defmodule DatomicQueryTranslator do
+  def translatetocurrentstate(query_list) do
+    datomic_query = rejoined(currentstate_cleanupfind(splitwithclauses(splitwhere(Exdn.to_reversible query_list))))
+    {:ok, datomic_query}
+  end
+
   def translatetodatoms(query_list) do
     datomic_query = rejoined(datoms_cleanupfind(splitwithclauses(splitwhere(Exdn.to_reversible query_list))))
     {:ok, datomic_query}
@@ -35,6 +40,14 @@ defmodule DatomicQueryTranslator do
     mappedfind = Enum.map(elem(argsplitwithclauses, 2), fn(x) -> processwhereclause(x) end)
     atomswclauses = [:find, {:symbol, :"?e"}, {:symbol, :"?aname"}, {:symbol, :"?v"}, {:symbol, :"?tx"}, {:symbol, :"?op"}]
     newmappedfind = mappedfind ++ [[symbol: :"?e", symbol: :"?a", symbol: :"?v", symbol: :"?tx", symbol: :"?op"]] ++ [[symbol: :"?a", symbol: :"db/ident", symbol: :"?aname"]]
+    {atomswclauses, newmappedfind, elem(splitwclauses, 1)}
+  end
+
+  defp currentstate_cleanupfind(argsplitwithclauses) do
+    splitwclauses = Enum.split_with(elem(argsplitwithclauses, 0), fn(x) -> !useorrejectfind(x) end)
+    mappedfind = Enum.map(elem(argsplitwithclauses, 2), fn(x) -> processwhereclause(x) end)
+    atomswclauses = [:find, {:symbol, :"?e"}, {:symbol, :"?aname"}, {:symbol, :"?v"}]
+    newmappedfind = mappedfind ++ [[symbol: :"?e", symbol: :"?a", symbol: :"?v"]] ++ [[symbol: :"?a", symbol: :"db/ident", symbol: :"?aname"]]
     {atomswclauses, newmappedfind, elem(splitwclauses, 1)}
   end
 

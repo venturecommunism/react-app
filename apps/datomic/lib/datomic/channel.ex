@@ -20,7 +20,8 @@ defmodule Datomic.Channel do
     %{topic: topic} = socket
 
     datomicsubscription = Enum.map(subscription, fn(x) ->
-      {:ok, reversiblequery} = DatomicQueryTranslator.translatetodatoms(Enum.at(x,0))
+      {:ok, reversiblequery} = DatomicQueryTranslator.translatetocurrentstate(Enum.at(x,0))
+#      {:ok, reversiblequery} = DatomicQueryTranslator.translatetodatoms(Enum.at(x,0))
       query = Exdn.from_elixir! reversiblequery
       {:ok, edn} = DatomicGenServer.q(via_tuple(topic), query, [], [:options, {:client_timeout, 100_000}])
       Exdn.to_reversible edn
@@ -31,6 +32,11 @@ defmodule Datomic.Channel do
     secondsub = Enum.at(datomicsubscription, 1)
 
     finaloutput = MapSet.union(firstsub, secondsub)
+
+    finaloutput = MapSet.new(finaloutput, fn(x) ->
+      x ++ [1, true]
+    end)
+
     {:ok, finaloutput} = Exdn.from_elixir finaloutput
 
 #    {:error, edn} = DatomicGenServer.q(DatomicGenServerLink, query, [], [:options, {:client_timeout, 100_000}])
