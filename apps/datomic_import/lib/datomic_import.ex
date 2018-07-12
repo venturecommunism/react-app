@@ -1,2 +1,0 @@
-defmodule DatomicImport do
-end
