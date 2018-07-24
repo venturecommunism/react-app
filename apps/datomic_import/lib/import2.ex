@@ -1,3 +1,6 @@
+defmodule DatomicImportTripl do
+  def tripl do
+
 IO.inspect Link.start
 
 {:ok, json} = ConvertJson.get_json("test.json")
@@ -83,3 +86,6 @@ IO.inspect {:ok, _transaction_result} = DatomicGenServer.transact(DatomicGenServ
 data_to_add = ~s([{ #{join} }])
 
 IO.inspect {:ok, _transaction_result} = DatomicGenServer.transact(DatomicGenServerLink, data_to_add, [:options, {:client_timeout, 100_000}])
+
+  end
+end

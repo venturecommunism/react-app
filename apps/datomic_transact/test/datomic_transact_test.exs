@@ -8,7 +8,7 @@ defmodule DatomicTransactTest do
     assert Application.get_env(:datomic_gen_server, :allow_datomic_mocking?) == true
     {status, response} = DatomicQuery.mock
     assert status == :ok
-    assert response == :somealiasthingie
+    assert response == :somealias
     :ok
   end
 

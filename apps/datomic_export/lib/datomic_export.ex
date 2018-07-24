@@ -1,5 +1,10 @@
 defmodule DatomicExport do
   def export do
+    filename = "export.txt"
+    export(filename)
+  end
+
+  def export(filename) do
     query = """
     [:find ?e ?aname    ?v     ?tx ?op
      :where 
@@ -8,8 +13,17 @@ defmodule DatomicExport do
     ]
     """
     {:ok, contents} = DatomicQuery.query(query)
-    {:ok, file} = File.open "priv/files/export.txt", [:write]
-    IO.binwrite file, contents
+    fullpath = "priv/files/" <> filename
+    {:ok, file} = File.open fullpath, [:write]
+
+    orderedcontents = Enum.sort_by(contents, fn [e, a, v, tx, added] ->
+      {tx, added, e, a, v}
+    end)
+    |> Enum.chunk_by(fn [_, _, _, tx, _] ->
+      tx
+    end)
+
+    IO.binwrite file, Poison.encode!(orderedcontents, pretty: true)
     File.close file
   end
 end

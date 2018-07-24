@@ -13,6 +13,17 @@ defmodule DatomicQuery do
     end
   end
 
+  def logquery(latest_tx, query \\ "[:find ?e ?a ?v ?tx ?op :in ?log ?t1 :where [(tx-ids ?log ?t1 nil) [?tx ...]] [(tx-data ?log ?tx) [[?e ?a ?v _ ?op]]]]") do
+    DatomicLink.start
+    case DatomicGenServer.qlog(via_tuple("someproc"), query, latest_tx - 1 , [], [:options, {:client_timeout, 100_000}]) do
+      {:ok, edn} ->
+        {:ok, edn}
+      {:error, response} ->
+        Logger.debug response
+        {:error, response}
+    end
+  end
+
   def mock do
     {_status, pid} = DatomicLink.start
     case DatomicGenServer.mock(pid, :somealias, [:options, {:client_timeout, 100_000}]) do

@@ -1,4 +1,7 @@
+import Datomic.Channel
+
 defmodule DatomicSchemaImport do
+  def schemaimport do
 IO.puts "test"
   IO.inspect DatomicLink.start
 
@@ -14,7 +17,11 @@ one_off_schema = """
 """
 
 schema_to_add = """
-[{                         :db/ident :description
+[
+                          {:db/id "datomic.tx"
+                           :db/txInstant #inst "1970-01-01"}
+
+                          {:db/ident :description
                            :db/valueType :db.type/string
                            :db/cardinality :db.cardinality/many
                            :db/doc "A description"}
@@ -192,6 +199,7 @@ schema_to_add = """
                            :db/doc "A unique identifier from mongo"}]
 
 """
-  IO.inspect {:ok, _transaction_result} = DatomicGenServer.transact(DatomicGenServerLink, schema_to_add, [:options, {:client_timeout, 100_000}])
+  IO.inspect {:ok, _transaction_result} = DatomicGenServer.transact(via_tuple("someproc"), schema_to_add, [:options, {:client_timeout, 100_000}])
 
+  end
 end

@@ -18,7 +18,7 @@ defmodule DatomicImport.Mixfile do
   #
   # Type "mix help compile.app" for more information
   def application do
-    [applications: [:logger]]
+    [applications: [:logger, :gproc]]
   end
 
   # Dependencies can be Hex packages:
@@ -38,7 +38,10 @@ defmodule DatomicImport.Mixfile do
     [
       {:calendar, "~> 0.17.4", override: true},
       {:datomic_gen_server, github: "venturecommunism/datomic_gen_server"},
-      {:poison, "~> 2.0"}
+      {:datomic_transact, in_umbrella: true},
+      {:poison, "~> 2.0"},
+      {:gproc, "0.3.1"},
+      {:datomic, [path: "../datomic", from_umbrella: true, env: :dev, manager: :mix]}
     ]
   end
 end
