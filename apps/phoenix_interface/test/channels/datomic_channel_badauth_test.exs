@@ -6,6 +6,7 @@ defmodule PhoenixInterface.BadAuthDatomicChannelTest do
 
   setup do
     randomid = "FaceLazerHorse"
+    IO.inspect "this has to be actually mocked to be a real mock subscription. otherwise schema could fail"
     mocksubscription = [
   [
     ["[:find ?desc ?date ?status ?uuid ?confirmid ?remoteid ?e\n               :where [?e \"description\" ?desc]\n                      [?e \"entry\" ?date]\n                      [?e \"status\" ?status]\n                      [?e \"status\" \"pending\"]\n                      [?e \"uuid\" ?uuid]\n                      [(missing? $ ?e \"wait\")]\n                      [(get-else $ ?e \"confirmationid\" \"none\") ?confirmid]\n                      [(get-else $ ?e \"dat.sync.remote.db/id\" \"none\") ?remoteid]]",
@@ -45,6 +46,7 @@ defmodule PhoenixInterface.BadAuthDatomicChannelTest do
     ref = push socket, "new:msg", %{"body" => %{"syncpoint" => "none", "subscription" => subscription}, "user" => randomid}
 
     # this only looks for the first transaction
+    IO.inspect "needs mock data in the event there aren't any transactions"
     assert_push "new:msg", %{"user" => "system", "body" => somedatoms}, 5_000_000
 
     assert is_list(somedatoms)

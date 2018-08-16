@@ -17,7 +17,7 @@
     },
     {
       ':db/id': -5,
-      'componentsname': 'Someday-Maybe',
+      'componentsname': 'Someday-Maybe2',
       'componentstype': 'root',
       'componentid': 'somedaymaybe'
     },
@@ -94,7 +94,7 @@
       routes: -15
     },
     { ':db/id': -19,
-      componentsname: 'taskcompletedbutton2',
+      componentsname: 'taskcompletedbutton3',
       componentstype: 'action',
       componentsparents: -5,
       actiontype: 'simplebutton',
@@ -121,7 +121,7 @@ console.log(e)
       'componentstype': 'data'
     },
     { ':db/id': -22,
-      componentsname: 'tasksomedaymaybebutton2',
+      componentsname: 'tasksomedaymaybebutton4',
       componentstype: 'action',
       componentsparents: -5,
       actiontype: 'simplebutton',

@@ -1,10 +1,7 @@
 import Datomic.Channel
 
 defmodule DatomicSchemaImport do
-  def schemaimport do
-IO.puts "test"
-  IO.inspect DatomicLink.start
-
+  def importoneoff do
 # one off schema were not in the original data imported from previous versions of the task manager but are being used to build new features
 one_off_schema = """
 
@@ -13,8 +10,11 @@ one_off_schema = """
                            :db/cardinality :db.cardinality/one
                            :db/doc "Hides a task until the wait period is over"}
 ]
-
 """
+    schemaimport(one_off_schema)
+  end
+
+  def importfirstschema do
 
 schema_to_add = """
 [
@@ -199,6 +199,12 @@ schema_to_add = """
                            :db/doc "A unique identifier from mongo"}]
 
 """
+    schemaimport(schema_to_add)
+  end
+
+  def schemaimport(schema_to_add) do
+  IO.inspect DatomicLink.start
+
   IO.inspect {:ok, _transaction_result} = DatomicGenServer.transact(via_tuple("someproc"), schema_to_add, [:options, {:client_timeout, 100_000}])
 
   end
