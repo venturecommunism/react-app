@@ -2,6 +2,26 @@ defmodule Datomic.ParseDatascriptTransaction do
   require Logger
 
   def first(arg) do
+    Logger.debug 'arg 2'
+#    uuid = Enum.find(arg, fn x ->
+#      match?(%{"a" => "uuid"}, x)
+#    end)
+#    %{"v" => uuid} = uuid
+#    IO.inspect uuid
+#    IO.inspect arg
+
+    Enum.map(arg, fn %{"e" => e, "a" => a, "v" => v, "tx" => tx, "added" => added} = head ->
+      case head do
+        %{"added" => true} ->
+          datom = [":db/add", "sometempid", String.to_atom(a), v]
+        %{"added" => false} ->
+          datom = [":db/retract", "sometempid", String.to_atom(a), v]
+      end
+    end)
+    |> Exdn.from_elixir!
+  end
+
+  def first_old(arg) do
     Logger.debug 'arg 1'
     IO.inspect arg
     newlist = ParseDatascriptSublistToMap.first(arg)

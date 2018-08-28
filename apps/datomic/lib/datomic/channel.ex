@@ -43,7 +43,11 @@ defmodule Datomic.Channel do
 #    {:ok, edn} = DatomicGenServer.q(via_tuple(topic), query, [], [:options, {:client_timeout, 100_000}])
     # IO.inspect is_binary(edn), label: "edn returns a string"
 #    Logger.debug fn -> edn end
-    _grouped_tx = Datomic.TransactionLogQueryLogger.parse(finaloutput) |> Enum.group_by( fn(x) -> x["tx"] end )
+
+#    _grouped_tx = Datomic.TransactionLogQueryLogger.parse(finaloutput) |> Enum.group_by( fn(x) -> x["tx"] end )
+    Datomic.TxForm.parse(finaloutput) |> Enum.group_by(fn x ->
+      x["tx"]
+    end)
   end
 
   def sync(latest_tx, _socket) do

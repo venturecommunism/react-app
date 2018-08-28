@@ -190,6 +190,21 @@ if (clientonly) {
 
 // Datascript listener. Fires when we transact data
 datascript.listen(conn, {channel}, function(report) {
+
+console.log("original report.tx_data", report.tx_data)
+
+  if (report.tx_meta.uuid) {
+    var newreportforuuid = {}
+    newreportforuuid.C = report.tx_data[0].C
+    newreportforuuid.m = report.tx_data[0].m
+    newreportforuuid.tx = report.tx_data[0].tx
+    newreportforuuid.added = true
+    newreportforuuid.e = report.tx_data[0].e
+    newreportforuuid.a = "uuid"
+    newreportforuuid.v = report.tx_meta.uuid
+    report.tx_data.push(newreportforuuid)
+  }
+
   log.push(report.tx_data)
   meta.push(report.tx_meta)
 
@@ -214,7 +229,7 @@ var tx_data_modded = report.tx_data.filter( s => {
   return s.a != 'confirmationid'
 })
 
-// console.log(tx_data_modded)
+// console.log("tx data modded", tx_data_modded)
 // console.log(report.tx_meta)
 
   channel.send({data: tx_data_modded, meta: report.tx_meta, confirmationid: report.tx_data.confirmationid})

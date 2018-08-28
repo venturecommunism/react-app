@@ -1,3 +1,14 @@
+defmodule Datomic.TxForm do
+  def parse(msg) do
+    intermed = Enum.map(MapSet.to_list(Exdn.to_elixir!(msg)), fn [e, a, v, tx, op] ->
+      %{"e" => e, "a" => a, "v" => v, "tx" => tx, "op" => op}
+    end)
+    Enum.sort_by(intermed, fn %{"e" => e, "a" => a, "v" => v, "tx" => tx, "op" => op} ->
+      {tx, op, e, a, v}
+    end)
+  end
+end
+
 defmodule Datomic.TransactionLogQueryLogger do
   def parse(msg) do
     msg_tolist = MapSet.to_list(Exdn.to_elixir!(msg))
