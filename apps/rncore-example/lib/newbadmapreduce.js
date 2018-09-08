@@ -60,10 +60,6 @@ const styles = StyleSheet.create({
   submitButtonText:{
     color: 'white'
   },
-  titleText: {
-    display: 'flex',
-    fontSize: 20,
-  },
 })
 
 const badmapreduce = function (result, actions, moduleroot) {

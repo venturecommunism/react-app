@@ -79,6 +79,7 @@ export default class App {
 
     const actions = module.actions || {}
 
+/*
     for (var i = 0; i < query.length; i++) {
       if (!actions[query[i][1]]) {
         actions[query[i][1]] = {}
@@ -86,6 +87,7 @@ export default class App {
       // intended to only use the code version if there is no database version
       actions[query[i][1]][query[i][2]] = new Function(`return function ` + query[i][2] + query[i][3])()
     }
+*/
 
     this.actions = {
       ...this.actions,
