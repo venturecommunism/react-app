@@ -183,12 +183,8 @@ Meteor.userId = () => {
 Meteor.user = () => {
   return {}
 }
-import { AppRegistry } from 'react-native';
-import {
-  Router,
-  Scene,
-  Actions,
-} from 'react-native-router-flux';
+
+import { AppRegistry } from 'react-native'
 
 // The actual context. This is the first argument to actions.
 export const initContext = () => {
@@ -199,12 +195,9 @@ export const initContext = () => {
     conn_components: conn_components,
     meta: meta,
     Meteor,
-    Router,
-    Scene,
-    Actions,
     AppRegistry,
     me,
     chData,
     key
-  };
+  }
 }

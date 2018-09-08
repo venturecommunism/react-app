@@ -49,23 +49,3 @@ export default (url, room, user, onChat, cspChan, conn, guardian_token) => {
   // reveal a couple ways to drive this bus
   return { close, send }
 }
-
-/*
-
-  function syncfunc() {
-    console.log('Access Granted. Syncing...')
-    var obj = {}
-    obj.email = 'john@phoenix-trello.com'
-    obj.password = '12345678'
-//    send(obj)
-    var query = `[:find ?latest_tx :where [?e "app/sync" ?latest_tx]]`
-    var syncpoint = datascript.q(query, datascript.db(conn))
-//    syncpoint[0] ? console.log(syncpoint[0][0]) : console.log('no syncpoint')
-    if (syncpoint[0]) {
-      send({"syncpoint": syncpoint[0][0]})
-    } else {
-      send({"syncpoint": "none"})
-    }
-  }
-
-*/

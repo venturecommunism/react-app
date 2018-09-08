@@ -2,7 +2,7 @@ import { compose, composeAll } from 'react-komposer'
 import { useDeps } from 'react-simple-di'
 import datascript from 'datascript'
 import React from 'react'
-import {Text} from 'react-native'
+import { Text } from 'react-native'
 import Channel from '../../../config/channel'
 import config from '../../../config/config'
 

@@ -1,8 +1,0 @@
-{
-  "source": "./src/app",
-  "destination": "./documentation",
-  "test": {
-    "type": "mocha",
-    "source": "./src/test"
-  }
-}

@@ -1,5 +1,0 @@
-#!/bin/bash
-cd ~/react-app
-screen -S myApp -d -m sh -c "while :; do HTTPS=true npm start; done;"
-# to view this do screen -RA myApp
-# then ctrl-a d to leave
