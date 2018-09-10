@@ -1,0 +1,21 @@
+apps/core/containers/module.js
+Allows you to select action set, component, data container and mapper
+
+apps/core/containers/actionsmapper.js
+Simples actions mapper
+
+apps/core/containers/appbuilder.js
+More complex container that loads list of components and does a pull query on them first to pour data into
+
+apps/core/containers/componentcontainer.js
+apps/core/containers/datacontainer.js
+Main go-to data container. Allows time travel
+
+apps/core/containers/goodcontainer.js
+Old example of a high quality container. Not actually used anywhere
+
+apps/core/containers/peerscontainer.js
+apps/core/containers/rncontainer.js
+apps/core/containers/audiovideocontainer.js
+apps/core/containers/simplertcontainer.js
+apps/core/containers/webrtcdatacontainer.js

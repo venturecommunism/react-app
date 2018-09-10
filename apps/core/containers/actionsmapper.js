@@ -1,4 +1,4 @@
-import { composeAll } from '../../../config/lib/mantra'
+import { composeAll } from 'react-komposer'
 import { useDeps } from '../../../config/lib/helpers/usedeps'
 
 export default (actionset, component) => composeAll(
