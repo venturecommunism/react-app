@@ -1,8 +1,5 @@
 export default {
-  login_page({conn, transact}, e) {
-    alert('test')
-    if (e.which === 13) {
-      alert('test')
-    }
+  login_page({conn, transact, putAsync, chUnPass}, username, password) {
+    putAsync(chUnPass, {email: username, password: password})
   },
 }

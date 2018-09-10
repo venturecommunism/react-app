@@ -16,6 +16,7 @@
       'componentstype': 'root',
       'componentid': 'loginpage'
     },
+/*
     { ':db/id': -3,
       actionsetid: 'loginactions',
       modulename: 'Login actions',
@@ -35,6 +36,7 @@
 //        }])
       }`
     },
+*/
   ]
 
 export default componentdatoms
