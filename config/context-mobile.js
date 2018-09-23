@@ -1,3 +1,5 @@
+import { AsyncStorage, AppRegistry } from 'react-native'
+
 // Datascript things
 import datascript from 'datascript'
 import {maindb, componentdb} from './lib/createDBConn'
@@ -5,10 +7,14 @@ const conn = maindb()
 const conn_components = componentdb()
 // const transact = datascript.transact
 // Transaction function maintains the log (for time travel, undo, etc.)
-function transact(conn, data_to_add, meta) {
-  var tx_report = datascript.transact(conn, data_to_add, meta)
-//  console.log('resolved tempid', datascript.resolve_tempid(tx_report.tempids, -1))
-}
+import transact from './transact'
+
+var querieslist = []
+const ql = datascript.q(`[:find ?query ?sortfields ?sortorders ?limit :where [?e "query" ?query] [?e "sortfields" ?sortfields] [?e "sortorders" ?sortorders] [?e "limit" ?limit]]`, datascript.db(conn_components))
+querieslist[0] = [ql[0], ql[1]]
+querieslist[1] = [ql[2]]
+
+console.log(querieslist)
 
 // Elixir / Phoenix Channels things
 var clientonly = false
@@ -31,19 +37,40 @@ var peers = []
 var channel
 let chData = chan()
 let chAuth = chan()
+let chUnPass = chan()
 var key
 
 // Fires when we receive a message on the Elixir data channel
 const receiveDataMessage = (conn, message) => {
+  if ('ok' in message && 'confirmationid' in message.ok.msg) {
+    var confirmationid = message['ok']['msg']['confirmationid']
+    var stringconfirmationid = JSON.stringify(confirmationid)
+
+    var confirmedquery = `[:find ?e
+                           :where [?e "confirmationid" ${stringconfirmationid}]]`
+    var confirmeddb = datascript.db(conn)
+    const confirmedqArgs = [confirmedquery, confirmeddb]
+    var result = datascript.q(...confirmedqArgs)
+    var confirmedent = result[0][0]
+
+    var report_id_confirmed_tx = [[':db/retract', confirmedent, 'confirmationid', confirmationid]]
+    transact(conn, report_id_confirmed_tx, {'remoteuser': 'server confirmation'})
+  }
+  if ('ok' in message) return
   const user = message.user
   const isMe = (someUser) => me === someUser
-  console.log('ELIXIR MSG', JSON.stringify(message))
+  console.log('ELIXIR OBJECT', message)
+//  console.log('ELIXIR MSG', JSON.stringify(message))
 
   if (isMe(user)) return // prevent echoing yourself (TODO: server could handle this i guess?)
 
     if (message.user === 'system') {
       function org_transaction(s) {
         return [':db/add', s.e, s.a, s.v]
+      }
+
+      function add_remoteeids(s) {
+        return [':db/add', s.e, 'dat.sync.remote.db/id', s.e]
       }
 
       function sort_func(a, b) {
@@ -57,7 +84,10 @@ const receiveDataMessage = (conn, message) => {
       message.body.map( s => s.tx !== tx_id ? bool_val = false : '')
       if (bool_val === true) {
         var single_tx = [[':db/add', 0, 'app/sync', tx_id]]
-        message.body.map(s => single_tx.push(org_transaction(s)) )
+        message.body.map(s => {
+          single_tx.push(org_transaction(s))
+          single_tx.push(add_remoteeids(s))
+        })
         transact(conn, single_tx, {'remoteuser': message.user})
         return
       }
@@ -113,49 +143,75 @@ if (clientonly) {
 } else {
   // Data Communicating Sequential Processes. Takes JWT from the Auth CSP and sets up the Elixir channel (server only)
   go(function* () {
-    key = yield take(chData)
-    console.log('key is:', key)
+    AsyncStorage.removeItem('key')
+    key = yield AsyncStorage.getItem('key') || take(chData)
+    // console.log('key is:', key)
+
+    key = config.jwt
 
     var user = me
-    var msg = {jwt: key, syncpoint: 'none'}
-    const ex_data_channel = Channel(config.url, "rooms:datomic", user, receiveDataMessage, chData, conn, key)
+    var msg = {jwt: key, syncpoint: 'none', subscription: querieslist}
+    const ex_data_channel = Channel(config.url, "datomic:" + user, user, receiveDataMessage, chData, conn, key)
     yield timeout(10000)
     ex_data_channel.send(msg)
     console.log('yield take chData', yield take(chData))
-    console.log('end data go function')
+    // console.log('end data go function')
     channel = ex_data_channel
+
+    transact(conn, [{
+      ':db/id': -1,
+      'localstate/state': 'loggingin'
+    }])
   })
 
   // Authentication Communicating Sequential Process. Puts a JWT on the Data CSP.
   go(function* () {
     // putAsync is more Communicating Sequential Processes but from outside Go functions
     const receiveAuthMessage = (conn, message) => {
-      console.log('message', message)
+      // console.log('message', message)
       putAsync(chAuth, message)
     }
-    if (1 != 2) {
+    if (!AsyncStorage.getItem('key')) {
+      // console.log('step 1')
       var user = me
-      var msg = {email: 'john@phoenix-trello.com', password: '12345678'}
-      const ex_auth_channel = Channel(config.url, "rooms:auth", user, receiveAuthMessage, chAuth, conn)
+      var msg = yield take(chUnPass)
+      console.log('yield take chUnPass', msg)
+//      var msg = {email: 'john@phoenix-trello.com', password: '12345678'}
+      const ex_auth_channel = Channel(config.url, "auth:" + user, user, receiveAuthMessage, chAuth, conn)
       yield timeout(10000)
       ex_auth_channel.send(msg)
       console.log('yield take chAuth', yield take(chAuth))
       var value = yield take(chAuth)
-      yield put(chData, value.jwt)
+      AsyncStorage.setItem('key', value.jwt)
+      yield put(chData, AsyncStorage.getItem('key'))
     }
   })
 }
 
 // Datascript listener. Fires when we transact data
 datascript.listen(conn, {channel}, function(report) {
+
+console.log("original report.tx_data", report.tx_data)
+
+  if (report.tx_meta.uuid) {
+    var newreportforuuid = {}
+    newreportforuuid.C = report.tx_data[0].C
+    newreportforuuid.m = report.tx_data[0].m
+    newreportforuuid.tx = report.tx_data[0].tx
+    newreportforuuid.added = true
+    newreportforuuid.e = report.tx_data[0].e
+    newreportforuuid.a = "uuid"
+    newreportforuuid.v = report.tx_meta.uuid
+    report.tx_data.push(newreportforuuid)
+  }
+
   log.push(report.tx_data)
   meta.push(report.tx_meta)
 
   if (report.tx_meta && (report.tx_meta.remoteuser || report.tx_meta.secrets)) return
-  if (!report.tx_meta) {
-    report.tx_meta = "test"
-  }
-
+//  if (!report.tx_meta) {
+//    report.tx_meta = "test"
+//  }
 
 //  console.log('META', report.tx_meta)
 //  console.log('listened tempid', datascript.resolve_tempid(report.tempids, -1))
@@ -169,35 +225,40 @@ datascript.listen(conn, {channel}, function(report) {
   var result = datascript.q(...qArgs)
 //  console.log('RESULT', result)
 
-  channel.send({data: report.tx_data, meta: report.tx_meta})
+var tx_data_modded = report.tx_data.filter( s => {
+  return s.a != 'confirmationid'
 })
 
+// console.log("tx data modded", tx_data_modded)
+// console.log(report.tx_meta)
 
-const Meteor = {}
-Meteor.loggingIn = () => {
-  return false
-}
-Meteor.userId = () => {
-  return 1
-}
-Meteor.user = () => {
-  return {}
-}
+  channel.send({data: tx_data_modded, meta: report.tx_meta, confirmationid: report.tx_data.confirmationid})
+})
 
-import { AppRegistry } from 'react-native'
+/*
+import Meteor from 'react-native-meteor';
+import { AppRegistry } from 'react-native';
+import {
+  Router,
+  Scene,
+  Actions,
+} from 'react-native-router-flux';
+*/
 
 // The actual context. This is the first argument to actions.
 export const initContext = () => {
   return {
+    datascript: datascript,
     conn: conn,
     transact: transact,
     log: log,
+    putAsync: putAsync,
+    chUnPass: chUnPass,
     conn_components: conn_components,
     meta: meta,
-    Meteor,
     AppRegistry,
     me,
     chData,
     key
-  }
+  };
 }

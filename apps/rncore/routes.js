@@ -1,10 +1,12 @@
 import React from 'react'
 import { View, Text } from 'react-native'
 
+import { DBConnProvider } from '../../config/lib/helpers/legacy/dbConnProvider.js'
+
 import Demo from '../rndemo/components/index'
 
 export default function (injectDeps, { AppRegistry }, context, actions) {
-  const conn = context.conn
+//  const conn = context.conn
   const App = () => (
     <View>
       <Demo />
@@ -12,5 +14,5 @@ export default function (injectDeps, { AppRegistry }, context, actions) {
   )
 
   const AppCtx = injectDeps(App)
-  AppRegistry.registerComponent('RCTWebRTCDemo', () => App)
+  AppRegistry.registerComponent('RCTWebRTCDemo', () => AppCtx)
 }

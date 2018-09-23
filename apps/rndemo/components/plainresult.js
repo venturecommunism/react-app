@@ -8,7 +8,7 @@ import {
 
 const PlainResultComponent = ({ result, actions }) => (
   <View>
-    <TouchableHighlight onPress={() => console.log("actions.addfollowerofjane")}>
+    <TouchableHighlight onPress={() => actions.addfollowerofjane() }>
       <Text>Demo Module ADD FOLLOWER OF JANE</Text>
     </TouchableHighlight>
     <Text>Stringified Result </Text>

@@ -29,6 +29,7 @@ if (data_to_add.some(r => {
   data_to_add[0].uuid = "6497bbee-9739-42a0-908c-c49fc3d6a07d"
 }
 
+/*
 if (meta.type == "basic transaction" && data_to_add.some(r => {
   if (Object.keys(r).every(x => x != 'uuid')) {
     return true
@@ -38,6 +39,7 @@ if (meta.type == "basic transaction" && data_to_add.some(r => {
   alert("can't transact")
   return
 }
+*/
 
 //  console.log('zeroing in', data_to_add[0].uuid)
   data_to_add.map(datom => {

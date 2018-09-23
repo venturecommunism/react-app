@@ -1,0 +1,15 @@
+# NodeJs server configuration
+node:
+  port: 80
+  clusterMode: no
+
+# Database configuration
+database:
+  name: test
+  port: 27017
+  user: myUser
+  password: myPassword
+
+# Application configuration
+application:
+  name: MyApp

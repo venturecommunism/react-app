@@ -8,7 +8,7 @@
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "electron-start": "node_modules/.bin/electron main-desktop.js",
-    "postinstall": "cp config/scripts/create-react-app.patch node_modules/react-scripts && cd node_modules/react-scripts && git init && git apply create-react-app.patch && cd ../.. && cd ../.. && ./config/scripts/stellar-patch.sh"
+    "postinstall": "cp config/scripts/create-react-app.patch node_modules/react-scripts && cd node_modules/react-scripts && git init && git apply create-react-app.patch && cd ../.. && cd node_modules/react-simple-di && yarn && cd ../.."
   },
   "dependencies": {
     "datascript": "^0.16.6",
@@ -26,6 +26,23 @@
     "react-scripts": "^1.1.0",
     "react-simple-di": "https://github.com/khayong/react-simple-di#d27801e09b25d479f441c6c1e4911fb335c99069",
     "recompose": "^0.27.0"
+  },
+  "dependenciesComments": {
+    "datascript": "client side database",
+    "js-csp": "communicating sequential processes for coordinating remote data sources without race conditions in config/context.js",
+    "mobx": "observables. so far used in the time travel data container",
+    "moment": "manipulating dates, times and durations",
+    "phoenix": "opens a socket to an elixir/phoenix data channel",
+    "react": "pinned to get rid of isMounted error. diffs the dom",
+    "react-art": "makes react-native-web work",
+    "react-app": "javascript bundler/environment",
+    "react-dom": "makes react work on web. (should be kept at the same version as react)",
+    "react-komposer": "composes react containers. should be used only at the top container or so",
+    "react-mounter": "mounts react components",
+    "recompose": "higher order components the rest of the way down after react-komposer. more modern"
+  },
+  "dependenciesToDeduplicate": {
+    "react-komposer": "2.0.0"
   },
   "devDependencies": {
     "babel-jest": "23.4.2",
