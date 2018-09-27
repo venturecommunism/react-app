@@ -8,6 +8,8 @@ import TopPad from '../../rncore/components/TopPad'
 import Module from '../../core/containers/module'
 const Mod = Module()
 
+import Demo from '../../rndemo/components/index'
+
 const loginstate = `
   [:find ?e ?v
    :where [?e "localstate/state" ?v]]`
@@ -24,7 +26,8 @@ const LoginContainer = Module('loginactions', Login, SmallContainer)
 
 const Root = ({result}) => (
   <TopPad>
-    <LoginContainer query={loginstate} />
+    <Demo/>
+    <LoginContainer query={loginstate}/>
   </TopPad>
 )
 

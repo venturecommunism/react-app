@@ -3,13 +3,13 @@ import { View, Text } from 'react-native'
 
 import { DBConnProvider } from '../../config/lib/helpers/legacy/dbConnProvider.js'
 
-import Demo from '../rndemo/components/index'
+import Core from '../rncore/components/index'
 
 export default function (injectDeps, { AppRegistry }, context, actions) {
 //  const conn = context.conn
   const App = () => (
     <View>
-      <Demo />
+      <Core />
     </View>
   )
 

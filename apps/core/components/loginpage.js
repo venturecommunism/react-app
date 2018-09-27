@@ -28,10 +28,10 @@ const Root = ({result, actions}) => (
         <Mod moduleid={"inbox"} />
         <Mod moduleid={"somedaymaybe"} />
       </ScrollView>
+      {/*
       <View style={{position: 'fixed', right: 5, bottom: 5, width: 200}}>
         <CreateTaskModule moduleid="createtask" />
       </View>
-      {/*
       <StellarDemoModule moduleid={"stellardemo"} />
       <Mod moduleid={"core"} />
       <Mod moduleid={"servercore"} />

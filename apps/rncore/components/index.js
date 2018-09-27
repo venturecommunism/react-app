@@ -1,19 +1,14 @@
 import React from 'react'
 import {
-  View
+  View,
+  Text
 } from 'react-native'
 
-import Module from '../../rncore/containers/module'
-const Mod = Module()
-const CreateTaskModule = Module('createtaskactions')
+import Demo from '../../rndemo/components/index'
 
 const Root = ({result}) => (
   <View>
-    <Mod moduleid={"newrootcore"} />
-{/*    <CreateTaskModule moduleid={"createtask"} />
-    <Mod moduleid={"core"} />
-    <Mod moduleid={"servercore"} />
-*/}
+    <Demo />
   </View>
 )
 

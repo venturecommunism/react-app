@@ -141,8 +141,12 @@ if (clientonly) {
 } else {
   // Data Communicating Sequential Processes. Takes JWT from the Auth CSP and sets up the Elixir channel (server only)
   go(function* () {
-    localStorage.removeItem('key')
-    key = yield localStorage.getItem('key') || take(chData)
+//
+// these lines determine whether the jwt key comes from config.jwt or the chData channel
+//
+//    localStorage.removeItem('key')
+//    key = yield localStorage.getItem('key') || take(chData)
+    var key = config.jwt
     // console.log('key is:', key)
 
     var user = me

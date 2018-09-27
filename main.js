@@ -4,6 +4,7 @@ import {initContext} from './config/context-web'
 const app = createApp(initContext())
 
 import coreModule from './apps/core'
+import rnDemoModule from './apps/rndemo'
 
 // maybe something that could be used to conditionally load different modules
 /*
@@ -32,5 +33,6 @@ if( isMobile.any() ) alert('Mobile');
 */
 
 app.loadModule(coreModule)
+app.loadModule(rnDemoModule)
 
 app.init()

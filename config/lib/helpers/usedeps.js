@@ -45,34 +45,20 @@ export function injectDeps(context, _actions) {
   };
 }
 
-const defaultMapper = (context, actions) => ({
-  query: null,
-  err: null,
-  actions: actions,
-  context: () => context,
+const defaultMapper = (actionset, context, actions) => ({
+  actions: actions[actionset],
+  context: () => context
 });
 
-export function useDeps(name, mapper = defaultMapper) {
+export function useDeps(actionset, mapper = defaultMapper) {
   return function (Component) {
     class ComponentUseDeps extends React.Component {
       render() {
-        const {context} = this.context;
-/*
-if (name == 'timepicker') {
-sweetAlert("context", Object.keys(this.context) + "name: " + name + "name keys: " + Object.keys(this.context.actions[name]))
-}
-*/
-        const actions = this.context.actions[name]
-/*
-if (!actions) {
-sweetAlert("name", name)
-}
-*/
-        const mappedProps = mapper(context, actions);
-
-//        if (mappedProps.actions().name() == 'sidebar') {
-//          sweetAlert("mp", Object.keys(mappedProps.actions()))
-//        }
+        const {context, actions} = this.context;
+        if (this.context.actions[actionset] === undefined) {
+          throw new Error(actionset + ' actionset undefined')
+        }
+        const mappedProps = mapper(actionset, context, actions);
 
         const newProps = {
           ...this.props,
