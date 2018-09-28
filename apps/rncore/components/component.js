@@ -8,7 +8,7 @@ import badmapreduce from '../lib/newbadmapreduce'
 
 const RecursiveResultComponent = ({ result, actions, moduleroot, title }) => (
   <View>
-    <Text style={{display: 'block', fontSize: 20, fontWeight: 'bold'}}>{title}</Text>
+    <Text style={{fontSize: 20, fontWeight: 'bold'}}>{title}</Text>
     {badmapreduce(result, actions, moduleroot)}
   </View>
 )

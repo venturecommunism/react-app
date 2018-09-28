@@ -39,10 +39,10 @@ const styles = Platform.OS === 'android' ? StyleSheet.create({
 
 const Demo = () => (
   <View>
-    <ScrollView style={{backgroundColor: '#FFFF00'}}>
+{/*    <ScrollView style={{backgroundColor: '#FFFF00'}}>
       <Text>Demo</Text>
       <AllUsersDataContainer query={allUserQuery} />
-    </ScrollView>
+    </ScrollView> */}
     <View style={styles.floatingMenuButtonStyle}>
       <InputsContainer />
     </View>

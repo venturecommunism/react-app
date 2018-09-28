@@ -81,8 +81,8 @@ const badmapreduce = function (result, actions, moduleroot) {
           case undefined:
           case null:
           default:
-            return <Inputs key={key} actions={actions} component={component} />
-//          return <Button key={key} title={component.componentsname} key={key} onPress={actions[component.componentsname]} accessibilityLabel={component.componentsname} />
+//          return <Inputs key={key} actions={actions} component={component} />
+            return <Button key={key} title={component.componentsname} key={key} onPress={() => actions[component.componentsname](result[pIndex][3])} accessibilityLabel={component.componentsname} />
         }
       case "subcomponent":
         // just return the component's name in subcomponents for now

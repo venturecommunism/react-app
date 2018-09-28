@@ -1,7 +1,7 @@
-// import actions from './actions'
+import actions from './commands'
 import routes from './routes'
 
 export default {
-//  actions,
+  actions,
   routes,
 }
