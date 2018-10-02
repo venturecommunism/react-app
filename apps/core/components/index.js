@@ -10,7 +10,8 @@ import TopPad from '../../rncore/components/TopPad'
 import Module from '../../core/containers/module'
 const Mod = Module()
 
-import Calendar from '../../rndemo/components/componentFromStream/index'
+import Timer from '../../rndemo/components/mapPropsStream/index'
+import GitHubDemo from '../../rndemo/components/componentFromStream/index'
 import Demo from '../../rndemo/components/index'
 
 const loginstate = `
@@ -29,7 +30,8 @@ const LoginContainer = Module('loginactions', Login, SmallContainer)
 
 const Root = ({result}) => (
   <View>
-    <Calendar />
+    <Timer/>
+    <GitHubDemo/>
     <Demo/>
     <LoginContainer query={loginstate}/>
   </View>
