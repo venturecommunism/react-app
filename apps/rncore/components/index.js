@@ -5,7 +5,7 @@ import {
   ScrollView
 } from 'react-native'
 
-import Calendar from '../../rndemo/components/calendar'
+import Calendar from '../../rndemo/components/componentFromStream/index'
 import TopPad from '../../rncore/components/TopPad'
 import Demo from '../../rndemo/components/index'
 import Module from '../../rncore/containers/module'

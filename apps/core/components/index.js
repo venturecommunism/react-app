@@ -10,7 +10,7 @@ import TopPad from '../../rncore/components/TopPad'
 import Module from '../../core/containers/module'
 const Mod = Module()
 
-import Calendar from '../../rndemo/components/calendar'
+import Calendar from '../../rndemo/components/componentFromStream/index'
 import Demo from '../../rndemo/components/index'
 
 const loginstate = `
