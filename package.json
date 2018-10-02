@@ -25,7 +25,9 @@
     "react-native-web": "^0.8.0",
     "react-scripts": "^1.1.0",
     "react-simple-di": "https://github.com/khayong/react-simple-di#d27801e09b25d479f441c6c1e4911fb335c99069",
-    "recompose": "^0.27.0"
+    "recompose": "^0.27.0",
+    "resize-observer-polyfill": "^1.5.0",
+    "rxjs": "^6.3.3"
   },
   "dependenciesComments": {
     "datascript": "client side database",

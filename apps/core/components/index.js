@@ -1,6 +1,8 @@
 import React from 'react'
+import 'resize-observer-polyfill/dist/ResizeObserver.global'
 import {
-  View
+  View,
+  Text
 } from 'react-native'
 
 import Login from './loginpage'
@@ -8,6 +10,7 @@ import TopPad from '../../rncore/components/TopPad'
 import Module from '../../core/containers/module'
 const Mod = Module()
 
+import Calendar from '../../rndemo/components/calendar'
 import Demo from '../../rndemo/components/index'
 
 const loginstate = `
@@ -25,10 +28,11 @@ const LoginContainer = Module('loginactions', Login, SmallContainer)
 **/
 
 const Root = ({result}) => (
-  <TopPad>
+  <View>
+    <Calendar />
     <Demo/>
     <LoginContainer query={loginstate}/>
-  </TopPad>
+  </View>
 )
 
 export default Root
