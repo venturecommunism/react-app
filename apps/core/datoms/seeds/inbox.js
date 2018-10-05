@@ -6,13 +6,13 @@
     {
       ':db/id': -1,
       'componentsname': 'newroot.js Subcomponent',
-      'componentsparents': [-5, -18],
+      'componentsparents': [-5],
       'componentstype': 'subcomponent'
     },
     {
       ':db/id': -4,
       'componentsname': 'Data Component',
-      'componentsparents': [-5, -18],
+      'componentsparents': [-5],
       'componentstype': 'data'
     },
     {
@@ -24,25 +24,25 @@
     {
       ':db/id': -6,
       'componentsname': 'Second Data Component',
-      'componentsparents': [-5, -18],
+      'componentsparents': [-5],
       'componentstype': 'data'
     },
     {
       ':db/id': -8,
       'componentsname': 'Third Data Component',
-      'componentsparents': [-5, -18],
+      'componentsparents': [-5],
       'componentstype': 'data'
     },
     {
       ':db/id': -10,
       'componentsname': 'Fourth Data Component',
-      'componentsparents': [-5, -18],
+      'componentsparents': [-5],
       'componentstype': 'data'
     },
     {
       ':db/id': -12,
       'componentsname': 'Fifth Data Component (fourth in the main)',
-      'componentsparents': [-5, -18],
+      'componentsparents': [-5],
       'componentstype': 'data'
     },
      { ':db/id': -13,
@@ -64,27 +64,11 @@
     { ':db/id': -14,
       actionsetid: 'general',
       modulename: 'General actions',
-      moduleactions: [-16, -19, -22]
+      moduleactions: [-18, -19, -22]
     },
     { ':db/id': -15,
       routeid: 'home',
       modulename: 'Core module'
-    },
-    { ':db/id': -16,
-      componentsname: 'keyupaddtask',
-      componentstype: 'action',
-      componentsfunction: `({conn, transact}, e) {
-        if (e.which === 13) {
-          var date = new Date().getTime()
-          transact(conn, [{
-            ':db/id': -1,
-            description: 'keyup addtask test',
-            date: date,
-            status: 'pending',
-            uuid: 'uuid-' + date
-          }])
-        }
-      }`
     },
     { ':db/id': -17,
       moduleid: 'inbox',
@@ -92,6 +76,13 @@
       moduleactionsets: -14,
       rootcomponent: -13,
       routes: -15
+    },
+    { ':db/id': -18,
+      componentsname: 'datetimepicker',
+      componentstype: 'action',
+      componentsparents: -5,
+      actiontype: 'datetimepicker',
+      placeholder: 'Due'
     },
     { ':db/id': -19,
       componentsname: 'taskcompletedbutton',
@@ -111,13 +102,13 @@ console.log(e)
     {
       ':db/id': -20,
       'componentsname': 'Sixth Data Component',
-      'componentsparents': [-5, -18],
+      'componentsparents': [-5],
       'componentstype': 'data'
     },
     {
       ':db/id': -21,
       'componentsname': 'Seventh Data Component',
-      'componentsparents': [-5, -18],
+      'componentsparents': [-5],
       'componentstype': 'data'
     },
     { ':db/id': -22,

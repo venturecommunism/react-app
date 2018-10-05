@@ -8,7 +8,7 @@ import { mapPropsStream } from 'recompose'
 import { combineLatest, timer } from 'rxjs'
 import { map } from 'rxjs/operators'
 
-const enhance = mapPropsStream(props$ => {
+const TimerContainer = mapPropsStream(props$ => {
   const timeElapsed$ = timer(0, 1000)
 
   return combineLatest(props$, timeElapsed$).pipe(
@@ -19,10 +19,11 @@ const enhance = mapPropsStream(props$ => {
   )
 })
 
-const Timer = enhance(({timeElapsed}) =>
+const TimerComponent = ({timeElapsed}) =>
   <View>
     <Text>{timeElapsed}</Text>
   </View>
-)
+
+const Timer = TimerContainer(TimerComponent)
 
 export default Timer

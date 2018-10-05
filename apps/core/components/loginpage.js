@@ -25,6 +25,7 @@ const Root = ({result, actions}) => (
     :
     <View> 
       <ScrollView>
+        <Mod moduleid={"calendar"} />
         <Mod moduleid={"inbox"} />
         <Mod moduleid={"somedaymaybe"} />
       </ScrollView>

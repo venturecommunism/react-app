@@ -17,6 +17,7 @@ const Root = ({result}) => (
     <ScrollView>
       <Timer/>
       <GitHubDemo/>
+      <Mod moduleid={"calendar"} />
       <Mod moduleid={"inbox"} />
       <Mod moduleid={"somedaymaybe"} />
     </ScrollView>

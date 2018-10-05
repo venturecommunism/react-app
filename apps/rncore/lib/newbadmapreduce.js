@@ -9,6 +9,8 @@ import {
   StyleSheet
 } from 'react-native'
 
+import DateTimePicker from '../components/datetimepicker'
+
 // https://javascriptplayground.com/functional-stateless-components-react/
 
 class Inputs extends React.Component {
@@ -78,6 +80,8 @@ const badmapreduce = function (result, actions, moduleroot) {
         switch(component.actiontype) {
           case "simplebutton":
             return <Button key={key} title={component.placeholder} onPress={() => actions[component.componentsname](result[pIndex][3])} accessibilityLabel={component.placeholder} />
+          case "datetimepicker":
+            return <DateTimePicker placeholder={component.placeholder} buttonaction={actions[component.componentsname]} key={key} taskid={result[pIndex][3]} />
           case undefined:
           case null:
           default:

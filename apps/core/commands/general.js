@@ -19,5 +19,8 @@ export default {
       uuid: e,
       wait: 'somedaymaybe'
     }])
-  }
+  },
+  datetimepicker({conn, transact}) {
+    alert('test')
+  },
 }

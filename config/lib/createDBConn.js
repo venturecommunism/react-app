@@ -10,6 +10,7 @@ import secretdatoms from '../../apps/core/datoms/seeds/secretdatoms'
 import followerdatoms from '../../apps/core/datoms/seeds/followerdatoms'
 
 import inbox from '../../apps/core/datoms/seeds/inbox'
+import calendar from '../../apps/core/datoms/seeds/calendar'
 import somedaymaybe from '../../apps/core/datoms/seeds/somedaymaybe'
 import clientroot from '../../apps/core/datoms/seeds/clientroot'
 import serverroot from '../../apps/core/datoms/seeds/serverroot'
@@ -46,6 +47,7 @@ const componentdb = () => {
    * querying.
    */
   datascript.transact(conn_db, inbox)
+  datascript.transact(conn_db, calendar)
   datascript.transact(conn_db, somedaymaybe)
   datascript.transact(conn_db, createtask)
   datascript.transact(conn_db, clientroot)

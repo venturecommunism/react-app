@@ -19,5 +19,11 @@ export default {
       uuid: e,
       wait: 'somedaymaybe'
     }])
-  }
+  },
+  datetimepicker({conn, transact}, uuid, year, month, day, hour, minute) {
+    transact(conn, [{
+      uuid: uuid,
+      due: year + "-" + month + "-" + day + "-" + hour + "-" + minute
+    }])
+  },
 }
