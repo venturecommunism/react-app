@@ -13,7 +13,8 @@ export default {
       description: text,
       entry: date,
       status: 'pending',
-      uuid: uuid()
+      uuid: uuid(),
+      confirmationid: uuid()
     }])
   },
 }

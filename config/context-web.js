@@ -6,11 +6,12 @@ const conn_components = componentdb()
 // const transact = datascript.transact
 // Transaction function maintains the log (for time travel, undo, etc.)
 import transact from './transact'
+import uuid from './uuid'
 
 var querieslist = []
 const ql = datascript.q(`[:find ?query ?sortfields ?sortorders ?limit :where [?e "query" ?query] [?e "sortfields" ?sortfields] [?e "sortorders" ?sortorders] [?e "limit" ?limit]]`, datascript.db(conn_components))
-querieslist[0] = [ql[0], ql[1]]
-querieslist[1] = [ql[2]]
+querieslist[0] = [ql[0], ql[1], ql[2]]
+querieslist[1] = [ql[3]]
 
 console.log(querieslist)
 
@@ -190,9 +191,7 @@ if (clientonly) {
 
 // Datascript listener. Fires when we transact data
 datascript.listen(conn, {channel}, function(report) {
-
-console.log("original report.tx_data", report.tx_data)
-
+  // adds a uuid. sync doesn't work without it
   if (report.tx_meta.uuid) {
     var newreportforuuid = {}
     newreportforuuid.C = report.tx_data[0].C
@@ -205,32 +204,17 @@ console.log("original report.tx_data", report.tx_data)
     report.tx_data.push(newreportforuuid)
   }
 
+  // adds things to the history
   log.push(report.tx_data)
   meta.push(report.tx_meta)
 
+  // if there's metadata but it's got remoteuser or secrets tags, then don't transact it
   if (report.tx_meta && (report.tx_meta.remoteuser || report.tx_meta.secrets)) return
-//  if (!report.tx_meta) {
-//    report.tx_meta = "test"
-//  }
 
-//  console.log('META', report.tx_meta)
-//  console.log('listened tempid', datascript.resolve_tempid(report.tempids, -1))
-
-  var query = `[:find ?id
-                :where [?e ":app/peer" ?id]]`
-
-  var db = datascript.db(conn)
-
-  const qArgs = [query, db]
-  var result = datascript.q(...qArgs)
-//  console.log('RESULT', result)
-
-var tx_data_modded = report.tx_data.filter( s => {
-  return s.a != 'confirmationid'
-})
-
-// console.log("tx data modded", tx_data_modded)
-// console.log(report.tx_meta)
+  // removes the confirmationid from the transaction itself since the server only needs it in meta
+  var tx_data_modded = report.tx_data.filter( s => {
+    return s.a != 'confirmationid'
+  })
 
   channel.send({data: tx_data_modded, meta: report.tx_meta, confirmationid: report.tx_data.confirmationid})
 })
@@ -256,5 +240,6 @@ export const initContext = () => {
     chUnPass: chUnPass,
     conn_components: conn_components,
     meta: meta,
+    uuid: uuid,
   };
 }

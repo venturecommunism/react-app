@@ -12,12 +12,13 @@ export default {
       e.target.value = ""
     }
   },
-  tasksomedaymaybebutton({conn, transact}, e) {
+  tasksomedaymaybebutton({conn, transact, uuid}, e) {
     console.log(e)
     var date = new Date().getTime()
     transact(conn, [{
       uuid: e,
-      wait: 'somedaymaybe'
+      wait: 'somedaymaybe',
+      confirmationid: uuid()
     }])
   },
   datetimepicker({conn, transact}) {

@@ -1,57 +1,48 @@
 import datascript from 'datascript'
 
-const uuid = () => {
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-    var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8)
-    return v.toString(16)
-  })
-}
-
 const transact = (conn, data_to_add, meta) => {
-// disable metadata to test transactions locally
-  var confid = uuid()
-  var tx_uuid = data_to_add[0].uuid
+  // disable metadata to test transactions locally
+
+  // confid is the confirmationid. it will be put in meta so that the server can send it back and it will be mapped onto data_to_add so that
+  // when it does come back it can be updated / removed
+  // set the meta if it's unset. need to track how confirmationid and uuid (for a tx) are used
   if (!meta) {
     var meta = {
       type: "basic transaction",
-      confirmationid: confid,
-      uuid: tx_uuid
+      // this is where the confirmationid gets set so that the server knows about it
+      confirmationid: data_to_add[0].confirmationid,
+      // for some reason this uuid has to be here and in the data_to_add.map in order to sync with the server
+      uuid: data_to_add[0].uuid
     }
   }
 
-if (meta.type != "basic transaction") console.log(meta)
-
-// if the transaction has any attribute that begins with localstate/ then we don't send it to the server
-if (data_to_add.some(r => {
-  if (Object.keys(r).some(x=>x.match(/^localstate\//i))) return true
-})) {
-  meta.secrets = "local transaction"
-  data_to_add[0].uuid = "6497bbee-9739-42a0-908c-c49fc3d6a07d"
-}
-
-/*
-if (meta.type == "basic transaction" && data_to_add.some(r => {
-  if (Object.keys(r).every(x => x != 'uuid')) {
-    return true
+  // this bit puts "local transaction" on meta.secrets if ANYTHING says localstate
+  if (data_to_add.some(r => {
+    if (Object.keys(r).some(x=>x.match(/^localstate\//i))) return true
+  })) {
+    meta.secrets = "local transaction"
+    data_to_add[0].uuid = "6497bbee-9739-42a0-908c-c49fc3d6a07d"
   }
-})) {
-  console.log("problem data", data_to_add)
-  alert("can't transact")
-  return
-}
-*/
 
-//  console.log('zeroing in', data_to_add[0].uuid)
+  // if there's some datom (in a basic transaction only?) without a uuid, it's a problem
+  if (meta.type == "basic transaction" && data_to_add.some(r => {
+    if (Object.keys(r).every(x => x != 'uuid')) {
+      return true
+    }
+  })) {
+    console.log("problem data", data_to_add)
+    alert("can't transact")
+    return
+  }
+
   data_to_add.map(datom => {
-    datom.confirmationid = confid
-    tx_uuid ? datom.uuid = tx_uuid : ''
-    datom
+    // not sure whether to add the confirmationid since it should (sometimes?) be added already
+    data_to_add[0].confirmationid ? datom.confirmationid = data_to_add[0].confirmationid : ''
+    // this uuid is needed in order to sync with the server
+    data_to_add[0].uuid ? datom.uuid = data_to_add[0].uuid : ''
   })
-//  console.log('confirmationid', data_to_add[0].confirmationid)
+
   var tx_report = datascript.transact(conn, data_to_add, meta)
-  console.log(tx_report)
-  // console.log('tmpid', tx_report.tempids)
-  //  console.log('resolved tempid', datascript.resolve_tempid(tx_report.tempids, -1))
 }
 
 export default transact
