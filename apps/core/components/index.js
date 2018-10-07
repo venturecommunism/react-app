@@ -1,18 +1,12 @@
 import React from 'react'
 import 'resize-observer-polyfill/dist/ResizeObserver.global'
 import {
-  View,
-  Text
+  View
 } from 'react-native'
 
 import Login from './loginpage'
-import TopPad from '../../rncore/components/TopPad'
 import Module from '../../core/containers/module'
 const Mod = Module()
-
-import Timer from '../../rndemo/components/mapPropsStream/index'
-import GitHubDemo from '../../rndemo/components/componentFromStream/index'
-import Demo from '../../rndemo/components/index'
 
 const loginstate = `
   [:find ?e ?v
@@ -30,9 +24,6 @@ const LoginContainer = Module('loginactions', Login, SmallContainer)
 
 const Root = ({result}) => (
   <View>
-    <Timer/>
-    <GitHubDemo/>
-    <Demo/>
     <LoginContainer query={loginstate}/>
   </View>
 )

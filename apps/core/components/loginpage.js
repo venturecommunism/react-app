@@ -9,6 +9,10 @@ import {
   ActivityIndicator
 } from 'react-native'
 
+import Timer from '../../rndemo/components/mapPropsStream'
+import GitHubDemo from '../../rndemo/components/componentFromStream'
+import Demo from '../../rndemo/components/index'
+
 import Module from '../../core/containers/module'
 const Mod = Module()
 const CreateTaskModule = Module('createtaskactions')
@@ -25,18 +29,13 @@ const Root = ({result, actions}) => (
     :
     <View> 
       <ScrollView>
+        <Timer/>
+        <GitHubDemo/>
         <Mod moduleid={"calendar"} />
         <Mod moduleid={"inbox"} />
         <Mod moduleid={"somedaymaybe"} />
       </ScrollView>
-      {/*
-      <View style={{position: 'fixed', right: 5, bottom: 5, width: 200}}>
-        <CreateTaskModule moduleid="createtask" />
-      </View>
-      <StellarDemoModule moduleid={"stellardemo"} />
-      <Mod moduleid={"core"} />
-      <Mod moduleid={"servercore"} />
-      */}
+      <Demo />
     </View>
     }
   </View>

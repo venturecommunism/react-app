@@ -27,4 +27,7 @@ export default {
       due: year + "-" + month + "-" + day + "-" + hour + "-" + minute
     }])
   },
+  inboxstatecheckbox({conn, transact}, e) {
+    alert(e)
+  }
 }

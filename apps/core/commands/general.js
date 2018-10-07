@@ -24,4 +24,7 @@ export default {
   datetimepicker({conn, transact}) {
     alert('test')
   },
+  inboxstatecheckbox({conn, transact}, e) {
+    alert(e)
+  },
 }
