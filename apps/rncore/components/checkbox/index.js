@@ -41,8 +41,16 @@ class CheckBox extends Component {
             });
         }
     }
+
     componentWillMount() {
         this.setState(this.baseState)
+    }
+
+    // sort-of hack to make sure state is consistent
+    componentDidUpdate(prevProps) {
+      if (this.props.taskid !== prevProps.taskid) {
+        this.setState(this.baseState)
+      }
     }
 
     render() {

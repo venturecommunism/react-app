@@ -26,7 +26,7 @@ const badmapreduce = function (result, actions, moduleroot) {
           case "simplebutton":
             return <Button key={key} title={component.placeholder} onPress={() => actions[component.componentsname](result[pIndex][3])} accessibilityLabel={component.placeholder} />
           case "checkbox":
-            return <CheckBox key={key} onChange={() => actions[component.componentsname](result[pIndex][3])} label={component.placeholder} />
+            return <CheckBox key={key} taskid={result[pIndex][3]} onChange={() => actions[component.componentsname](result[pIndex][3])} label={component.placeholder} />
           case "datetimepicker":
             return <DateTimePicker placeholder={component.placeholder} buttonaction={actions[component.componentsname]} key={key} taskid={result[pIndex][3]} />
           case undefined:

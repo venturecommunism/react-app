@@ -4,30 +4,27 @@
 
   const componentdatoms = [
     { ':db/id': -1,
-      moduleid: 'inbox',
-      modulename: 'Root Core module',
+      moduleid: 'projectspicker',
+      modulename: 'Projects list',
       moduleactionsets: -4,
       rootcomponent: -3
     },
     {
       ':db/id': -2,
-      'componentsname': 'Inbox',
+      'componentsname': 'Projects picker',
       'componentstype': 'root',
-      'componentid': 'inbox'
+      'componentid': 'projectspicker'
     },
     { ':db/id': -3,
-      componentid: 'newrootcomponentcleanup',
-      componentsname: 'New Root component (cleanup)',
+      componentid: 'someid-projectspicker',
+      componentsname: 'New Projectspicker (this needs to be unique) component (cleanup)',
       query: `[:find ?desc ?date ?status ?uuid ?confirmid ?remoteid ?e
                :where [?e "description" ?desc]
                       [?e "entry" ?date]
                       [?e "status" ?status]
                       [?e "status" "pending"]
                       [?e "uuid" ?uuid]
-                      [(missing? $ ?e "project")]
-                      [(missing? $ ?e "type")]
-                      [(missing? $ ?e "wait")]
-                      [(missing? $ ?e "due")]
+                      [?e "type" "project"]
                       [(get-else $ ?e "confirmationid" "none") ?confirmid]
                       [(get-else $ ?e "dat.sync.remote.db/id" "none") ?remoteid]]`,
       sortfields: `[1, 0]`,
@@ -35,13 +32,13 @@
       limit: 10
     },
     { ':db/id': -4,
-      actionsetid: 'general',
-      modulename: 'General actions',
-      moduleactions: [-18, -19, -22, -23, -24]
+      actionsetid: 'general-mustbeunique',
+      modulename: 'General actions (unique?)',
+      moduleactions: [-19, -22, -23]
     },
     {
       ':db/id': -5,
-      'componentsname': 'newroot.js Subcomponent',
+      'componentsname': 'projectspicker newroot.js Subcomponent',
       'componentsparents': [-2],
       'componentstype': 'subcomponent'
     },
@@ -75,27 +72,12 @@
       'componentsparents': [-2],
       'componentstype': 'data'
     },
-    { ':db/id': -18,
-      componentsname: 'datetimepicker',
-      componentstype: 'action',
-      componentsparents: -2,
-      actiontype: 'datetimepicker',
-      placeholder: 'Due'
-    },
     { ':db/id': -19,
-      componentsname: 'taskcompletedbutton',
+      componentsname: 'placeinproject',
       componentstype: 'action',
       componentsparents: -2,
       actiontype: 'simplebutton',
-      placeholder: 'Done',
-      componentsfunction: `({conn, transact}, e) {
-console.log(e)
-          var date = new Date().getTime()
-          transact(conn, [{
-            uuid: e,
-            status: 'completed'
-          }])
-      }`
+      placeholder: 'Place in project'
     },
     {
       ':db/id': -20,
@@ -108,37 +90,6 @@ console.log(e)
       'componentsname': 'Seventh Data Component',
       'componentsparents': [-2],
       'componentstype': 'data'
-    },
-    { ':db/id': -22,
-      componentsname: 'tasksomedaymaybebutton',
-      componentstype: 'action',
-      componentsparents: -2,
-      actiontype: 'simplebutton',
-      placeholder: 'Someday-Maybe',
-      componentsfunction: `({conn, transact}, e) {
-console.log(e)
-          var date = new Date().getTime()
-          transact(conn, [{
-            uuid: e,
-            wait: 'somedaymaybe'
-          }])
-      }`
-    },
-    {
-      ':db/id': -23,
-      componentsname: 'inboxstatecheckbox',
-      componentstype: 'action',
-      componentsparents: [-2],
-      actiontype: 'checkbox',
-      placeholder: 'Click me'
-    },
-    {
-      ':db/id': -24,
-      componentsname: 'makeproject',
-      componentstype: 'action',
-      componentsparents: [-2],
-      actiontype: 'simplebutton',
-      placeholder: 'Make Project'
     },
   ]
 

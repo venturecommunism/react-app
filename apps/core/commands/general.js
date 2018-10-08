@@ -25,6 +25,31 @@ export default {
     alert('test')
   },
   inboxstatecheckbox({conn, transact}, e) {
-    alert(e)
+    transact(conn, [{
+      "localstate/moduleid": "inbox",
+      "localstate/selectlist": e
+    }])
   },
+  makeproject({conn, transact, uuid}, e) {
+    transact(conn, [{
+      type: "project",
+      uuid: e,
+      confirmationid: uuid()
+    }])
+  },
+  placeinproject({conn, transact, uuid, datascript}, e) {
+    var query = `[:find ?select :where
+                  [?e "localstate/selectlist" ?select]
+                  [?e "localstate/moduleid" "inbox"]]`
+    var result = datascript.q(query, datascript.db(conn))
+    result.forEach(x => {
+      var confid = uuid()
+      var obj = {
+        uuid: x[0],
+        project: e,
+        confirmationid: confid
+      }
+      transact(conn, [obj])
+    })
+  }
 }

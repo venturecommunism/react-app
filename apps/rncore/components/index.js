@@ -18,6 +18,7 @@ const Root = ({result}) => (
       <Timer/>
       <GitHubDemo/>
       <Mod moduleid={"calendar"} />
+      <Mod moduleid={"projectspicker"} />
       <Mod moduleid={"inbox"} />
       <Mod moduleid={"somedaymaybe"} />
     </ScrollView>
