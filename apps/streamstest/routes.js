@@ -2,7 +2,7 @@ import React from 'react'
 import {mount} from 'react-mounter'
 import { DBConnProvider } from '../../config/lib/helpers/legacy/react-datascript'
 
-import Index from './components/index'
+import Index from '../rnstreamstest/components/index'
 
 export default function (injectDeps, context, actions) {
   const conn = context.conn

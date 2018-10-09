@@ -3,10 +3,12 @@ import {initContext} from './config/context-mobile'
 
 const app = createApp(initContext())
 
-import rnCoreModule from './apps/rncore'
-import rnDemoModule from './apps/rndemo'
+//import rnCoreModule from './apps/rncore'
+//import rnDemoModule from './apps/rndemo'
+
+import rnCoreModule from './apps/rnstreamstest'
 
 app.loadModule(rnCoreModule)
-app.loadModule(rnDemoModule)
+//app.loadModule(rnDemoModule)
 
 app.init()

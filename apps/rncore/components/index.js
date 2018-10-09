@@ -5,6 +5,7 @@ import {
   ScrollView
 } from 'react-native'
 
+import StreamsTest from '../../rnstreamstest/components/index'
 import Timer from '../../rndemo/components/mapPropsStream/index'
 import GitHubDemo from '../../rndemo/components/componentFromStream/index'
 import TopPad from '../../rncore/components/TopPad'
@@ -15,6 +16,7 @@ const Mod = Module()
 const Root = ({result}) => (
   <View>
     <ScrollView>
+      <StreamsTest/>
       <Timer/>
       <GitHubDemo/>
       <Mod moduleid={"calendar"} />
