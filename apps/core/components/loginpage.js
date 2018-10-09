@@ -2,11 +2,7 @@ import React, {Component} from 'react'
 import {
   ScrollView,
   Text,
-  TextInput,
-  View,
-  Button,
-  Alert,
-  ActivityIndicator
+  View
 } from 'react-native'
 
 import Timer from '../../rndemo/components/mapPropsStream'
@@ -15,8 +11,6 @@ import Demo from '../../rndemo/components/index'
 
 import Module from '../../core/containers/module'
 const Mod = Module()
-const CreateTaskModule = Module('createtaskactions')
-const StellarDemoModule = Module('stellardemoactions')
 import LoginComponent from './logincomponent'
 const Login = Module('loginactions', LoginComponent, 'none')
 

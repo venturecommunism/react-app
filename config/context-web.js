@@ -10,10 +10,8 @@ import uuid from './uuid'
 
 var querieslist = []
 const ql = datascript.q(`[:find ?query ?sortfields ?sortorders ?limit :where [?e "query" ?query] [?e "sortfields" ?sortfields] [?e "sortorders" ?sortorders] [?e "limit" ?limit]]`, datascript.db(conn_components))
-querieslist[0] = [ql[0], ql[1], ql[2]]
-querieslist[1] = [ql[3]]
-
-console.log(querieslist)
+// querieslist might get more entries for data needed now versus later
+querieslist[0] = [...ql]
 
 // Elixir / Phoenix Channels things
 var clientonly = false
