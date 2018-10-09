@@ -27,12 +27,7 @@ defmodule Datomic.Channel do
       Exdn.to_reversible edn
     end)
 
-    # recurse through this instead
-    firstsub = Enum.at(datomicsubscription, 0)
-    secondsub = Enum.at(datomicsubscription, 1)
-    thirdsub = Enum.at(datomicsubscription, 2)
-
-    finaloutput = MapSet.union(MapSet.union(firstsub, secondsub), thirdsub)
+    finaloutput = RecUnion.recursiveunion(datomicsubscription)
 
     finaloutput = MapSet.new(finaloutput, fn(x) ->
       x ++ [1, true]

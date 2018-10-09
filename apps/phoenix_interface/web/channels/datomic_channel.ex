@@ -35,8 +35,8 @@ defmodule PhoenixInterface.DatomicChannel do
     end)
     |> Enum.each(fn({_, x}) ->
       push socket, "new:msg", %{"user" => "system", "body" => x}
-#      Process.sleep(60)
-#      IO.puts Enum.random([1,2,3,4,5,6,7,8,9])
+      Process.sleep(60)
+      IO.puts Enum.random([1,2,3,4,5,6,7,8,9])
     end)
 
     push socket, "join", %{status: "connected"}

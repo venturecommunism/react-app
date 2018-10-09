@@ -63,6 +63,8 @@ buck-out/
 
 ### SERVER ###
 
+/run_all_tests.sh
+
 TODOS.txt
 */TODOS.txt
 .env
