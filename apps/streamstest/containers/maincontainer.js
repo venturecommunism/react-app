@@ -1,3 +1,5 @@
+import { useDeps } from 'react-simple-di'
+
 import PropTypes from 'prop-types'
 import { Observable } from 'rxjs'
 import {
@@ -56,5 +58,6 @@ export default (component, streamhandlers) => compose(
       user: selectedUser,
       updateFunctions: { addLike, addDislike, deleteLike, deleteDislike }
     })
-  )
+  ),
+  useDeps()
 )(component, streamhandlers)

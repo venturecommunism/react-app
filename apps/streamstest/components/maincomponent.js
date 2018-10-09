@@ -15,11 +15,12 @@ const Likes = InfoTablesContainer(LikesComponent, streamhandlers)
 const Dislikes = InfoTablesContainer(DislikesComponent, streamhandlers)
 
 // 1) remote state (userList, status, message)
-// 2) remote actions ()
+// 2) remote actions (actions)
 // 3) local state (selectedUser, match)
 // 4) local actions (userSelect, history)
 
 const MainComponent = ({
+  actions,
   status,
   userList,
   selectedUser,
@@ -28,6 +29,7 @@ const MainComponent = ({
   match,
   history
 }) => {
+  const commands = actions().general
   const { params: { user: userParam = 1 } } = match
   if (selectedUser) {
     userParam !== selectedUser.user && history.push(`/${selectedUser.user}`)
@@ -37,7 +39,7 @@ const MainComponent = ({
       <UserContainer>
         {status === 'SUCCESS' ? (
           <Fragment>
-            <h3>Users</h3>
+            <h3 onClick={() => commands.test()}>Users</h3>
             <ListContainer style={{ height: '500px' }}>
               {userList.map((user, i) => (
                 <ListItem key={i} onClick={() => userSelect(user)} selected={user === selectedUser}>
