@@ -13,8 +13,10 @@
   "dependencies": {
     "datascript": "^0.16.6",
     "js-csp": "^0.9.3",
+    "lodash": "^4.17.11",
     "mobx": "^2.6.3",
     "moment": "^2.18.1",
+    "normalize.css": "^8.0.0",
     "phoenix": "1.2.1",
     "react": "16.4.1",
     "react-art": "^16.5.0",
@@ -23,11 +25,13 @@
     "react-mounter": "^1.2.0",
     "react-native": "0.56.0",
     "react-native-web": "^0.8.0",
+    "react-router-dom": "^4.3.1",
     "react-scripts": "^1.1.0",
     "react-simple-di": "https://github.com/khayong/react-simple-di#d27801e09b25d479f441c6c1e4911fb335c99069",
     "recompose": "^0.27.0",
     "resize-observer-polyfill": "^1.5.0",
-    "rxjs": "^6.3.3"
+    "rxjs": "^6.3.3",
+    "styled-components": "^3.4.9"
   },
   "dependenciesComments": {
     "datascript": "client side database",
