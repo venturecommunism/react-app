@@ -4,7 +4,7 @@ import {
   TextInput
 } from 'react-native'
 
-import { TableContainer, LikesContainer, ListItem, ListHeader } from './styledComponents'
+import { TableContainer, LikesContainer, ListItem, ListHeader, ListItemView, Delete } from './styledComponents'
 
 const oldAddPopup = ({ open, onChange, handleSubmit, text, closeModal }) => (
   <form
@@ -62,12 +62,14 @@ const LikesList = ({
         text={text}
       />
       {likes.map(like => (
-        <ListItem open={isOpen} key={like.item + like.id}>
-          {like.item}
-          <Text className="material-icons" onPress={() => deleteLike(user, like)}>
+        <ListItemView open={isOpen} key={like.item + like.id}>
+          <ListItem open={isOpen}>
+            {like.item}
+          </ListItem>
+          <Delete className="material-icons" onPress={() => deleteLike(user, like)}>
             delete
-          </Text>
-        </ListItem>
+          </Delete>
+        </ListItemView>
       ))}
     </LikesContainer>
   </Fragment>

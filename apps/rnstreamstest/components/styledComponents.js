@@ -2,101 +2,47 @@ import React from 'react'
 import styled from 'styled-components/native'
 
 export const PageWrapper = styled.View`
-  width: 100%;
-  height: 100%;
   display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  flex-wrap: wrap;
+  flex-direction: row;
 `
-
 export const ListContainer = styled.View`
-  width: 95%;
-/*  flex: 1 0 50%; */
-  height: 100%;
-/*  list-style-type: none; */
-  padding: 0;
-  margin: 0;
-  display: flex;
-  border-radius: 3px;
-  border: 2px solid;
-  flex-direction: column;
-  justify-content: space-around;
+  border: 3px #CCCCCC solid;
+  padding: 10px;
 `
 export const UserContainer = styled.View`
-/*  flex: 1 1 50%; */
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
+  padding-left: 5px;
+  padding-right: 2px;
+  flex: 1;
 `
 export const TableContainer = styled.View`
-/*  flex: 1 1 50%; */
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
+  padding-right: 5px;
+  padding-left: 2px;
+  flex: 3;
 `
 export const ListItem = styled.Text`
-  flex: 1;
-  height: 60px;
-/*  background: ${p => p.selected && 'rgba(66, 244, 173, 0.4)'}; */
-/*  cursor: pointer; */
-  display: flex;
-  justify-content: space-between;
-/*  filter: ${p => p.open && 'blur(3px)'}; */
-/*  overflow-x: hidden; */
-/*  text-overflow: ellipsis; */
-/*  overflow-y: hidden;
-  align-items: center;
-  padding: 8px;*/
+  flex: 5;
+  padding; 2px;
 `
 export const ListHeader = styled.View`
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  width: 85%;
 `
 export const LikesContainer = styled(ListContainer)`
-  height: 200px;
-  overflow-y: auto;
-`
-export const Popup = styled.TextInput`
-  width: 300px;
   display: flex;
   flex-direction: column;
-  border-radius: 3px;
-  position: relative;
-  background: #fff;
-  left: 20px;
-  top: 5px;
-  border: 1px solid;
-  display: ${p => (p.open ? 'block' : 'none')};
-  z-index: 100;
-/*  box-shadow: 9px 14px 14px -8px rgba(128, 128, 128, 1); */
+  justifyContent: flex-end;
 `
-export const StyledInput = styled.TextInput.attrs({
-  type: 'text'
-})`
-  width: 96%;
-  margin: auto;
-  height: 30px;
-  font-size: 14px;
-/*  border: none; */
-  padding: 5px;
+export const StyledInput = styled.TextInput`
 `
 export const Button = styled.View`
-  border-radius: 3px;
-  border: 2px solid rgba(66, 244, 173, 0.7);
-  cursor: pointer;
-  height: 30px;
-  width: 100%;
-  background: rgba(66, 244, 173, 0.6);
-  &:hover {
-    background: rgba(66, 244, 173, 0.9);
-  }
+`
+export const Delete = styled.Text`
+  flex: 1;
+  padding: 2px;
+  alignItems: flex-end;
+  color: #F00;
+`
+export const ListItemView = styled.View`
+  display: flex;
+  flex-direction: row;
 `
 
 export const AddPopup = ({ open, onChange, handleSubmit, text, closeModal }) => (
