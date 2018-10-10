@@ -45,9 +45,9 @@ const MainComponent = ({
           <Fragment>
             <Text onPress={() => commands.test()}>Users</Text>
             <ListContainer>
-              {userList.map((user, i) => (
-                <ListItem key={i} onPress={() => userSelect(user)} selected={user === selectedUser}>
-                  <Text>{user.user}</Text>
+              {userList.map(x => (
+                <ListItem key={x[1]} onPress={() => userSelect(x[0])} selected={x[0] === selectedUser}>
+                  <Text>{x[0]}</Text>
                 </ListItem>
               ))}
             </ListContainer>

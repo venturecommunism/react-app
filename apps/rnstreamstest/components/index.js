@@ -5,7 +5,6 @@ import {
   ScrollView
 } from 'react-native'
 
-import 'resize-observer-polyfill/dist/ResizeObserver.global'
 import { render } from 'react-dom'
 
 import { MemoryRouter as Router, Route } from 'react-router-dom'
@@ -14,9 +13,9 @@ import Container from '../containers/maincontainer'
 import MainComponent from './maincomponent'
 
 import { withRouter } from 'react-router-dom'
-import load from '../containers/streamhandlers/load'
+import listenload from '../containers/streamhandlers/listenload'
 import selectUser from '../containers/streamhandlers/selectuser'
-const streamhandlers = [withRouter, load, selectUser]
+const streamhandlers = [withRouter, listenload, selectUser]
 
 const StreamComponent = Container(MainComponent, streamhandlers)
 

@@ -51,6 +51,8 @@ export default (component, streamhandlers) => compose(
         ])
       )
   }),
+  // moved useDeps() here so streamhandlers (like listenload) would have context
+  useDeps(),
   ...streamhandlers,
   withContext(
     { updateFunctions: PropTypes.object, user: PropTypes.object },
@@ -59,5 +61,4 @@ export default (component, streamhandlers) => compose(
       updateFunctions: { addLike, addDislike, deleteLike, deleteDislike }
     })
   ),
-  useDeps()
 )(component, streamhandlers)
