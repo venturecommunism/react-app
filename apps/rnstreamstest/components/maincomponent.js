@@ -7,7 +7,7 @@ import {
 
 import { createDatomQLContainer, datomql } from '../containers/datomql'
 import React, {Fragment} from 'react'
-import { PageWrapper, ListContainer, ListItem, Loader, UserContainer } from './styledComponents'
+import { PageWrapper, ListContainer, ListItem, ListItemView, Loader, UserContainer } from './styledComponents'
 
 const PickerInbox = ({
   actions,
@@ -25,7 +25,7 @@ const PickerInbox = ({
                 <Fragment>
                   <ListContainer>
                     {dsQuery.map(item => (
-                      <ListItem key={item[3]}>
+                      <ListItemView key={item[3]}>
 
                       <Button
                         title={item[0]}
@@ -33,7 +33,7 @@ const PickerInbox = ({
                         accessibilityLabel={item[0]} />
 
 
-                      </ListItem>
+                      </ListItemView>
                     ))}
                   </ListContainer>
 
@@ -44,9 +44,9 @@ const PickerInbox = ({
 
                  <ListContainer>
                    {dsQuery.map(proj => (
-                     <ListItem key={proj[3]}>
-                       {proj[0]}
-                     </ListItem>
+                     <ListItemView key={proj[3]}>
+                       <ListItem>{proj[0]}</ListItem>
+                     </ListItemView>
                    ))}
                  </ListContainer>
                </Fragment>
