@@ -12,9 +12,9 @@ const selectUser = mapPropsStream(props$ => {
       return selected$
         .pipe(
           startWith(
-            props.userList && userInURL
-              ? props.userList.find(userInList => userInList.user === userInURL)
-              : props.userList[0]
+            props.dsQuery && userInURL
+              ? props.dsQuery.find(userInList => userInList.user === userInURL)
+              : props.dsQuery[0]
           )
         )
         .pipe(map(selectedUser => ({ ...props, selectedUser, userSelect })))

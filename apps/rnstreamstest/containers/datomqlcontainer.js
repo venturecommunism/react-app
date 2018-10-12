@@ -1,4 +1,7 @@
+// add useDeps back in afterwards
 import { useDeps } from 'react-simple-di'
+
+import listenload from './streamhandlers/listenload'
 
 import PropTypes from 'prop-types'
 import { Observable } from 'rxjs'
@@ -22,10 +25,10 @@ setObservableConfig({
   toESObservable: stream => stream
 })
 
-export default (component, streamhandlers) => compose(
-  withState('userList', 'updateUserList', []),
+export default (component, query) => compose(
+  withState('dsQuery', 'updateDsQuery', []),
   withHandlers({
-    setUserList: ({ updateUserList }) => users => updateUserList(state => users),
+    setDsQuery: ({ updateDsQuery }) => users => updateDsQuery(state => users),
     addLike: ({ updateUserList }) => (user, like) => addUserLike(user, like),
     addDislike: ({ updateUserList }) => (user, dislike) => addUserDislike(user, dislike),
     deleteLike: ({ updateUserList }) => (user, like) =>
@@ -53,7 +56,7 @@ export default (component, streamhandlers) => compose(
   }),
   // moved useDeps() here so streamhandlers (like listenload) would have context
   useDeps(),
-  ...streamhandlers,
+  listenload(query),
   withContext(
     { updateFunctions: PropTypes.object, user: PropTypes.object },
     ({ selectedUser, addLike, addDislike, deleteLike, deleteDislike }) => ({
@@ -61,4 +64,4 @@ export default (component, streamhandlers) => compose(
       updateFunctions: { addLike, addDislike, deleteLike, deleteDislike }
     })
   ),
-)(component, streamhandlers)
+)(component, query)

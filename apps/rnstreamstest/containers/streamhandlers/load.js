@@ -12,9 +12,9 @@ const load = mapPropsStream(props$ =>
   props$.pipe(
     switchMap(
       props =>
-        isEmpty(props.userList)
+        isEmpty(props.dsQuery)
           ? from(fetchUsers()).pipe(
-              tap(users => props.setUserList(users)),
+              tap(users => props.setDsQuery(users)),
               map(users => ({ ...props, users, status: 'SUCCESS' })),
               startWith({ status: 'REQUEST', ...props })
             )

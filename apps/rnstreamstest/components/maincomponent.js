@@ -1,68 +1,60 @@
+import { createDatomQLContainer, datomql } from '../containers/datomql'
 import React, {Fragment} from 'react'
-import {
-  Text,
-  View
-} from 'react-native'
+import { PageWrapper, ListContainer, ListItem, Loader, UserContainer } from './styledComponents'
 
-import { PageWrapper, ListContainer, ListItem, Loader, UserContainer, TableContainer } from './styledComponents'
-
-import InfoTablesContainer from '../containers/infocontainer'
-import LikesComponent from '../components/likes'
-import DislikesComponent from '../components/dislikes'
-
-import modalHandler from '../containers/streamhandlers/modal'
-import textHandler from '../containers/streamhandlers/text'
-
-const streamhandlers = [modalHandler, textHandler]
-
-const Likes = InfoTablesContainer(LikesComponent, streamhandlers)
-const Dislikes = InfoTablesContainer(DislikesComponent, streamhandlers)
-
-// 1) remote state (userList, status, message)
-// 2) remote actions (actions)
-// 3) local state (selectedUser, match)
-// 4) local actions (userSelect, history)
-
-const MainComponent = ({
-  actions,
+const PickerInbox = ({
   status,
-  userList,
-  selectedUser,
-  userSelect,
   message,
-  match,
-  history
+  dsQuery,
 }) => {
-  const commands = actions().general
-  const { params: { user: userParam = 1 } } = match
-  if (selectedUser) {
-    userParam !== selectedUser.user && history.push(`/${selectedUser.user}`)
-  }
   return (
     <PageWrapper>
       <UserContainer>
         {status === 'SUCCESS' ? (
           <Fragment>
-            <Text onPress={() => commands.test()}>Users</Text>
             <ListContainer>
-              {userList.map(x => (
-                <ListItem key={x[1]} onPress={() => userSelect(x[0])} selected={x[0] === selectedUser}>
-                  <Text>{x[0]}</Text>
+              {dsQuery.map(item => (
+                <ListItem key={item[3]}>
+                  {item[1]}
+                </ListItem>
+              ))}
+            </ListContainer>
+            <ListContainer>
+              {dsQuery.map(proj => (
+                <ListItem key={proj[3]}>
+                  {proj[1]}
                 </ListItem>
               ))}
             </ListContainer>
           </Fragment>
         ) : (
-          <Loader status={status} message={message} />
+          <Fragment>
+            <Loader status={status} message={message} />
+            <Loader status={status} message={message} />
+          </Fragment>
         )}
       </UserContainer>
-      {selectedUser && <TableContainer>
-                         <Likes />
-                         <Dislikes />
-                       </TableContainer>
-      }
     </PageWrapper>
   )
 }
 
-export default MainComponent
+export default createDatomQLContainer(
+  PickerInbox,
+  datomql`
+    query maincomponent_inboxitem {
+[:find ?desc ?date ?status ?uuid ?confirmid ?e
+  :where
+[?e "description" ?desc]
+[?e "entry" ?date]
+[?e "status" ?status]
+[?e "status" "pending"]
+[?e "uuid" ?uuid]
+[(missing? $ ?e "project")]
+[(missing? $ ?e "type")]
+[(missing? $ ?e "wait")]
+[(missing? $ ?e "due")]
+[(get-else $ ?e "confirmationid" "none") ?confirmid]
+]
+    }
+  `
+)

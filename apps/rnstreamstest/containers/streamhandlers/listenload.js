@@ -7,39 +7,40 @@ import {
 } from 'recompose'
 import { isEmpty } from 'lodash'
 
-const initialQuery = (props) => {
+const initialQuery = (props, query) => {
   const {conn} = props.context()
   const db = datascript.db(conn)
-  const q  = `[:find ?name ?e
-               :where [?e "name" ?name]]`
-  const result = datascript.q(q, db)
-  return [result]
+  const result = datascript.q(query, db)
+  if (!isEmpty(result)) {
+    return [result]
+  } else {
+    return [[["Should load a status indicator here...", "blank", "blank", "something-for-key-prop"]]]
+  }
 }
 
-const dsQuery = (props) => Observable.create(function(observer) {
+const dsQuery = (props, query) => Observable.create(function(observer) {
   const {conn} = props.context()
   datascript.listen(conn, function(report) {
     const db = datascript.db(conn)
-    const q  = `[:find ?name ?e
-                 :where [?e "name" ?name]]`
-    const result = datascript.q(q, db)
+    const result = datascript.q(query, db)
     observer.next(result)
   })
 })
 
-const load = mapPropsStream(props$ =>
+const listenload = (query) => mapPropsStream(props$ =>
   props$.pipe(
     switchMap(
       props =>
-        isEmpty(props.userList)
-        ? from(initialQuery(props)).pipe(
-              tap(users => props.setUserList(users)),
-              map(users => ({ ...props, users, status: 'SUCCESS' })),
+        isEmpty(props.dsQuery)
+        ? from(initialQuery(props, query)).pipe(
+//              tap(result => console.log("might be empty", result)),
+              tap(result => props.setDsQuery(result)),
+              map(result => ({ ...props, result, status: 'SUCCESS' })),
               startWith({ status: 'REQUEST', ...props })
             )
-        : dsQuery(props).pipe(
+        : dsQuery(props, query).pipe(
           // tap(result => console.log(Object.keys(props))),
-          tap(result => props.setUserList(result)),
+          tap(result => props.setDsQuery(result)),
           map(result => ({ ...props, result, status: 'SUCCESS' })),
           startWith({ status: 'REQUEST', ...props }),
           map(props => ({ ...props, status: 'SUCCESS' }))
@@ -49,4 +50,4 @@ const load = mapPropsStream(props$ =>
   )
 )
 
-export default load
+export default listenload
