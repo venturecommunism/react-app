@@ -25,6 +25,7 @@
     "react-mounter": "^1.2.0",
     "react-native": "0.56.0",
     "react-native-web": "^0.8.0",
+    "react-powerplug": "^1.0.0-rc.1",
     "react-router-dom": "^4.3.1",
     "react-scripts": "^1.1.0",
     "react-simple-di": "https://github.com/khayong/react-simple-di#d27801e09b25d479f441c6c1e4911fb335c99069",

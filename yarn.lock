@@ -458,6 +458,13 @@
     pirates "^3.0.1"
     source-map-support "^0.4.2"
 
+"@babel/runtime@7.0.0-beta.49":
+  version "7.0.0-beta.49"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.0.0-beta.49.tgz#03b3bf07eb982072c8e851dd2ddd5110282e61bf"
+  dependencies:
+    core-js "^2.5.6"
+    regenerator-runtime "^0.11.1"
+
 "@babel/template@7.0.0-beta.47":
   version "7.0.0-beta.47"
   resolved "https://registry.yarnpkg.com/@babel/template/-/template-7.0.0-beta.47.tgz#0473970a7c0bee7a1a18c1ca999d3ba5e5bad83d"
@@ -2857,7 +2864,7 @@ core-js@^1.0.0, core-js@^1.2.6:
   version "1.2.7"
   resolved "https://registry.yarnpkg.com/core-js/-/core-js-1.2.7.tgz#652294c14651db28fa93bd2d5ff2983a4f08c636"
 
-core-js@^2.2.2, core-js@^2.4.0, core-js@^2.4.1, core-js@^2.5.0, core-js@^2.5.3:
+core-js@^2.2.2, core-js@^2.4.0, core-js@^2.4.1, core-js@^2.5.0, core-js@^2.5.3, core-js@^2.5.6:
   version "2.5.7"
   resolved "https://registry.yarnpkg.com/core-js/-/core-js-2.5.7.tgz#f972608ff0cead68b841a16a932d0b183791814e"
 
@@ -9227,6 +9234,12 @@ react-native@0.56.0:
     xmldoc "^0.4.0"
     yargs "^9.0.0"
 
+react-powerplug@^1.0.0-rc.1:
+  version "1.0.0-rc.1"
+  resolved "https://registry.yarnpkg.com/react-powerplug/-/react-powerplug-1.0.0-rc.1.tgz#6b3bc57e31684e8bc36baa7a65af602ba0e31145"
+  dependencies:
+    "@babel/runtime" "7.0.0-beta.49"
+
 react-proxy@^1.1.7:
   version "1.1.8"
   resolved "https://registry.yarnpkg.com/react-proxy/-/react-proxy-1.1.8.tgz#9dbfd9d927528c3aa9f444e4558c37830ab8c26a"
@@ -9510,7 +9523,7 @@ regenerate@^1.2.1, regenerate@^1.4.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/regenerate/-/regenerate-1.4.0.tgz#4a856ec4b56e4077c557589cae85e7a4c8869a11"
 
-regenerator-runtime@^0.11.0:
+regenerator-runtime@^0.11.0, regenerator-runtime@^0.11.1:
   version "0.11.1"
   resolved "https://registry.yarnpkg.com/regenerator-runtime/-/regenerator-runtime-0.11.1.tgz#be05ad7f9bf7d22e056f9726cee5017fbf19e2e9"
 
