@@ -8,7 +8,9 @@ import ModuleSchema from '../../apps/core/datoms/schema/moduleschema'
 
 import taskscategories from '../../apps/core/datoms/seeds/taskscategories'
 import secretdatoms from '../../apps/core/datoms/seeds/secretdatoms'
+
 import followerdatoms from '../../apps/core/datoms/seeds/followerdatoms'
+import dummydata from '../../apps/core/datoms/seeds/dummydata'
 
 import calendar from '../../apps/core/datoms/seeds/calendar'
 import projectspicker from '../../apps/core/datoms/seeds/projectspicker'
@@ -32,10 +34,29 @@ const maindb = () => {
    * Transact in the data, to be stored and indexed by datascript for performant
    * querying.
    */
+  // TODO: make it so the login procedure does not depend on these
   datascript.transact(conn, taskscategories)
   datascript.transact(conn, secretdatoms)
   datascript.transact(conn, followerdatoms)
   return conn
+}
+
+const fakedb = () => {
+  const Schema = {
+    ...CoreAppSchema,
+    ...LocalStateSchema
+  }
+  const conn_fake_db = datascript.create_conn(Schema)
+
+  /**
+   * Transact in the data, to be stored and indexed by datascript for performant
+   * querying.
+   */
+  datascript.transact(conn_fake_db, taskscategories)
+  datascript.transact(conn_fake_db, secretdatoms)
+  datascript.transact(conn_fake_db, followerdatoms)
+  datascript.transact(conn_fake_db, dummydata)
+  return conn_fake_db
 }
 
 const componentdb = () => {
@@ -61,4 +82,4 @@ const componentdb = () => {
   return conn_db
 }
 
-export {maindb, componentdb}
+export {maindb, fakedb, componentdb}

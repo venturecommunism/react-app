@@ -1,7 +1,9 @@
 // Datascript things
 import datascript from 'datascript'
-import {maindb, componentdb} from './lib/createDBConn'
-const conn = maindb()
+import {maindb, fakedb, componentdb} from './lib/createDBConn'
+
+const clientonly = false
+const conn = clientonly ? fakedb() : maindb()
 const conn_components = componentdb()
 // const transact = datascript.transact
 // Transaction function maintains the log (for time travel, undo, etc.)
@@ -14,7 +16,6 @@ const ql = datascript.q(`[:find ?query ?sortfields ?sortorders ?limit :where [?e
 querieslist[0] = [...ql]
 
 // Elixir / Phoenix Channels things
-var clientonly = false
 import {go, chan, take, put, timeout, putAsync} from 'js-csp'
 import Channel from './channel'
 import config from './config'
