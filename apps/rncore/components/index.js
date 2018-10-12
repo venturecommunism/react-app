@@ -1,31 +1,17 @@
 import React from 'react'
 import {
-  View,
-  Text,
   ScrollView
 } from 'react-native'
 
-import StreamsTest from '../../rnstreamstest/components/index'
-import Timer from '../../rndemo/components/mapPropsStream/index'
-import GitHubDemo from '../../rndemo/components/componentFromStream/index'
-import TopPad from '../../rncore/components/TopPad'
-import Demo from '../../rndemo/components/index'
-import Module from '../../rncore/containers/module'
-const Mod = Module()
+import Calendar from './calendar'
+import Inbox from './inbox'
+import SomedayMaybe from './somedaymaybe'
 
-const Root = ({result}) => (
-  <View>
-    <ScrollView>
-      <StreamsTest/>
-      <Timer/>
-      <GitHubDemo/>
-      <Mod moduleid={"calendar"} />
-      <Mod moduleid={"projectspicker"} />
-      <Mod moduleid={"inbox"} />
-      <Mod moduleid={"somedaymaybe"} />
-    </ScrollView>
-    <Demo />
-  </View>
-)
+const App = () =>
+  <ScrollView>
+    <Calendar />
+    <Inbox />
+    <SomedayMaybe />
+  </ScrollView>
 
-export default Root
+export default App

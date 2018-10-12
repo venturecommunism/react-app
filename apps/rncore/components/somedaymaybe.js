@@ -9,7 +9,7 @@ import { createDatomQLContainer, datomql } from '../containers/datomql'
 import React, {Fragment} from 'react'
 import { PageWrapper, ListContainer, ListItem, ListItemView, Loader, UserContainer } from './styledComponents'
 
-const PickerInbox = ({
+const SomedayMaybe = ({
   actions,
   status,
   message,
@@ -73,20 +73,17 @@ const PickerInbox = ({
 }
 
 export default createDatomQLContainer(
-  PickerInbox,
+  SomedayMaybe,
   datomql`
-    query maincomponent_inboxitem {
-[:find ?desc ?date ?status ?uuid ?confirmid ?e
+    query somedaymaybe_somedaymaybeitem {
+[:find ?desc ?date ?status ?uuid ?confirmid ?wait
   :where
 [?e "description" ?desc]
 [?e "entry" ?date]
 [?e "status" ?status]
 [?e "status" "pending"]
 [?e "uuid" ?uuid]
-[(missing? $ ?e "project")]
-[(missing? $ ?e "type")]
-[(missing? $ ?e "wait")]
-[(missing? $ ?e "due")]
+[?e "wait" ?wait]
 [(get-else $ ?e "confirmationid" "none") ?confirmid]
 ]
     }
