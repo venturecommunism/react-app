@@ -3,12 +3,13 @@ import styled from 'styled-components/native'
 import DateTimePicker from './datetimepicker'
 
 export const FloatingButton = styled.View`
-  position: fixed;
-  right: 5px;
-  bottom: 5px;
+  align-self: flex-end;
+  position: absolute;
+  bottom: 15px;
+  backgroundColor: #FFFFFF;
   width: 200px;
+  left: 160px;
   border: 3px #CCCCCC solid;
-  background-color: #FFFFFF;
 `
 export const SimpleView = styled.View`
 `

@@ -1,13 +1,8 @@
-import { State } from 'react-powerplug'
-import {
-  View,
-  Text,
-  Button
-} from 'react-native'
-
 import { createDatomQLContainer, datomql } from '../containers/datomql'
 import React, {Fragment} from 'react'
-import { PageWrapper, ListContainer, ListItem, ListItemView, Loader, UserContainer } from './styledComponents'
+
+import { SimpleView, SimpleText, SimpleButton, PageWrapper, ListContainer, ListItem, ListItemView, Loader, UserContainer, DateTime } from './styledComponents'
+import { State } from 'react-powerplug'
 
 const PickerInbox = ({
   actions,
@@ -21,13 +16,15 @@ const PickerInbox = ({
         {status === 'SUCCESS' ? (
           <State initial={{ favorite: "", picked: "" }}>
             {({ state, setState }) => (
-              <View>
+              <SimpleView>
                 <Fragment>
                   <ListContainer>
                     {dsQuery.map(item => (
                       <ListItemView key={item[3]}>
 
-                      <Button
+                      <DateTime placeholder={"Due"} buttonaction={() => actions.general.test} taskid={item[3]}/>
+
+                      <SimpleButton
                         title={item[0]}
                         onPress={() => setState({ favorite: item[0], picked: new Date().toLocaleTimeString()})}
                         accessibilityLabel={item[0]} />
@@ -37,7 +34,7 @@ const PickerInbox = ({
                     ))}
                   </ListContainer>
 
-                 <Button
+                 <SimpleButton
                  title={"Reset"}
                  onPress={() => setState({ favorite: '', picked: ''})}
                  accessibilityLabel={"Reset"} />
@@ -52,13 +49,13 @@ const PickerInbox = ({
                </Fragment>
 
                { state && state.favorite && state.picked
-               ? <View>
-                   <Text>
+               ? <SimpleView>
+                   <SimpleText>
                      {state.favorite} + {state.picked}
-                   </Text>
-                 </View>
+                   </SimpleText>
+                 </SimpleView>
                : null}
-            </View>
+            </SimpleView>
           )}
         </State>
         ) : (

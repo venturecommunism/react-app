@@ -2,7 +2,7 @@
 import datascript from 'datascript'
 import {maindb, fakedb, componentdb} from './lib/createDBConn'
 
-const clientonly = false
+const clientonly = true
 const conn = clientonly ? fakedb() : maindb()
 const conn_components = componentdb()
 // const transact = datascript.transact
