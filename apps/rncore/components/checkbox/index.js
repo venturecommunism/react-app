@@ -7,7 +7,8 @@ import {
     Image,
     Text,
     View,
-    TouchableHighlight
+    TouchableHighlight,
+    Platform
 } from 'react-native';
 
 const CB_ENABLED_IMAGE = require('./cb_enabled.png');
@@ -153,8 +154,8 @@ CheckBox.propTypes = {
     checkboxStyle: PropTypes.oneOfType([PropTypes.array,PropTypes.object,PropTypes.number]),
     containerStyle: PropTypes.oneOfType([PropTypes.array,PropTypes.object,PropTypes.number]),
     checked: PropTypes.bool,
-    checkedImage: PropTypes.number,
-    uncheckedImage: PropTypes.number,
+    checkedImage: Platform.OS == 'android' ? PropTypes.number : PropTypes.string,
+    uncheckedImage: Platform.OS == 'android' ? PropTypes.number : PropTypes.string,
     underlayColor: PropTypes.string,
     onChange: PropTypes.func,
     hitSlop: PropTypes.object

@@ -19,7 +19,7 @@ const PickerInbox = ({
           <SimpleView>
           <Fragment>
           <ListContainer>
-          {dsQuery.map(item => (
+          {dsQuery.calendar.map(item => (
               <ListItemView key={item[3]}>
               <SimpleButton
               title={item[0]}
@@ -33,7 +33,7 @@ const PickerInbox = ({
           onPress={clear}
           accessibilityLabel={"Reset"} />
             <ListContainer>
-            {dsQuery.map(inboxitem => (
+            {dsQuery.inbox.map(inboxitem => (
                     <ListItemView key={inboxitem[3]}>
                     <CheckBox checked={values.indexOf(inboxitem[3]) > -1} key={inboxitem[3]} taskid={inboxitem[3]} 
                     onChange={() => actions().pickerinbox.dostuff(values, add, remove, inboxitem[3])} label={inboxitem[0]} />
@@ -70,7 +70,7 @@ const PickerInbox = ({
 export default createDatomQLContainer(
     PickerInbox,
     datomql`
-    query inbox_inboxitem {
+    query pickerinbox_inbox {
     [:find ?desc ?date ?status ?uuid ?confirmid ?e
     :where
     [?e "description" ?desc]
@@ -82,6 +82,21 @@ export default createDatomQLContainer(
     [(missing? $ ?e "type")]
     [(missing? $ ?e "wait")]
     [(missing? $ ?e "due")]
+    [(get-else $ ?e "confirmationid" "none") ?confirmid]
+    ]
+    }
+    `,
+    datomql`
+    query pickerinbox_projects {
+    [:find ?desc ?date ?status ?uuid ?confirmid ?e
+    :where
+    [?e "description" ?desc]
+    [?e "entry" ?date]
+    [?e "status" ?status]
+    [?e "status" "pending"]
+    [?e "uuid" ?uuid]
+    [?e "type" "project"]
+    [(missing? $ ?e "wait")]
     [(get-else $ ?e "confirmationid" "none") ?confirmid]
     ]
     }

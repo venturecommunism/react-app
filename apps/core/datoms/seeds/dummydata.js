@@ -44,6 +44,14 @@ const date = Math.floor(new Date().toString() / 1000)
       wait: "somedaymaybe",
       uuid: uuid()
     },
+    {
+      ':db/id': -6,
+      uuid: uuid(),
+      status: "pending",
+      type: "project",
+      entry: date,
+      description: "Some other project (FAKE)"
+    },
   ]
 
 export default followerdatoms

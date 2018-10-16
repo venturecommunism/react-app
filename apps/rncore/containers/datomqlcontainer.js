@@ -8,11 +8,11 @@ import {
   withHandlers,
 } from 'recompose'
 
-export default (component, query) => compose(
-  withState('dsQuery', 'updateDsQuery', []),
+export default (component, ...queries) => compose(
+  withState('dsQuery', 'updateDsQuery', {inbox: [], calendar: []}),
   withHandlers({
-    setDsQuery: ({ updateDsQuery }) => users => updateDsQuery(state => users),
+    setDsQuery: ({ updateDsQuery }) => data => updateDsQuery(state => data),
   }),
   useDeps(),
-  listenload(query),
-)(component, query)
+  listenload(queries),
+)(component, ...queries)
