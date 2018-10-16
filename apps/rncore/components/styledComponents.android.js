@@ -2,6 +2,9 @@ import React from 'react'
 import styled from 'styled-components/native'
 import DateTimePicker from './datetimepicker'
 
+export {default as CheckBox} from '../../rncore/components/checkbox'
+export const Modal = styled.Modal`
+`
 export const FloatingButton = styled.View`
   align-self: flex-end;
   position: absolute;
