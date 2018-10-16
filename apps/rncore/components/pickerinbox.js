@@ -19,7 +19,7 @@ const PickerInbox = ({
           <SimpleView>
           <Fragment>
           <ListContainer>
-          {dsQuery.calendar.map(item => (
+          {dsQuery.projects.map(item => (
               <ListItemView key={item[3]}>
               <SimpleButton
               title={item[0]}
@@ -70,7 +70,7 @@ const PickerInbox = ({
 export default createDatomQLContainer(
     PickerInbox,
     datomql`
-    query pickerinbox_inbox {
+    query inbox {
     [:find ?desc ?date ?status ?uuid ?confirmid ?e
     :where
     [?e "description" ?desc]
@@ -87,7 +87,7 @@ export default createDatomQLContainer(
     }
     `,
     datomql`
-    query pickerinbox_projects {
+    query projects {
     [:find ?desc ?date ?status ?uuid ?confirmid ?e
     :where
     [?e "description" ?desc]

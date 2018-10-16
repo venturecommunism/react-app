@@ -20,6 +20,7 @@ function datomql () {
   const operation = getvar(templateliteral)
   const op_removed = templateliteral.replace(operation, '')
   const filename_prop = getvar(op_removed)
+  // at this point should get the prop from filename_prop
   var query_with_braces = op_removed.replace(filename_prop, '')
   var one_brace_query = query_with_braces.split("{").pop();
   const query =
@@ -28,7 +29,11 @@ function datomql () {
       .split("}")
       .pop()
       .split("").reverse().join("")
-  return query
+
+  var item = {}
+  item[filename_prop] = query
+
+  return item
 }
 
 export { createDatomQLContainer, datomql }

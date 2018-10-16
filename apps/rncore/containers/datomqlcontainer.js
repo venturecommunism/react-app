@@ -8,8 +8,14 @@ import {
   withHandlers,
 } from 'recompose'
 
+const initkeys = (...queries) => {
+  var initstate = {}
+  queries.forEach(j => Object.keys(j).forEach(k => initstate[k] = []))
+  return initstate
+}
+
 export default (component, ...queries) => compose(
-  withState('dsQuery', 'updateDsQuery', {inbox: [], calendar: []}),
+  withState('dsQuery', 'updateDsQuery', initkeys(...queries)),
   withHandlers({
     setDsQuery: ({ updateDsQuery }) => data => updateDsQuery(state => data),
   }),

@@ -12,13 +12,13 @@ const initialQuery = (props, queries) => {
   const db = datascript.db(conn)
   const loadertext = [["Should load a status indicator here...", "blank", "blank", "something-for-key-prop"]]
 
-  var inbox = datascript.q(queries[0], db)
-  var calendar = datascript.q(queries[1], db)
-  var result = {inbox, calendar}
-  if (!isEmpty(inbox) && !isEmpty(calendar)) {
+  var inbox = datascript.q(queries[0].inbox, db)
+  var projects = datascript.q(queries[1].projects, db)
+  var result = {inbox, projects}
+  if (!isEmpty(inbox) && !isEmpty(projects)) {
     return [result]
   } else {
-    return [{inbox: [["Should load a status indicator here...", "blank", "blank", "something-for-key-prop"]], calendar: [["Should load...", "blank", "blank", "something-for-key-prop"]]}]
+    return [{inbox: [["Should load a status indicator here...", "blank", "blank", "something-for-key-prop"]], projects: [["Should load...", "blank", "blank", "something-for-key-prop"]]}]
   }
 }
 
@@ -26,9 +26,9 @@ const dsQuery = (props, queries) => Observable.create(function(observer) {
   const {conn} = props.context()
   datascript.listen(conn, function(report) {
     const db = datascript.db(conn)
-    const inbox = datascript.q(queries[0], db)
-    const calendar = datascript.q(queries[1], db)
-    observer.next({inbox: inbox, calendar: calendar})
+    const inbox = datascript.q(queries[0].inbox, db)
+    const projects = datascript.q(queries[1].projects, db)
+    observer.next({inbox: inbox, projects: projects})
   })
 })
 
@@ -36,7 +36,7 @@ const listenload = (queries) => mapPropsStream(props$ =>
   props$.pipe(
     switchMap(
       props =>
-        isEmpty(props.dsQuery.calendar) || isEmpty(props.dsQuery.inbox)
+        isEmpty(props.dsQuery.projects) || isEmpty(props.dsQuery.inbox)
         ? from(initialQuery(props, queries)).pipe(
 //              tap(result => console.log("might be empty", result)),
               tap(result => props.setDsQuery( result )),
