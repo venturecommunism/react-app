@@ -22,7 +22,7 @@ const PickerInbox = ({
             <Fragment>
             <ListContainer>
 
-                {on && state.uuid &&
+                {on && state.favorite != '' && state.uuid != '' &&
                 <Modal
                 transparent={false}
                 onRequestClose={() => console.log('closed modal')}
@@ -41,7 +41,7 @@ const PickerInbox = ({
 
               <SimpleButton
               title={item[0]}
-            onPress={() => setState({ favorite: item[0], uuid: item[3]})}
+            onPress={() => setState({ favorite: item[0], uuid: item[3] })}
             accessibilityLabel={item[0]} />
 
 
@@ -51,7 +51,7 @@ const PickerInbox = ({
 
             <SimpleButton
             title={"Reset"}
-          onPress={() => setState({ favorite: '', uuid: ''})}
+          onPress={() => setState({ favorite: '', uuid: '' })}
           accessibilityLabel={"Reset"} />
 
             <ListContainer>
