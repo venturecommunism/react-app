@@ -12,13 +12,13 @@ const initialQuery = (props, queries) => {
   const db = datascript.db(conn)
   const loadertext = [["Should load a status indicator here...", "blank", "blank", "something-for-key-prop"]]
 
-  var inbox = datascript.q(queries[0].inbox, db)
-  var projects = datascript.q(queries[1].projects, db)
-  var result = {inbox, projects}
-  if (!isEmpty(inbox) && !isEmpty(projects)) {
+  var result = {}
+  queries.forEach(metadata => Object.keys(metadata).forEach(prop => result[prop] = datascript.q(metadata[prop], db)))
+
+  if (Object.keys(result).every(k => !isEmpty(result[k]))) {
     return [result]
   } else {
-    return [{inbox: [["Should load a status indicator here...", "blank", "blank", "something-for-key-prop"]], projects: [["Should load...", "blank", "blank", "something-for-key-prop"]]}]
+    return [{inbox: loadertext, projects: loadertext}]
   }
 }
 
@@ -26,9 +26,11 @@ const dsQuery = (props, queries) => Observable.create(function(observer) {
   const {conn} = props.context()
   datascript.listen(conn, function(report) {
     const db = datascript.db(conn)
-    const inbox = datascript.q(queries[0].inbox, db)
-    const projects = datascript.q(queries[1].projects, db)
-    observer.next({inbox: inbox, projects: projects})
+
+    var result = {}
+    queries.forEach(metadata => Object.keys(metadata).forEach(prop => result[prop] = datascript.q(metadata[prop], db)))
+
+    observer.next(result)
   })
 })
 
