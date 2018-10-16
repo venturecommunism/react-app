@@ -13,13 +13,9 @@ const initialQuery = (props, queries) => {
   const loadertext = [["Should load a status indicator here...", "blank", "blank", "something-for-key-prop"]]
 
   var result = {}
-  queries.forEach(metadata => Object.keys(metadata).forEach(prop => result[prop] = datascript.q(metadata[prop], db)))
+  queries.forEach(metadata => Object.keys(metadata).forEach(prop => result[prop] = isEmpty(datascript.q(metadata[prop], db)) ? [] : datascript.q(metadata[prop], db) ))
 
-  if (Object.keys(result).every(k => !isEmpty(result[k]))) {
-    return [result]
-  } else {
-    return [{inbox: loadertext, projects: loadertext}]
-  }
+  return [result]
 }
 
 const dsQuery = (props, queries) => Observable.create(function(observer) {
@@ -38,7 +34,7 @@ const listenload = (queries) => mapPropsStream(props$ =>
   props$.pipe(
     switchMap(
       props =>
-        isEmpty(props.dsQuery.projects) || isEmpty(props.dsQuery.inbox)
+        Object.keys(props.dsQuery).every(k => isEmpty(props.dsQuery[k]) )
         ? from(initialQuery(props, queries)).pipe(
 //              tap(result => console.log("might be empty", result)),
               tap(result => props.setDsQuery( result )),

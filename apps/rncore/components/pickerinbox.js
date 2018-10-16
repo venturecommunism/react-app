@@ -70,7 +70,7 @@ const PickerInbox = ({
 export default createDatomQLContainer(
     PickerInbox,
     datomql`
-    query inbox {
+    query pickerinbox_inbox {
     [:find ?desc ?date ?status ?uuid ?confirmid ?e
     :where
     [?e "description" ?desc]
@@ -87,7 +87,7 @@ export default createDatomQLContainer(
     }
     `,
     datomql`
-    query projects {
+    query pickerinbox_projects {
     [:find ?desc ?date ?status ?uuid ?confirmid ?e
     :where
     [?e "description" ?desc]
