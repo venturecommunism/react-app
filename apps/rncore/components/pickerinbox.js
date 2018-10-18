@@ -9,6 +9,8 @@ const PickerInbox = ({
     status,
     message,
     dsQuery,
+    set_theproject,
+    theproject,
     }) => {
   return (
       <PageWrapper>
@@ -19,12 +21,20 @@ const PickerInbox = ({
           <SimpleView>
           <Fragment>
           <ListContainer>
+
+          {dsQuery.filterprojects && dsQuery.filterprojects.map(item => <SimpleView key={item[3]}><SimpleText>- {item[0]}</SimpleText></SimpleView>)}
+          <SimpleText>{theproject}</SimpleText>
+          <SimpleText>{dsQuery.filterprojects.length > 0 && dsQuery.filterprojects.length}</SimpleText>
+
           {dsQuery.projects.map(item => (
               <ListItemView key={item[3]}>
+
               <SimpleButton
               title={item[0]}
-              onPress={() => actions().pickerinbox.addtoproject(item[0], values, clear)}
+              onPress={() => actions().pickerinbox.addtoproject(item[3], values, clear, set_theproject)}
               accessibilityLabel={item[0]} />
+
+
               </ListItemView>
               ))}
           </ListContainer>
@@ -36,7 +46,7 @@ const PickerInbox = ({
             {dsQuery.inbox.map(inboxitem => (
                     <ListItemView key={inboxitem[3]}>
                     <CheckBox checked={values.indexOf(inboxitem[3]) > -1} key={inboxitem[3]} taskid={inboxitem[3]} 
-                    onChange={() => actions().pickerinbox.dostuff(values, add, remove, inboxitem[3])} label={inboxitem[0]} />
+                    onChange={() => actions().pickerinbox.dostuff(values, add, remove, inboxitem[3])} />
 
                     <ListItem>{inboxitem[0]}</ListItem>
                     </ListItemView>
@@ -96,6 +106,22 @@ export default createDatomQLContainer(
     [?e "status" "pending"]
     [?e "uuid" ?uuid]
     [?e "type" "project"]
+    [(missing? $ ?e "wait")]
+    [(get-else $ ?e "confirmationid" "none") ?confirmid]
+    ]
+    }
+    `,
+    datomql`
+    query pickerinbox_filterprojects {
+    [:find ?desc ?date ?status ?uuid ?confirmid ?e
+    :in $ ?project
+    :where
+    [?e "description" ?desc]
+    [?e "entry" ?date]
+    [?e "status" ?status]
+    [?e "status" "pending"]
+    [?e "uuid" ?uuid]
+    [?e "project" ?project]
     [(missing? $ ?e "wait")]
     [(get-else $ ?e "confirmationid" "none") ?confirmid]
     ]

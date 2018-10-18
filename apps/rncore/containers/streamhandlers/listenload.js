@@ -10,11 +10,8 @@ import { isEmpty } from 'lodash'
 const initialQuery = (props, queries) => {
   const {conn} = props.context()
   const db = datascript.db(conn)
-  const loadertext = [["Should load a status indicator here...", "blank", "blank", "something-for-key-prop"]]
-
   var result = {}
-  queries.forEach(metadata => Object.keys(metadata).forEach(prop => result[prop] = isEmpty(datascript.q(metadata[prop], db)) ? [] : datascript.q(metadata[prop], db) ))
-
+  queries.forEach(metadata => Object.keys(metadata).forEach(prop => result[prop] = datascript.q(metadata[prop], db, props.theproject)))
   return [result]
 }
 
@@ -22,11 +19,9 @@ const dsQuery = (props, queries) => Observable.create(function(observer) {
   const {conn} = props.context()
   datascript.listen(conn, function(report) {
     const db = datascript.db(conn)
-
     var result = {}
-    queries.forEach(metadata => Object.keys(metadata).forEach(prop => result[prop] = datascript.q(metadata[prop], db)))
-
-    observer.next(result)
+    queries.forEach(metadata => Object.keys(metadata).forEach(prop => result[prop] = datascript.q(metadata[prop], db, props.theproject)))
+    return observer.next(result)
   })
 })
 
@@ -34,20 +29,20 @@ const listenload = (queries) => mapPropsStream(props$ =>
   props$.pipe(
     switchMap(
       props =>
-        Object.keys(props.dsQuery).every(k => isEmpty(props.dsQuery[k]) )
+        props.theproject || Object.keys(props.dsQuery).every(k => isEmpty(props.dsQuery[k]) )
         ? from(initialQuery(props, queries)).pipe(
-//              tap(result => console.log("might be empty", result)),
-              tap(result => props.setDsQuery( result )),
-              map(result => ({ ...props, result, status: 'SUCCESS' })),
+            tap(result => props.set_theproject(props.PLACEHOLDERPROP)),
+            // tap(result => console.log("might be empty", result)),
+            tap(result => props.setDsQuery( result )),
+            map(result => ({ ...props, result, status: 'SUCCESS' })),
               startWith({ status: 'REQUEST', ...props })
-            )
+          )
         : dsQuery(props, queries).pipe(
-          // tap(result => console.log(Object.keys(props))),
-          tap(result => props.setDsQuery(result)),
-          map(result => ({ ...props, result, status: 'SUCCESS' })),
-          startWith({ status: 'REQUEST', ...props }),
-          map(props => ({ ...props, status: 'SUCCESS' }))
-        )
+            tap(result => props.setDsQuery(result)),
+            map(result => ({ ...props, result, status: 'SUCCESS' })),
+            startWith({ status: 'REQUEST', ...props }),
+            map(props => ({ ...props, status: 'SUCCESS' }))
+          )
     ),
     catchError(() => ({ status: 'ERROR', message: 'Looks like our service is down' }))
   )

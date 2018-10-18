@@ -8,10 +8,11 @@ export default {
   removeall({}, clear) {
     clear()
   },
-  addtoproject({conn, transact, uuid}, projid, values, clear) {
+  addtoproject({conn, transact, uuid}, projid, values, clear, set_theproject) {
     if (values.length < 1) {
-      alert('empty')
+      set_theproject(projid)
     } else {
+    set_theproject(projid)
     values.map(item =>
       transact(conn, [{
         ':db/id': -1,

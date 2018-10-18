@@ -52,6 +52,62 @@ const date = Math.floor(new Date().toString() / 1000)
       entry: date,
       description: "Some other project (FAKE)"
     },
+    {
+      ':db/id': -7,
+      description: "some todo item",
+      entry: date,
+      status: "pending",
+      uuid: uuid()
+    },
+    {
+      ':db/id': -8,
+      description: "another something time time really important",
+      entry: date,
+      status: "pending",
+      uuid: uuid()
+    },
+    {
+      ':db/id': -9,
+      uuid: uuid(),
+      status: "pending",
+      entry: date,
+      description: "Some other project (FAKE)"
+    },
+    {
+      ':db/id': -10,
+      description: "some todo item",
+      entry: date,
+      status: "pending",
+      uuid: uuid()
+    },
+    {
+      ':db/id': -11,
+      description: "another something time time really important",
+      entry: date,
+      status: "pending",
+      uuid: uuid()
+    },
+    {
+      ':db/id': -12,
+      uuid: uuid(),
+      status: "pending",
+      entry: date,
+      description: "Some other project (FAKE)"
+    },
+    {
+      ':db/id': -13,
+      description: "some todo item",
+      entry: date,
+      status: "pending",
+      uuid: uuid()
+    },
+    {
+      ':db/id': -14,
+      description: "another something time time really important",
+      entry: date,
+      status: "pending",
+      uuid: uuid()
+    },
   ]
 
 export default followerdatoms
