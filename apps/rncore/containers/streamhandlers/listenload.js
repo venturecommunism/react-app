@@ -10,9 +10,12 @@ import { isEmpty } from 'lodash'
 const initialQuery = (props, queries) => {
   const {conn} = props.context()
   const db = datascript.db(conn)
+  const loadertext = [["Should load a status indicator here...", "blank", "blank", "something-for-key-prop"]]
   var result = {}
+  var latencyloader = {}
   queries.forEach(metadata => Object.keys(metadata).forEach(prop => result[prop] = datascript.q(metadata[prop], db, props.theproject)))
-  return [result]
+  queries.forEach(metadata => Object.keys(metadata).forEach(prop => latencyloader[prop] = loadertext))
+  return Object.keys(result).every(k => !isEmpty(result[k])) ? [result] : [latencyloader]
 }
 
 const dsQuery = (props, queries) => Observable.create(function(observer) {

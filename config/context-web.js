@@ -2,7 +2,7 @@
 import datascript from 'datascript'
 import {maindb, fakedb, componentdb} from './lib/createDBConn'
 
-const clientonly = true
+const clientonly = false
 const conn = clientonly ? fakedb() : maindb()
 const conn_components = componentdb()
 // const transact = datascript.transact
@@ -144,9 +144,10 @@ if (clientonly) {
 //
 // these lines determine whether the jwt key comes from config.jwt or the chData channel
 //
-//    localStorage.removeItem('key')
-//    key = yield localStorage.getItem('key') || take(chData)
-    var key = config.jwt
+    localStorage.removeItem('key')
+    putAsync(chUnPass, {email: config.username, password: config.password})
+    key = yield localStorage.getItem('key') || take(chData)
+//    var key = config.jwt
     // console.log('key is:', key)
 
     var user = me
