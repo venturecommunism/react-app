@@ -14,7 +14,7 @@ let chUnPass = chan()
 
 const me = uuid()
 
-import Channel from '../channel'
+import Channel from './phoenix-channel'
 
 import { receiveDataMessage } from './elixirmessage'
 

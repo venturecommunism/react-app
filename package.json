@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "datascript": "^0.16.6",
+    "idb-keyval": "^3.1.0",
     "js-csp": "^0.9.3",
     "lodash": "^4.17.11",
     "mobx": "^2.6.3",
@@ -24,6 +25,7 @@
     "react-komposer": "2.0.0",
     "react-mounter": "^1.2.0",
     "react-native": "0.56.0",
+    "react-native-sensitive-info": "^5.2.6",
     "react-native-web": "^0.8.0",
     "react-powerplug": "^1.0.0-rc.1",
     "react-router-dom": "^4.3.1",

@@ -5,6 +5,10 @@ const clientonly = false
 const conn = clientonly ? fakedb() : maindb()
 import transact from './transact'
 
+import { loadsyncpoint } from './context/persistence'
+loadsyncpoint(conn)
+import { get } from 'idb-keyval'
+
 import setchannel from './context/channel-web'
 var channel
 if (clientonly) {
@@ -13,7 +17,10 @@ if (clientonly) {
     console.log('set clientonly to false in order to actually send')
   }
 } else {
-  channel = setchannel(conn)
+  get('syncpoint')
+    .then(syncpoint => {
+      channel = setchannel(conn, JSON.stringify(syncpoint))
+    })
 }
 
 datascript.listen(conn, {channel}, function(report) {

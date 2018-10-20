@@ -4,8 +4,12 @@ import datascript from 'datascript'
 import { maindb, fakedb } from './lib/createDBConn'
 
 const clientonly = false
-const conn = clientonly ? fakedb() : maindb()
+//const conn = clientonly ? fakedb() : maindb()
+const conn = maindb()
 import transact from './transact'
+
+import { loadsyncpoint } from './context/persistence'
+loadsyncpoint(conn)
 
 import setchannel from './context/channel-mobile'
 var channel

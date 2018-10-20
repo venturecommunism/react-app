@@ -12,7 +12,7 @@ let chUnPass = chan()
 
 const me = uuid()
 
-import Channel from '../channel'
+import Channel from './phoenix-channel'
 
 import { receiveDataMessage } from './elixirmessage'
 
@@ -28,7 +28,7 @@ querieslist[0] = [...ql]
 /***** get rid of above */
 
 // Data Communicating Sequential Processes. Takes JWT from the Auth CSP and sets up the Elixir channel (server only)
-const channel = (conn) => go(function* () {
+const channel = (conn, syncpoint) => go(function* () {
   // localStorage.removeItem('key')
   // putAsync(chUnPass, {email: config.username, password: config.password})
   // var key = yield localStorage.getItem('key') || take(chData)
@@ -36,7 +36,7 @@ const channel = (conn) => go(function* () {
   console.log('key is:', key)
 
   var user = me
-  var msg = {jwt: key, syncpoint: 'none', subscription: querieslist}
+  var msg = {jwt: key, syncpoint: syncpoint, subscription: querieslist}
   const ex_data_channel = Channel(config.url, "datomic:" + user, user, receiveDataMessage, chData, conn, key)
   yield timeout(10000)
   ex_data_channel.send(msg)
