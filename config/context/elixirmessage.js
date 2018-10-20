@@ -6,6 +6,7 @@ import { sync } from './persistence'
 
 // Fires when we receive a message on the Elixir data channel
 export const receiveDataMessage = (conn, message, me) => {
+  console.log("ELIXIR MESSAGE", message)
   if ('ok' in message && 'confirmationid' in message.ok.msg) {
     var confirmationid = message['ok']['msg']['confirmationid']
     var stringconfirmationid = JSON.stringify(confirmationid)
@@ -23,7 +24,6 @@ export const receiveDataMessage = (conn, message, me) => {
   if ('ok' in message) return
   const user = message.user
   const isMe = (someUser) => me === someUser
-  //  console.log('ELIXIR OBJECT', message)
   if (isMe(user)) return // prevent echoing yourself (TODO: server could handle this i guess?)
 
   if (Object.keys(message).some(item => item == 'syncpoint')) {

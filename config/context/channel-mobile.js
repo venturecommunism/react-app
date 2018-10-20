@@ -30,7 +30,7 @@ querieslist[0] = [...ql]
 /***** get rid of above */
 
 // Data Communicating Sequential Processes. Takes JWT from the Auth CSP and sets up the Elixir channel (server only)
-const channel = (conn) => go(function* () {
+const channel = (conn, syncpoint) => go(function* () {
   // AsyncStorage.removeItem('key')
   // putAsync(chUnPass, {email: config.username, password: config.password})
   // var key = yield AsyncStorage.getItem('key') || take(chData)
@@ -38,9 +38,9 @@ const channel = (conn) => go(function* () {
   console.log('key is:', key)
 
   var user = me
-  var msg = {jwt: key, syncpoint: 'none', subscription: querieslist}
+  var msg = {jwt: key, syncpoint: syncpoint, subscription: querieslist}
   const ex_data_channel = Channel(config.url, "datomic:" + user, user, receiveDataMessage, chData, conn, key)
-  yield timeout(10000)
+  yield timeout(1000)
   ex_data_channel.send(msg)
   console.log('yield take chData', yield take(chData))
   // console.log('end data go function')
@@ -66,7 +66,7 @@ go(function* (conn) {
     console.log('yield take chUnPass', msg)
     // var msg = {email: 'john@phoenix-trello.com', password: '12345678'}
     const ex_auth_channel = Channel(config.url, "auth:" + user, user, receiveAuthMessage, chAuth, conn)
-    yield timeout(10000)
+    yield timeout(1000)
     ex_auth_channel.send(msg)
     console.log('yield take chAuth', yield take(chAuth))
     var value = yield take(chAuth)

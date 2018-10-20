@@ -7,21 +7,18 @@ import transact from './transact'
 
 import { loadsyncpoint } from './context/persistence'
 loadsyncpoint(conn)
-import { get } from 'idb-keyval'
 
+import { get } from 'idb-keyval'
 import setchannel from './context/channel-web'
 var channel
-if (clientonly) {
-  channel = {}
-  channel.send = function () {
-    console.log('set clientonly to false in order to actually send')
-  }
-} else {
-  get('syncpoint')
-    .then(syncpoint => {
-      channel = setchannel(conn, JSON.stringify(syncpoint))
-    })
-}
+get('syncpoint')
+  .then(syncpoint => {
+    channel = setchannel(conn, JSON.stringify(syncpoint))
+  })
+  .catch(err => {
+    console.log("maybe there is no syncpoint", err)
+    channel = setchannel(conn, 'none')
+  })
 
 datascript.listen(conn, {channel}, function(report) {
   // adds a uuid. sync doesn't work without it
@@ -45,7 +42,9 @@ datascript.listen(conn, {channel}, function(report) {
     return s.a != 'confirmationid'
   })
 
-  channel.send({data: tx_data_modded, meta: report.tx_meta, confirmationid: report.tx_data.confirmationid})
+  channel.send
+  ? channel.send({data: tx_data_modded, meta: report.tx_meta, confirmationid: report.tx_data.confirmationid})
+  : console.log('there is no channel')
 })
 
 export const initContext = () => {

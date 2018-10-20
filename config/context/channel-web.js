@@ -38,7 +38,7 @@ const channel = (conn, syncpoint) => go(function* () {
   var user = me
   var msg = {jwt: key, syncpoint: syncpoint, subscription: querieslist}
   const ex_data_channel = Channel(config.url, "datomic:" + user, user, receiveDataMessage, chData, conn, key)
-  yield timeout(10000)
+  yield timeout(1000)
   ex_data_channel.send(msg)
   console.log('yield take chData', yield take(chData))
   // console.log('end data go function')
@@ -64,7 +64,7 @@ go(function* (conn) {
     console.log('yield take chUnPass', msg)
     // var msg = {email: 'john@phoenix-trello.com', password: '12345678'}
     const ex_auth_channel = Channel(config.url, "auth:" + user, user, receiveAuthMessage, chAuth, conn)
-    yield timeout(10000)
+    yield timeout(1000)
     ex_auth_channel.send(msg)
     console.log('yield take chAuth', yield take(chAuth))
     var value = yield take(chAuth)
