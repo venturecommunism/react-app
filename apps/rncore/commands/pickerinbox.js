@@ -1,3 +1,5 @@
+import uuid from '../../../config/uuid'
+
 export default {
   checkitem({}, uuid) {
     console.log(JSON.stringify(uuid))
@@ -8,7 +10,7 @@ export default {
   removeall({}, clear) {
     clear()
   },
-  addtoproject({conn, transact, uuid}, projid, values, clear, set_theproject) {
+  addtoproject({conn, transact}, projid, values, clear, set_theproject) {
     if (values.length < 1) {
       set_theproject(projid)
     } else {
@@ -17,7 +19,8 @@ export default {
       transact(conn, [{
         ':db/id': -1,
         project: projid,
-        uuid: item
+        uuid: item,
+        confirmationid: uuid()
       }])
     )
     clear()
