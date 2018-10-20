@@ -15,6 +15,43 @@ defmodule Datomic.Channel do
     {:via, :gproc, {:n, :l, {:topic, process_per_topic}}}
   end
 
+  def sync(latest_tx, subscription, socket) do
+    %{topic: topic} = socket
+
+    datomicsubscription = Enum.map(subscription, fn(x) ->
+      latest_tx = String.to_integer(latest_tx)
+      {:ok, reversiblequery} = DatomicQueryTranslator.translatetodatoms(Enum.at(x,0))
+      query = Exdn.from_elixir! reversiblequery
+      {:ok, edn} = DatomicGenServer.q(via_tuple(topic), query, [ Exdn.from_elixir!({:list, [{:symbol, :"datomic.api/since"}, {:symbol, :"datomic_gen_server.peer/*db*"}, latest_tx ]})], [:options, {:client_timeout, 100_000}])
+      Exdn.to_reversible edn
+    end)
+
+    finaloutput = RecUnion.recursiveunion(datomicsubscription)
+
+    listfrommapset = MapSet.to_list(finaloutput)
+    |> Enum.sort_by(fn x ->
+      Enum.at(x,3)
+    end)
+    |> Enum.reverse
+
+    final_tx = Enum.at(Enum.at(listfrommapset, 0), 3)
+
+    {:ok, superfinaloutput} = Exdn.from_elixir finaloutput
+    Datomic.TxForm.parse(superfinaloutput)
+    |> Enum.map(fn x ->
+      %{
+        "a" => x["a"],
+        "e" => x["e"],
+        "op" => x["op"],
+        "tx" => final_tx,
+        "v" => x["v"]
+      }
+    end)
+    |> Enum.group_by(fn x ->
+      x["tx"]
+    end)
+  end
+
   def sync("none", subscription, socket) do
     Logger.debug "MSG FALSE"
     %{topic: topic} = socket
