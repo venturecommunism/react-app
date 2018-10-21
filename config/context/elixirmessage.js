@@ -1,6 +1,5 @@
 import datascript from 'datascript'
 import transact from '../transact'
-import {go, chan, take, put, timeout, putAsync} from 'js-csp'
 
 import { sync } from './persistence'
 
@@ -22,6 +21,7 @@ export const receiveDataMessage = (conn, message, me) => {
     transact(conn, report_id_confirmed_tx, {'remoteuser': 'server confirmation'})
   }
   if ('ok' in message) return
+  console.log("ELIXIR OBJECT", message)
   const user = message.user
   const isMe = (someUser) => me === someUser
   if (isMe(user)) return // prevent echoing yourself (TODO: server could handle this i guess?)
