@@ -1,4 +1,4 @@
-import { AppRegistry, AsyncStorage } from 'react-native'
+import { AsyncStorage } from 'react-native'
 
 import datascript from 'datascript'
 import { maindb, fakedb } from './lib/createDBConn'
@@ -34,14 +34,21 @@ let chSyncpoint = chan()
 var key
 
 import { getItem } from 'react-native-sensitive-info'
-getItem('syncpoint',{
+getItem('syncpoint', {
     sharedPreferencesName: 'mySharedPrefs',
     keychainService: 'myKeychain'
   })
   .then(syncpoint => {
-    syncpoint ? putAsync(chSyncpoint, syncpoint) : putAsync(chSyncpoint, 'none')
+    getItem(syncpoint, {
+      sharedPreferencesName: 'mySharedPrefs',
+      keychainService: 'myKeychain'
+    })
+    .then(letterpoint => {
+      letterpoint ? putAsync(chSyncpoint, letterpoint) : putAsync(chSyncpoint, 'none')
+    })
   })
   .catch(err => {
+    putAsync(chSyncpoint, 'none')
     console.log("maybe there is no syncpoint", err)
   })
 
@@ -127,6 +134,5 @@ export const initContext = () => {
   return {
     conn: conn,
     transact: transact,
-    AppRegistry: AppRegistry,
   }
 }

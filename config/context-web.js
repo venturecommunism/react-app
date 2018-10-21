@@ -34,7 +34,10 @@ var key
 import { get } from 'idb-keyval'
 get('syncpoint')
   .then(syncpoint => {
-    syncpoint ? putAsync(chSyncpoint, JSON.stringify(syncpoint)) : putAsync(chSyncpoint, 'none')
+    get(syncpoint)
+      .then(letterpoint => {
+        letterpoint ? putAsync(chSyncpoint, JSON.stringify(letterpoint)) : putAsync(chSyncpoint, 'none')
+      })
   })
   .catch(err => {
     putAsync(chSyncpoint, 'none')
@@ -63,11 +66,6 @@ go(function* () {
   console.log('yield take chData', yield take(chData))
   // console.log('end data go function')
   channel = ex_data_channel
-
-  transact(conn, [{
-    ':db/id': -1,
-    'localstate/state': 'loggingin'
-  }])
 })
 
 // Authentication Communicating Sequential Process. Puts a JWT on the Data CSP.

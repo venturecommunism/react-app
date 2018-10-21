@@ -66,6 +66,8 @@ export const sync = (message) => {
     Object.keys(brokenmessage).map(uuid => {
       setItem(uuid, brokenmessage[uuid])
     })
+
+    setItem('syncpoint', syncpoint)
   }
 
   const swapSync = (newsync, oldsync, oldkeys, message) => {
@@ -78,6 +80,8 @@ export const sync = (message) => {
     })
     setItem(message.syncpoint, [...oldkeys, ...Object.keys(brokenmessage)])
     setItem(newsync, message.syncpoint)
+
+    setItem('syncpoint', newsync)
   }
 }
 
