@@ -1,4 +1,8 @@
 defmodule DatomicQueryTranslator do
+  def translatetosince(query_list) do
+    datomic_query = rejoined(since_cleanupfind(splitwithclauses(splitwhere(Exdn.to_reversible query_list))))
+    {:ok, datomic_query}
+  end
   def translatetocurrentstate(query_list) do
     datomic_query = rejoined(currentstate_cleanupfind(splitwithclauses(splitwhere(Exdn.to_reversible query_list))))
     {:ok, datomic_query}
@@ -35,11 +39,19 @@ defmodule DatomicQueryTranslator do
     {elem(splitwclauses, 0), mappedfind, elem(splitwclauses, 1)}
   end
 
+  defp since_cleanupfind(argsplitwithclauses) do
+    splitwclauses = Enum.split_with(elem(argsplitwithclauses, 0), fn(x) -> !useorrejectfind(x) end)
+    mappedfind = Enum.map(elem(argsplitwithclauses, 2), fn(x) -> processwhereclause(x) end)
+    atomswclauses = [:find, {:symbol, :"?e"}, {:symbol, :"?aname"}, {:symbol, :"?v"}, {:symbol, :"?tx"}, {:symbol, :"?op"}, :in, {:symbol, :"$"}, {:symbol, :"$since"}]
+    newmappedfind = mappedfind ++ [[{:symbol, :"$since"}, {:symbol, :"?e"}, {:symbol, :"?a"}, {:symbol, :"?v"}, {:symbol, :"?tx"}, {:symbol, :"?op"}]] ++ [[{:symbol, :"$"}, {:symbol, :"?a"}, {:symbol, :"db/ident"}, {:symbol, :"?aname"}]]
+    {atomswclauses, newmappedfind, elem(splitwclauses, 1)}
+  end
+
   defp datoms_cleanupfind(argsplitwithclauses) do
     splitwclauses = Enum.split_with(elem(argsplitwithclauses, 0), fn(x) -> !useorrejectfind(x) end)
     mappedfind = Enum.map(elem(argsplitwithclauses, 2), fn(x) -> processwhereclause(x) end)
     atomswclauses = [:find, {:symbol, :"?e"}, {:symbol, :"?aname"}, {:symbol, :"?v"}, {:symbol, :"?tx"}, {:symbol, :"?op"}]
-    newmappedfind = mappedfind ++ [[symbol: :"?e", symbol: :"?a", symbol: :"?v", symbol: :"?tx", symbol: :"?op"]] ++ [[symbol: :"?a", symbol: :"db/ident", symbol: :"?aname"]]
+    newmappedfind = mappedfind ++ [{:symbol, :"?e"}, {:symbol, :"?a"}, {:symbol, :"?v"}, {:symbol, :"?tx"}, {:symbol, :"?op"}] ++ [{:symbol, :"?a"}, {:symbol, :"db/ident"}, {:symbol, :"?aname"}]
     {atomswclauses, newmappedfind, elem(splitwclauses, 1)}
   end
 

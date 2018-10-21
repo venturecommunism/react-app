@@ -29,9 +29,10 @@ defmodule Datomic.Channel do
     end
 
     datomicsubscription = Enum.map(subscription, fn(x) ->
-      {:ok, reversiblequery} = DatomicQueryTranslator.translatetodatoms(Enum.at(x,0))
+      {:ok, reversiblequery} = DatomicQueryTranslator.translatetosince(Enum.at(x,0))
       query = Exdn.from_elixir! reversiblequery
-      {:ok, edn} = DatomicGenServer.q(via_tuple(topic), query, [ Exdn.from_elixir!({:list, [{:symbol, :"datomic.api/since"}, {:symbol, :"datomic_gen_server.peer/*db*"}, latest_tx ]})], [:options, {:client_timeout, 100_000}])
+#      {:ok, qedn} = DatomicGenServer.q(via_tuple(topic), otherquery, [ Exdn.from_elixir!({:list, [{:symbol, :"datomic.api/since"}, {:symbol, :"datomic_gen_server.peer/*db*"}, latest_tx ]})], [:options, {:client_timeout, 100_000}])
+      {:ok, edn} = DatomicGenServer.since(via_tuple(topic), query, latest_tx, [:options, {:client_timeout, 100_000}])
       Exdn.to_reversible edn
     end)
 
@@ -42,8 +43,6 @@ defmodule Datomic.Channel do
       Enum.at(x,3)
     end)
     |> Enum.reverse
-
-    IO.inspect listfrommapset
 
     final_tx = cond do
       listfrommapset == [] ->
