@@ -1,11 +1,12 @@
 import { createDatomQLContainer, datomql } from '../containers/datomql'
 import React, {Fragment} from 'react'
 
-import { SimpleView, SimpleText, SimpleButton, PageWrapper, ListContainer, ListItem, ListItemView, Loader, UserContainer, DateTime, AriaModal, CheckBox } from './styledComponents'
-import { Set } from 'react-powerplug'
+import { View, Text, Button, PageWrapper, ListContainer, ListItem, ListItemView, Loader, UserContainer, DateTime, Modal, CheckBox } from './styledComponents'
+import { Set, State } from 'react-powerplug'
 
 const PickerInbox = ({
     actions,
+    tx,
     status,
     message,
     dsQuery,
@@ -16,20 +17,23 @@ const PickerInbox = ({
       <PageWrapper>
       <UserContainer>
       {status === 'SUCCESS' ? (
+
+        <State initial={{ favorite: "", uuid: "" }}>
+        {({ state, setState }) => (
+
         <Set initial={[]}>
         {({ values, add, remove, clear }) => (
-          <SimpleView>
+          <View>
           <Fragment>
           <ListContainer>
-
-          {dsQuery.filterprojects && dsQuery.filterprojects.map(item => <SimpleView key={item[3]}><SimpleText>- {item[0]}</SimpleText></SimpleView>)}
-          <SimpleText>{theproject}</SimpleText>
-          <SimpleText>{dsQuery.filterprojects.length > 0 && dsQuery.filterprojects.length}</SimpleText>
+          {dsQuery.filterprojects && dsQuery.filterprojects.map(item => <View key={item[3]}><Text>- {item[0]}</Text></View>)}
+          <Text>{theproject}</Text>
+          <Text>{dsQuery.filterprojects.length > 0 && dsQuery.filterprojects.length}</Text>
 
           {dsQuery.projects.map(item => (
               <ListItemView key={item[3]}>
 
-              <SimpleButton
+              <Button
               title={item[0]}
               onPress={() => actions().pickerinbox.addtoproject(item[3], values, clear, set_theproject)}
               accessibilityLabel={item[0]} />
@@ -38,33 +42,53 @@ const PickerInbox = ({
               </ListItemView>
               ))}
           </ListContainer>
-          <SimpleButton
+          <Button
           title={"Reset"}
           onPress={clear}
           accessibilityLabel={"Reset"} />
             <ListContainer>
             {dsQuery.inbox.map(inboxitem => (
                     <ListItemView key={inboxitem[3]}>
+
+                {state.inboxitem != '' && state.uuid == inboxitem[3] &&
+                <Modal
+                transparent={false}
+                onRequestClose={() => console.log('closed modal')}
+                >
+                <Text>{state.inboxitem}</Text>
+                <Button title={"Make Project"} onPress={ () => tx({type: "project"}, state.uuid) }/>
+                <Button title={"Make Context"} onPress={() => tx({type: "context"}, state.uuid) }/>
+                <DateTime placeholder={"Add to Calendar"} taskid={state.uuid}/>
+                <Button title={"deactivate Modal"} onPress={() => setState({ inboxitem: '', uuid: ''})}/>
+                </Modal> }
+
+
                     <CheckBox checked={values.indexOf(inboxitem[3]) > -1} key={inboxitem[3]} taskid={inboxitem[3]} 
                     onChange={() => actions().pickerinbox.dostuff(values, add, remove, inboxitem[3])} />
 
                     <ListItem>{inboxitem[0]}</ListItem>
+                    <Button onPress={() => setState({ inboxitem: inboxitem[0], uuid: inboxitem[3] })} title={"Change Type"}/>
                     </ListItemView>
                     ))}
         </ListContainer>
           </Fragment>
 
           { values
-            ? <SimpleView>
-              <SimpleText>
+            ? <View>
+              <Text>
               {JSON.stringify(values)}
-            </SimpleText>
-              </SimpleView>
+            </Text>
+              </View>
               : null}
-        </SimpleView>
+        </View>
+
 
           )}
       </Set>
+
+          )}
+      </State>
+
 
         ) : (
           <Fragment>

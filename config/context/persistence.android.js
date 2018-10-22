@@ -137,7 +137,7 @@ export const sync = (message) => {
 }
 
 export const loadsyncpoint = (conn) => {
-  //clear()
+  // clear()
   go(function* () {
     var loadCh = chan()
     getItem('syncpoint-A', {

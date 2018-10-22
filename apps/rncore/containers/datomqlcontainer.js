@@ -17,6 +17,12 @@ const initkeys = (...queries) => {
   return initstate
 }
 
+const depsToPropsMapper = (context, actions) => ({
+  context: () => context,
+  actions: () => actions,
+  tx:      actions.transact.tx
+})
+
 export default (component, ...queries) => compose(
   withState('dsQuery', 'updateDsQuery', initkeys(...queries)),
   withHandlers({
@@ -28,7 +34,7 @@ export default (component, ...queries) => compose(
     set_theproject: ({ update_theproject }) => data => update_theproject(state => data),
   }),
 
-  useDeps(),
+  useDeps(depsToPropsMapper),
   listenload(queries),
   project,
 )(component, ...queries)

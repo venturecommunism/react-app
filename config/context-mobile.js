@@ -39,6 +39,8 @@ getItem('syncpoint', {
     keychainService: 'myKeychain'
   })
   .then(syncpoint => {
+    syncpoint
+    ?
     getItem(syncpoint, {
       sharedPreferencesName: 'mySharedPrefs',
       keychainService: 'myKeychain'
@@ -46,6 +48,7 @@ getItem('syncpoint', {
     .then(letterpoint => {
       letterpoint ? putAsync(chSyncpoint, letterpoint) : putAsync(chSyncpoint, 'none')
     })
+    : putAsync(chSyncpoint, 'none')
   })
   .catch(err => {
     putAsync(chSyncpoint, 'none')

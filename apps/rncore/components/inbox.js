@@ -1,7 +1,7 @@
 import { createDatomQLContainer, datomql } from '../containers/datomql'
 import React, {Fragment} from 'react'
 
-import { SimpleView, SimpleText, SimpleButton, PageWrapper, ListContainer, ListItem, ListItemView, Loader, UserContainer, DateTime, Modal } from './styledComponents'
+import { View, Text, Button, PageWrapper, ListContainer, ListItem, ListItemView, Loader, UserContainer, DateTime, Modal } from './styledComponents'
 import { State, Toggle } from 'react-powerplug'
 
 const PickerInbox = ({
@@ -18,7 +18,7 @@ const PickerInbox = ({
         {({ state, setState }) => (
           <Toggle initial={false}>
           {({ on, toggle }) => (
-            <SimpleView>
+            <View>
             <Fragment>
             <ListContainer>
 
@@ -27,19 +27,19 @@ const PickerInbox = ({
                 transparent={false}
                 onRequestClose={() => console.log('closed modal')}
                 >
-                <SimpleText>{state.favorite}</SimpleText>
-                <SimpleButton title={"Make Project"} onPress={() => console.log('okay')}/>
-                <SimpleButton title={"Make Context"} onPress={() => console.log('okay2')}/>
+                <Text>{state.favorite}</Text>
+                <Button title={"Make Project"} onPress={() => console.log('okay')}/>
+                <Button title={"Make Context"} onPress={() => console.log('okay2')}/>
                 <DateTime placeholder={"Add to Calendar"} buttonaction={() => actions.general.test} taskid={state.uuid}/>
-                <SimpleButton title={"deactivate Modal"} onPress={toggle}/>
+                <Button title={"deactivate Modal"} onPress={toggle}/>
                 </Modal> }
 
 
-            {dsQuery.map(item => (
+            {dsQuery.inboxitems.map(item => (
                 <ListItemView key={item[3]}>
-               {state && state.uuid && state.uuid == item[3] ? <SimpleButton onPress={toggle} title={"Change Type"}/> : null }
+               {state && state.uuid && state.uuid == item[3] ? <Button onPress={toggle} title={"Change Type"}/> : null }
 
-              <SimpleButton
+              <Button
               title={item[0]}
             onPress={() => setState({ favorite: item[0], uuid: item[3] })}
             accessibilityLabel={item[0]} />
@@ -49,13 +49,13 @@ const PickerInbox = ({
               ))}
           </ListContainer>
 
-            <SimpleButton
+            <Button
             title={"Reset"}
           onPress={() => setState({ favorite: '', uuid: '' })}
           accessibilityLabel={"Reset"} />
 
             <ListContainer>
-            {dsQuery.map(proj => (
+            {dsQuery.inboxitems.map(proj => (
                   <ListItemView key={proj[3]}>
                   <ListItem>{proj[0]}</ListItem>
                   </ListItemView>
@@ -64,13 +64,13 @@ const PickerInbox = ({
             </Fragment>
 
             { state && state.favorite && state.uuid
-              ? <SimpleView>
-                <SimpleText>
+              ? <View>
+                <Text>
                 {state.favorite} + {state.uuid}
-              </SimpleText>
-                </SimpleView>
+              </Text>
+                </View>
                 : null}
-          </SimpleView>
+          </View>
 
             )}
         </Toggle>
@@ -91,7 +91,7 @@ const PickerInbox = ({
 export default createDatomQLContainer(
     PickerInbox,
     datomql`
-    query inbox_inboxitem {
+    query inbox_inboxitems {
     [:find ?desc ?date ?status ?uuid ?confirmid ?e
     :where
     [?e "description" ?desc]

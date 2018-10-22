@@ -34,10 +34,13 @@ var key
 import { get } from 'idb-keyval'
 get('syncpoint')
   .then(syncpoint => {
+    syncpoint
+    ?
     get(syncpoint)
       .then(letterpoint => {
         letterpoint ? putAsync(chSyncpoint, JSON.stringify(letterpoint)) : putAsync(chSyncpoint, 'none')
       })
+    : putAsync(chSyncpoint, 'none')
   })
   .catch(err => {
     putAsync(chSyncpoint, 'none')

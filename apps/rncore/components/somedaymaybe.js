@@ -1,7 +1,7 @@
 import { createDatomQLContainer, datomql } from '../containers/datomql'
 import React, {Fragment} from 'react'
 
-import { SimpleView, SimpleButton, SimpleText, PageWrapper, ListContainer, ListItem, ListItemView, Loader, UserContainer } from './styledComponents'
+import { View, Button, Text, PageWrapper, ListContainer, ListItem, ListItemView, Loader, UserContainer } from './styledComponents'
 import { State } from 'react-powerplug'
 
 const SomedayMaybe = ({
@@ -16,13 +16,13 @@ const SomedayMaybe = ({
         {status === 'SUCCESS' ? (
           <State initial={{ favorite: "", picked: "" }}>
             {({ state, setState }) => (
-              <SimpleView>
+              <View>
                 <Fragment>
                   <ListContainer>
-                    {dsQuery.map(item => (
+                    {dsQuery.somedaymaybes.map(item => (
                       <ListItemView key={item[3]}>
 
-                      <SimpleButton
+                      <Button
                         title={item[0]}
                         onPress={() => setState({ favorite: item[0], picked: new Date().toLocaleTimeString()})}
                         accessibilityLabel={item[0]} />
@@ -32,13 +32,13 @@ const SomedayMaybe = ({
                     ))}
                   </ListContainer>
 
-                 <SimpleButton
+                 <Button
                  title={"Reset"}
                  onPress={() => setState({ favorite: '', picked: ''})}
                  accessibilityLabel={"Reset"} />
 
                  <ListContainer>
-                   {dsQuery.map(proj => (
+                   {dsQuery.somedaymaybes.map(proj => (
                      <ListItemView key={proj[3]}>
                        <ListItem>{proj[0]}</ListItem>
                      </ListItemView>
@@ -47,13 +47,13 @@ const SomedayMaybe = ({
                </Fragment>
 
                { state && state.favorite && state.picked
-               ? <SimpleView>
-                   <SimpleText>
+               ? <View>
+                   <Text>
                      {state.favorite} + {state.picked}
-                   </SimpleText>
-                 </SimpleView>
+                   </Text>
+                 </View>
                : null}
-            </SimpleView>
+            </View>
           )}
         </State>
         ) : (
@@ -70,7 +70,7 @@ const SomedayMaybe = ({
 export default createDatomQLContainer(
   SomedayMaybe,
   datomql`
-    query somedaymaybe_somedaymaybeitem {
+    query somedaymaybe_somedaymaybes {
 [:find ?desc ?date ?status ?uuid ?confirmid ?wait
   :where
 [?e "description" ?desc]

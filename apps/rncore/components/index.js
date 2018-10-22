@@ -6,18 +6,16 @@ import {
 
 import CreateTask from './createtask'
 
-//import Calendar from './calendar'
+import Calendar from './calendar'
 import PickerInbox from './pickerinbox'
-//import Inbox from './inbox'
-//import SomedayMaybe from './somedaymaybe'
+import SomedayMaybe from './somedaymaybe'
 
 const App = () =>
   <View>
     <ScrollView>
-      {/* <Calendar /> */}
+      <Calendar />
       <PickerInbox />
-{/*      <Inbox />
-      <SomedayMaybe /> */}
+      <SomedayMaybe />
     </ScrollView>
     <CreateTask/>
   </View>

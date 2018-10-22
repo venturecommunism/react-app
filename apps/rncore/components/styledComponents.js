@@ -13,11 +13,11 @@ export const FloatingButton = styled.View`
   border: 3px #CCCCCC solid;
   background-color: #FFFFFF;
 `
-export const SimpleView = styled.View`
+export const View = styled.View`
 `
-export const SimpleButton = styled.Button`
+export const Button = styled.Button`
 `
-export const SimpleText = styled.Text`
+export const Text = styled.Text`
 `
 export const PageWrapper = styled.View`
   display: flex;
@@ -49,8 +49,6 @@ export const LikesContainer = styled(ListContainer)`
   justifyContent: flex-end;
 `
 export const StyledInput = styled.TextInput`
-`
-export const Button = styled.View`
 `
 export const Delete = styled.Text`
   flex: 1;
