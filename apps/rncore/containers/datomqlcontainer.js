@@ -1,7 +1,7 @@
 import { useDeps } from 'react-simple-di'
-import './ObservableConfig'
-import project from './streamhandlers/project'
-import listenload from './streamhandlers/listenload'
+import '../../rncore/containers/ObservableConfig'
+import state from './streamhandlers/state'
+import dsload from './streamhandlers/dsload'
 
 import {
   compose,
@@ -24,17 +24,21 @@ const depsToPropsMapper = (context, actions) => ({
 })
 
 export default (component, ...queries) => compose(
-  withState('dsQuery', 'updateDsQuery', initkeys(...queries)),
-  withHandlers({
-    setDsQuery: ({ updateDsQuery }) => data => updateDsQuery(state => data),
-  }),
+//  withState('dsQuery', 'updateDsQuery', initkeys(...queries)),
+//  withHandlers({
+//    setDsQuery: ({ updateDsQuery }) => data => updateDsQuery(state => data),
+//  }),
 
- withState('theproject', 'update_theproject', 'blankproject'),
-  withHandlers({
-    set_theproject: ({ update_theproject }) => data => update_theproject(state => data),
-  }),
+// can't use this because it's different for each container you wrap
+// but maybe if we put this higher up in the ONE BIG container
+// also don't say 'blankproject'
+
+// withState('theproject', 'update_theproject', 'blankproject'),
+//  withHandlers({
+//    set_theproject: ({ update_theproject }) => data => update_theproject(state => data),
+//  }),
 
   useDeps(depsToPropsMapper),
-  listenload(queries),
-  project,
+  state,
+  dsload(queries),
 )(component, ...queries)

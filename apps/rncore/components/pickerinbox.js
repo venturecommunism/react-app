@@ -10,13 +10,12 @@ const PickerInbox = ({
     status,
     message,
     dsQuery,
-    set_theproject,
-    theproject,
+    selectedState,
+    stateSelect,
     }) => {
   return (
       <PageWrapper>
       <UserContainer>
-      {status === 'SUCCESS' ? (
 
         <State initial={{ favorite: "", uuid: "" }}>
         {({ state, setState }) => (
@@ -27,7 +26,7 @@ const PickerInbox = ({
           <Fragment>
           <ListContainer>
           {dsQuery.filterprojects && dsQuery.filterprojects.map(item => <View key={item[3]}><Text>- {item[0]}</Text></View>)}
-          <Text>{theproject}</Text>
+          <Text>{JSON.stringify(selectedState)}</Text>
           <Text>{dsQuery.filterprojects.length > 0 && dsQuery.filterprojects.length}</Text>
 
           {dsQuery.projects.map(item => (
@@ -35,7 +34,7 @@ const PickerInbox = ({
 
               <Button
               title={item[0]}
-              onPress={() => actions().pickerinbox.addtoproject(item[3], values, clear, set_theproject)}
+              onPress={() => stateSelect({project: item[3]})}
               accessibilityLabel={item[0]} />
 
 
@@ -90,12 +89,6 @@ const PickerInbox = ({
       </State>
 
 
-        ) : (
-          <Fragment>
-          <Loader status={status} message={message} />
-          <Loader status={status} message={message} />
-          </Fragment>
-          )}
       </UserContainer>
         </PageWrapper>
         )

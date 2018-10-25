@@ -13,7 +13,7 @@ const SomedayMaybe = ({
   return (
     <PageWrapper>
       <UserContainer>
-        {status === 'SUCCESS' ? (
+
           <State initial={{ favorite: "", picked: "" }}>
             {({ state, setState }) => (
               <View>
@@ -56,12 +56,7 @@ const SomedayMaybe = ({
             </View>
           )}
         </State>
-        ) : (
-          <Fragment>
-            <Loader status={status} message={message} />
-            <Loader status={status} message={message} />
-          </Fragment>
-        )}
+
       </UserContainer>
     </PageWrapper>
   )
