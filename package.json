@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "datascript": "^0.16.6",
+    "datascript-mori": "^0.17.0",
     "idb-keyval": "^3.1.0",
     "js-csp": "^0.9.3",
     "lodash": "^4.17.11",

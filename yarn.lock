@@ -3664,6 +3664,11 @@ data-urls@^1.0.0:
     whatwg-mimetype "^2.1.0"
     whatwg-url "^7.0.0"
 
+datascript-mori@^0.17.0:
+  version "0.17.0"
+  resolved "https://registry.yarnpkg.com/datascript-mori/-/datascript-mori-0.17.0.tgz#ebcc23c09c1aaf978b9be697134cd64ac09952ee"
+  integrity sha1-68wjwJwar5eLm+aXE0zWSsCZUu4=
+
 datascript@^0.16.6:
   version "0.16.6"
   resolved "https://registry.yarnpkg.com/datascript/-/datascript-0.16.6.tgz#c4685f965b1e05823d9e106c856d17c918fd1d5c"

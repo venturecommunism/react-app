@@ -4,20 +4,20 @@ import {
   ScrollView
 } from 'react-native'
 
-import CreateTask from './createtask'
+//import CreateTask from './createtask'
 
-import Calendar from './calendar'
-import PickerInbox from './pickerinbox'
-import SomedayMaybe from './somedaymaybe'
+//import Calendar from './calendar'
+//import PickerInbox from './pickerinbox'
+//import SomedayMaybe from './somedaymaybe'
 
 const App = () =>
   <View>
     <ScrollView>
-      <Calendar />
+{/*      <Calendar />
       <PickerInbox />
-      <SomedayMaybe />
+      <SomedayMaybe /> */}
     </ScrollView>
-    <CreateTask/>
+    {/* <CreateTask/> */}
   </View>
 
 export default App
