@@ -1,4 +1,5 @@
-import datascript from 'datascript'
+import {datascript as ds, mori, helpers} from 'datascript-mori'
+const datascript = ds.js
 
 import { Observable, from, of, interval, timer } from 'rxjs'
 import {

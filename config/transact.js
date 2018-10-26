@@ -1,4 +1,5 @@
-import datascript from 'datascript'
+import {datascript as ds, mori, helpers} from 'datascript-mori'
+const datascript = ds.js
 
 const transact = (conn, data_to_add, meta) => {
   // disable metadata to test transactions locally
