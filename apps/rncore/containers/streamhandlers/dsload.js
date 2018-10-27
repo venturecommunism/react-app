@@ -32,20 +32,49 @@ const initialQuery = (props, queries) => {
   var latencyloader = {}
   queries.forEach(metadata => Object.keys(metadata).forEach(prop => result[prop] = datascript.q(metadata[prop], db, props.selectedState.project)))
   queries.forEach(metadata => Object.keys(metadata).forEach(prop => latencyloader[prop] = initqueryloadertext))
-  return Object.keys(result).every(k => !isEmpty(result[k])) ? [result] : [latencyloader]
+  return Object.keys(result).some(k => !isEmpty(result[k])) ? [result] : [latencyloader]
 }
 
 const listenQuery = (props, queries) => Observable.create(function(observer) {
+  const {globalstate} = props.context()
   const {conn} = props.context()
-  datascript.listen(conn, function(report) {
-    console.log("LISTEN")
-    const listenqueryloadertext = [["LISTEN QUERY Should load a status indicator here...", "blank", "blank", "something-for-key-prop"]]
+  var THEPROJECT
+
+  datascript.listen(globalstate, function(report) {
+    const statequery = `
+[:find ?project :where
+[?e "project" ?project]
+]
+    `
+    // global in scope, but local because it comes from the client
+    const localstate = datascript.q(statequery, datascript.db(globalstate))
+    THEPROJECT = localstate[0] ? localstate[0][0] : null
+    // console.log("PROJ-LISTEN")
+    const listenqueryloadertext = [["GLOBALSTATE LISTEN QUERY Should load a status indicator here...", "blank", "blank", "something-for-key-prop"]]
     const db = datascript.db(conn)
     var result = {}
     var latencyloader = {}
-    queries.forEach(metadata => Object.keys(metadata).forEach(prop => result[prop] = datascript.q(metadata[prop], db, props.selectedState.project)))
+    queries.forEach(metadata => Object.keys(metadata).forEach(prop => result[prop] = datascript.q(metadata[prop], db, THEPROJECT)))
     queries.forEach(metadata => Object.keys(metadata).forEach(prop => latencyloader[prop] = listenqueryloadertext))
-    return Object.keys(result).every(k => !isEmpty(result[k])) ? observer.next(result) : observer.next(latencyloader)
+    return Object.keys(result).some(k => !isEmpty(result[k])) ? observer.next(result) : observer.next(latencyloader)
+  })
+
+  datascript.listen(conn, function(report) {
+    const statequery = `
+[:find ?v :where
+[?e "project" ?v]
+]
+    `
+    const theproj = datascript.q(statequery, datascript.db(globalstate))
+    var THEPROJECT = (theproj[0] && theproj[0][0]) ? theproj[0][0] : null
+    // console.log("CONN LISTEN")
+    const listenqueryloadertext = [["CONN LISTEN QUERY Should load a status indicator here...", "blank", "blank", "something-for-key-prop"]]
+    const db = datascript.db(conn)
+    var result = {}
+    var latencyloader = {}
+    queries.forEach(metadata => Object.keys(metadata).forEach(prop => result[prop] = datascript.q(metadata[prop], db, THEPROJECT)))
+    queries.forEach(metadata => Object.keys(metadata).forEach(prop => latencyloader[prop] = listenqueryloadertext))
+    return Object.keys(result).some(k => !isEmpty(result[k])) ? observer.next(result) : observer.next(latencyloader)
   })
 })
 
@@ -92,7 +121,7 @@ const dsload = (queries) => mapPropsStream(props$ => {
 //    tap(thing => console.log("THING", thing)),
 //  )
   return props$.pipe(
-    tap(props => console.log("COMBINED", props)),
+//    tap(props => console.log("COMBINED", props)),
     combineLatest(dsListenQuery$, dsQ$, (props, dsQuery) => ({
       ...props,
       dsQuery

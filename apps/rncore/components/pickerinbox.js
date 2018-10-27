@@ -7,6 +7,7 @@ import { Set, State } from 'react-powerplug'
 const PickerInbox = ({
     actions,
     tx,
+    localtx,
     status,
     message,
     dsQuery,
@@ -34,7 +35,7 @@ const PickerInbox = ({
 
               <Button
               title={item[0]}
-              onPress={() => stateSelect({project: item[3]})}
+              onPress={() => localtx({project: item[3]})}
               accessibilityLabel={item[0]} />
 
 

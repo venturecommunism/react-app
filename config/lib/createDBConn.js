@@ -26,8 +26,7 @@ import localdb from '../../apps/core/datoms/seeds/localdb'
 
 const maindb = () => {
   const Schema = {
-    ...CoreAppSchema,
-    ...LocalStateSchema
+    ...CoreAppSchema
   }
   const conn = datascript.create_conn(Schema)
 
@@ -44,8 +43,7 @@ const maindb = () => {
 
 const fakedb = () => {
   const Schema = {
-    ...CoreAppSchema,
-    ...LocalStateSchema
+    ...CoreAppSchema
   }
   const conn_fake_db = datascript.create_conn(Schema)
 
@@ -83,4 +81,13 @@ const componentdb = () => {
   return conn_db
 }
 
-export {maindb, fakedb, componentdb}
+const localstate = () => {
+  const LocalSchema = {
+    ...LocalStateSchema
+  }
+
+  const conn_localstate_db = datascript.create_conn(LocalSchema)
+  return conn_localstate_db
+}
+
+export {maindb, fakedb, componentdb, localstate}

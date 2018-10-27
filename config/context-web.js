@@ -1,9 +1,10 @@
 import {datascript as ds, mori, helpers} from 'datascript-mori'
 const datascript = ds.js
-import { maindb, fakedb } from './lib/createDBConn'
+import { maindb, fakedb, localstate } from './lib/createDBConn'
 
 const clientonly = false
 const conn = clientonly ? fakedb() : maindb()
+const globalstate = localstate() // global but not remote
 import transact from './transact'
 
 import { loadsyncpoint } from './context/persistence'
@@ -129,6 +130,7 @@ datascript.listen(conn, {channel}, function(report) {
 export const initContext = () => {
   return {
     conn: conn,
+    globalstate: globalstate,
     transact: transact,
   }
 }

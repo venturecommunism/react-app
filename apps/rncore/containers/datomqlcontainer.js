@@ -20,7 +20,8 @@ const initkeys = (...queries) => {
 const depsToPropsMapper = (context, actions) => ({
   context: () => context,
   actions: () => actions,
-  tx:      actions.transact.tx
+  tx:      actions.transact.tx,
+  localtx: actions.localtx.tx,
 })
 
 export default (component, ...queries) => compose(

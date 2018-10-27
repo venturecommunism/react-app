@@ -1,3 +1,4 @@
+import localtx from '../../rncore/commands/localtx'
 import transact from '../../rncore/commands/transact'
 import general from './general'
 import createtaskactions from './createtaskactions'
@@ -7,6 +8,7 @@ import createtask from '../../rndemo/commands/createtask'
 import pickerinbox from '../../rncore/commands/pickerinbox'
 
 const actions = {
+  localtx,
   transact,
   general,
   createtaskactions,
