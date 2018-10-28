@@ -2,9 +2,12 @@ import {datascript as ds, mori, helpers} from 'datascript-mori'
 const datascript = ds.js
 import { maindb, fakedb, localstate } from './lib/createDBConn'
 
-const clientonly = false
+const clientonly = true
 const conn = clientonly ? fakedb() : maindb()
 const globalstate = localstate() // global but not remote
+
+import {connect, nextTx} from './rx-datascript'
+const {report$, tx$} = connect(datascript.db(conn))
 import transact from './transact'
 
 import { loadsyncpoint } from './context/persistence'
@@ -132,5 +135,8 @@ export const initContext = () => {
     conn: conn,
     globalstate: globalstate,
     transact: transact,
+    report$: report$,
+    tx$: tx$,
+    nextTx: nextTx,
   }
 }

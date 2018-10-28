@@ -4,6 +4,8 @@ import {
   ScrollView
 } from 'react-native'
 
+import BlankView from './blankview'
+
 import CreateTask from './createtask'
 
 import Calendar from './calendar'
@@ -13,9 +15,11 @@ import SomedayMaybe from './somedaymaybe'
 const App = () =>
   <View>
     <ScrollView>
+      <BlankView />
+{/*
       <Calendar />
       <PickerInbox />
-      <SomedayMaybe />
+      <SomedayMaybe /> */}
     </ScrollView>
     <CreateTask/>
   </View>

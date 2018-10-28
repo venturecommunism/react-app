@@ -1,7 +1,7 @@
 import { useDeps } from 'react-simple-di'
 import '../../rncore/containers/ObservableConfig'
 import state from './streamhandlers/state'
-import dsload from './streamhandlers/dsload'
+import moriload from './streamhandlers/moriload'
 
 import {
   compose,
@@ -22,24 +22,12 @@ const depsToPropsMapper = (context, actions) => ({
   actions: () => actions,
   tx:      actions.transact.tx,
   localtx: actions.localtx.tx,
+  rxTx:    actions.rxtx.tx,
 })
 
 export default (component, ...queries) => compose(
-//  withState('dsQuery', 'updateDsQuery', initkeys(...queries)),
-//  withHandlers({
-//    setDsQuery: ({ updateDsQuery }) => data => updateDsQuery(state => data),
-//  }),
-
-// can't use this because it's different for each container you wrap
-// but maybe if we put this higher up in the ONE BIG container
-// also don't say 'blankproject'
-
-// withState('theproject', 'update_theproject', 'blankproject'),
-//  withHandlers({
-//    set_theproject: ({ update_theproject }) => data => update_theproject(state => data),
-//  }),
-
   useDeps(depsToPropsMapper),
   state,
-  dsload(queries),
-)(component, ...queries)
+  moriload(Object.assign({}, ...queries)),
+  // make sure both these Object.assigns are correct
+)(component, Object.assign({}, ...queries))
