@@ -1,4 +1,8 @@
-import datascript, { conn, report$, maintransact, localreport$, localtransact } from './datascript'
+import { mori, helpers } from 'datascript-mori'
+const {DB_ID, DB_ADD, TX_DATA, TX_META, DB_AFTER, DB_BEFORE, DB_UNIQUE, DB_UNIQUE_IDENTITY} = helpers
+const moriget = mori.get
+
+import datascript, { conn, report$, localreport$, maintransact} from './datascript'
 
 import { loadsyncpoint } from './context/persistence'
 loadsyncpoint(maintransact)
@@ -58,7 +62,7 @@ go(function* () {
 
   var user = me
   var msg = {jwt: key, syncpoint: syncpoint, subscription: querieslist}
-  const ex_data_channel = Channel(config.url, "datomic:" + user, user, receiveDataMessage, chData, conn, key)
+  const ex_data_channel = Channel(config.url, "datomic:" + user, user, receiveDataMessage, chData, report$, maintransact, key)
   yield timeout(1000)
   ex_data_channel.send(msg)
   console.log('yield take chData', yield take(chData))
@@ -69,7 +73,7 @@ go(function* () {
 // Authentication Communicating Sequential Process. Puts a JWT on the Data CSP.
 go(function* () {
   // putAsync is more Communicating Sequential Processes but from outside Go functions
-  const receiveAuthMessage = (conn, message) => {
+  const receiveAuthMessage = (report$, maintransact, message) => {
     // console.log('message', message)
     putAsync(chAuth, message)
   }
@@ -79,7 +83,7 @@ go(function* () {
     var msg = yield take(chUnPass)
     console.log('yield take chUnPass', msg)
     // var msg = {email: 'john@phoenix-trello.com', password: '12345678'}
-    const ex_auth_channel = Channel(config.url, "auth:" + user, user, receiveAuthMessage, chAuth, conn)
+    const ex_auth_channel = Channel(config.url, "auth:" + user, user, receiveAuthMessage, chAuth, report$, maintransact)
     yield timeout(1000)
     ex_auth_channel.send(msg)
     console.log('yield take chAuth', yield take(chAuth))
@@ -92,6 +96,39 @@ go(function* () {
 /*****
 * End Elixir / Phoenix Channel
 */
+
+report$.subscribe(r => {
+  var report = {}
+  report.tx_meta = {}
+  mori.toJs(moriget(r, TX_META)).forEach( item =>
+    report.tx_meta[item[0]] = item[1]
+  )
+  report.tx_data = mori.toJs(moriget(r, TX_DATA))
+
+  if (report.tx_meta.uuid) {
+    var newreportforuuid = {}
+    newreportforuuid.C = report.tx_data[0].C
+    newreportforuuid.m = report.tx_data[0].m
+    newreportforuuid.tx = report.tx_data[0].tx
+    newreportforuuid.added = true
+    newreportforuuid.e = report.tx_data[0].e
+    newreportforuuid.a = "uuid"
+    newreportforuuid.v = report.tx_meta.uuid
+    report.tx_data.push(newreportforuuid)
+  }
+
+  // if there's metadata but it's got remoteuser or secrets tags, then don't transact it
+  if (report.tx_meta && (report.tx_meta.remoteuser || report.tx_meta.secrets)) return
+
+  // removes the confirmationid from the transaction itself since the server only needs it in meta
+  var tx_data_modded = report.tx_data.filter( s => {
+    return s.a != 'confirmationid'
+  })
+
+  channel && channel.send
+  ? channel.send({data: tx_data_modded, meta: report.tx_meta, confirmationid: report.tx_data.confirmationid})
+  : console.log('there is no channel')
+})
 
 /*
 datascript.listen(conn, {channel}, function(report) {
@@ -127,6 +164,5 @@ export const initContext = () => {
     report$: report$,
     maintransact: maintransact,
     localreport$: localreport$,
-    localtransact: localtransact,
   }
 }

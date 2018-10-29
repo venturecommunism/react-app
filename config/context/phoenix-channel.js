@@ -3,7 +3,7 @@ import { Socket } from 'phoenix'
 
 const TIMEOUT = 10000
 
-export default (url, room, user, onChat, cspChan, conn, guardian_token) => {
+export default (url, room, user, onChat, cspChan, report$, maintransact, guardian_token) => {
   // construct a socket
   const socket = new Socket(url)
 
@@ -29,7 +29,7 @@ export default (url, room, user, onChat, cspChan, conn, guardian_token) => {
   chan.onClose(event => console.log('Channel closed.'))
 
   // when we receive a new chat message, just trigger the appropriate callback
-  chan.on('new:msg', msg => onChat && onChat(conn, msg))
+  chan.on('new:msg', msg => onChat && onChat(report$, maintransact, msg))
 
   // you can can listen to multiple types
   chan.on('user:entered', msg => console.log('say hello to ', msg))
@@ -40,7 +40,7 @@ export default (url, room, user, onChat, cspChan, conn, guardian_token) => {
   // a function to send a message
   const send = (message) => {
     chan.push('new:msg', {body: message, user}, TIMEOUT)
-      .receive('ok', (msg) => onChat && onChat(conn, {ok: msg}))
+      .receive('ok', (msg) => onChat && onChat(report$, maintransact, {ok: msg}))
       .receive('error', (reasons) => console.log('flop', reasons))
       .receive('timeout', () => console.log('slow much?'))
     putAsync(cspChan, message)

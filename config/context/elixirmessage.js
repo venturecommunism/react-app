@@ -5,7 +5,7 @@ import transact from '../transact'
 import { sync } from './persistence'
 
 // Fires when we receive a message on the Elixir data channel
-export const receiveDataMessage = (conn, message, me) => {
+export const receiveDataMessage = (report$, maintransact, message, me) => {
   console.log("ELIXIR MESSAGE", message)
   if ('ok' in message && 'confirmationid' in message.ok.msg) {
     var confirmationid = message['ok']['msg']['confirmationid']
@@ -19,7 +19,7 @@ export const receiveDataMessage = (conn, message, me) => {
     var confirmedent = result[0][0]
 
     var report_id_confirmed_tx = [[':db/retract', confirmedent, 'confirmationid', confirmationid]]
-    transact(conn, report_id_confirmed_tx, {'remoteuser': 'server confirmation'})
+    maintransact(report_id_confirmed_tx, {'remoteuser': 'server confirmation'})
   }
   if ('ok' in message) return
   console.log("ELIXIR OBJECT", message)
