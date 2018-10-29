@@ -41,15 +41,13 @@ const multiquery = (props$, queries) => {
 
 const dsload = (queries) => mapPropsStream(props$ => {
   const dsQ$ = multiquery(props$, queries)
-  const calendaritems = dsQ$.calendaritems
-  const inbox = dsQ$.inbox
+  const keys = Object.keys(dsQ$)
+  const values = Object.values(dsQ$)
   return props$.pipe(
-    combineLatest(dsQ$.calendaritems, dsQ$.inbox, (props, calendaritems, inbox) => {
-      return {
-        ...props,
-        calendaritems,
-        inbox,
-      }
+    combineLatest(...values, (props, ...values) => {
+      var returnobj = {...props}
+      keys.forEach( (key, i) => returnobj[key] = values[i] )
+      return returnobj
   }))
 })
 

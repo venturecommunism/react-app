@@ -10,7 +10,9 @@ const PickerInbox = ({
     localtx,
     status,
     message,
-    dsQuery,
+    filterprojects,
+    projects,
+    inbox,
     selectedState,
     stateSelect,
     }) => {
@@ -26,11 +28,11 @@ const PickerInbox = ({
           <View>
           <Fragment>
           <ListContainer>
-          {dsQuery.filterprojects && dsQuery.filterprojects.map(item => <View key={item[3]}><Text>- {item[0]}</Text></View>)}
+          {filterprojects && filterprojects.map(item => <View key={item[3]}><Text>- {item[0]}</Text></View>)}
           <Text>{JSON.stringify(selectedState)}</Text>
-          <Text>{dsQuery.filterprojects.length > 0 && dsQuery.filterprojects.length}</Text>
+          <Text>{filterprojects.length > 0 && filterprojects.length}</Text>
 
-          {dsQuery.projects.map(item => (
+          {projects.map(item => (
               <ListItemView key={item[3]}>
 
               <Button
@@ -47,7 +49,7 @@ const PickerInbox = ({
           onPress={clear}
           accessibilityLabel={"Reset"} />
             <ListContainer>
-            {dsQuery.inbox.map(inboxitem => (
+            {inbox.map(inboxitem => (
                     <ListItemView key={inboxitem[3]}>
 
                 {state.inboxitem != '' && state.uuid == inboxitem[3] &&

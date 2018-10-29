@@ -8,7 +8,7 @@ const Calendar = ({
   actions,
   status,
   message,
-  dsQuery,
+  calendaritems,
 }) => {
   return (
     <PageWrapper>
@@ -19,7 +19,7 @@ const Calendar = ({
               <View>
                 <Fragment>
                   <ListContainer>
-                    {dsQuery.calendaritems.map(item => (
+                    {calendaritems.map(item => (
                       <ListItemView key={item[3]}>
 
                       <Button
@@ -38,7 +38,7 @@ const Calendar = ({
                  accessibilityLabel={"Reset"} />
 
                  <ListContainer>
-                   {dsQuery.calendaritems.map(proj => (
+                   {calendaritems.map(proj => (
                      <ListItemView key={proj[3]}>
                        <ListItem>{proj[0]}</ListItem>
                      </ListItemView>

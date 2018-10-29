@@ -16,10 +16,9 @@ const App = () =>
   <View>
     <ScrollView>
       <BlankView />
-{/*
       <Calendar />
       <PickerInbox />
-      <SomedayMaybe /> */}
+      <SomedayMaybe />
     </ScrollView>
     <CreateTask/>
   </View>

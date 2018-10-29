@@ -8,7 +8,6 @@ const BlankView = ({
   actions,
   status,
   message,
-  dsQuery,
   calendaritems,
   inbox,
   rxTx,

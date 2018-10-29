@@ -8,7 +8,7 @@ const PickerInbox = ({
     actions,
     status,
     message,
-    dsQuery,
+    inboxitems,
     }) => {
   return (
       <PageWrapper>
@@ -35,7 +35,7 @@ const PickerInbox = ({
                 </Modal> }
 
 
-            {dsQuery.inboxitems.map(item => (
+            {inboxitems.map(item => (
                 <ListItemView key={item[3]}>
                {state && state.uuid && state.uuid == item[3] ? <Button onPress={toggle} title={"Change Type"}/> : null }
 

@@ -8,7 +8,7 @@ const SomedayMaybe = ({
   actions,
   status,
   message,
-  dsQuery,
+  somedaymaybes,
 }) => {
   return (
     <PageWrapper>
@@ -19,7 +19,7 @@ const SomedayMaybe = ({
               <View>
                 <Fragment>
                   <ListContainer>
-                    {dsQuery.somedaymaybes.map(item => (
+                    {somedaymaybes.map(item => (
                       <ListItemView key={item[3]}>
 
                       <Button
@@ -38,7 +38,7 @@ const SomedayMaybe = ({
                  accessibilityLabel={"Reset"} />
 
                  <ListContainer>
-                   {dsQuery.somedaymaybes.map(proj => (
+                   {somedaymaybes.map(proj => (
                      <ListItemView key={proj[3]}>
                        <ListItem>{proj[0]}</ListItem>
                      </ListItemView>
