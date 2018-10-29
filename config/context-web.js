@@ -1,17 +1,7 @@
-import {datascript as ds, mori, helpers} from 'datascript-mori'
-const datascript = ds.js
-import { maindb, fakedb, localstate } from './lib/createDBConn'
-
-const clientonly = true
-const conn = clientonly ? fakedb() : maindb()
-const globalstate = localstate() // global but not remote
-
-import {connect, nextTx} from './rx-datascript'
-const {report$, tx$} = connect(datascript.db(conn))
-import transact from './transact'
+import datascript, { conn, report$, maintransact, localreport$, localtransact } from './datascript'
 
 import { loadsyncpoint } from './context/persistence'
-loadsyncpoint(conn)
+loadsyncpoint(maintransact)
 
 /*****
 * Elixir / Phoenix Channel
@@ -58,10 +48,10 @@ go(function* () {
   //
   // these lines determine whether the jwt key comes from config.jwt or the chData channel
   //
-  // localStorage.removeItem('key')
-  // putAsync(chUnPass, {email: config.username, password: config.password})
-  // key = yield localStorage.getItem('key') || take(chData)
-  var key = config.jwt
+  localStorage.removeItem('key')
+  putAsync(chUnPass, {email: config.username, password: config.password})
+  key = yield localStorage.getItem('key') || take(chData)
+  // var key = config.jwt
   // console.log('key is:', key)
 
   var syncpoint = yield take(chSyncpoint)
@@ -103,6 +93,7 @@ go(function* () {
 * End Elixir / Phoenix Channel
 */
 
+/*
 datascript.listen(conn, {channel}, function(report) {
   // adds a uuid. sync doesn't work without it
   if (report.tx_meta.uuid) {
@@ -129,14 +120,13 @@ datascript.listen(conn, {channel}, function(report) {
   ? channel.send({data: tx_data_modded, meta: report.tx_meta, confirmationid: report.tx_data.confirmationid})
   : console.log('there is no channel')
 })
+*/
 
 export const initContext = () => {
   return {
-    conn: conn,
-    globalstate: globalstate,
-    transact: transact,
     report$: report$,
-    tx$: tx$,
-    nextTx: nextTx,
+    maintransact: maintransact,
+    localreport$: localreport$,
+    localtransact: localtransact,
   }
 }

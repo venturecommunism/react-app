@@ -2,10 +2,10 @@ import rxtx from '../../rncore/commands/rxtx'
 import localtx from '../../rncore/commands/localtx'
 import transact from '../../rncore/commands/transact'
 import general from './general'
-import createtaskactions from './createtaskactions'
+// import createtaskactions from './createtaskactions'
 // import stellardemoactions from './stellardemoactions'
 import loginactions from './login'
-import createtask from '../../rndemo/commands/createtask'
+import createtask from '../../rncore/commands/createtask'
 import pickerinbox from '../../rncore/commands/pickerinbox'
 
 const actions = {
@@ -13,7 +13,7 @@ const actions = {
   localtx,
   transact,
   general,
-  createtaskactions,
+//  createtaskactions,
   loginactions,
   createtask,
   pickerinbox

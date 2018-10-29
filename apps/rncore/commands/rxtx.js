@@ -5,22 +5,23 @@ const {DB_ADD} = helpers
 const datascript = ds.js
 
 export default {
-  tx({tx$, nextTx}, tx_data) {
-    nextTx(tx$, vector(
+  tx({maintransact}, tx_data) {
+/*
+    maintransact(vector(
       vector(DB_ADD, -1, `uuid`, uuid()),
       vector(DB_ADD, -1, `something`, `Ivan`)
     ))
 
-    nextTx(tx$, vector(
+    maintransact(vector(
       vector(DB_ADD, -1, `uuid`, uuid()),
       vector(DB_ADD, -1, `something`, `Jeremy`)
     ))
-
-    nextTx(tx$,     helpers.entities_to_clj([{
+*/
+    maintransact([{
       ":db/id": -2,
       uuid: uuid(),
       something: "Splotsky",
       "aka": ["X", "Y"]
-    }]))
+    }])
   },
 }
