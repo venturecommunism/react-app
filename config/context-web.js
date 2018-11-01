@@ -1,109 +1,63 @@
-import { mori, helpers } from 'datascript-mori'
-const {DB_ID, DB_ADD, TX_DATA, TX_META, DB_AFTER, DB_BEFORE, DB_UNIQUE, DB_UNIQUE_IDENTITY} = helpers
-const moriget = mori.get
+import { get as getItem, set as setItem } from 'idb-keyval'
 
-import datascript, { conn, report$, localreport$, maintransact} from './datascript'
+import datascript, { report$, maintransact, localreport$, localtransact, mori, helpers } from './datascript'
+
+import uuid from './uuid'
+const me = uuid()
+import config from './config'
 
 import { loadsyncpoint } from './context/persistence'
 loadsyncpoint(maintransact)
 
-/*****
-* Elixir / Phoenix Channel
-*/
+import { DataChannel, AuthChannel } from './context/phoenix-channel'
+const ex_data = DataChannel(config.url, "datomic", me)
+const ex_auth = AuthChannel(config.url, "auth", me)
 
-import { receiveDataMessage } from './context/elixirmessage'
-import uuid from './uuid'
+import ql from './context/querieslist'
+const querieslist = ql()
 
-import queries from './context/querieslist'
-const querieslist = queries()
-
-import {go, chan, take, put, timeout, putAsync} from 'js-csp'
-import Channel from './context/phoenix-channel'
-import config from './config'
-
-const me = uuid()
+var datascript_db
+report$.subscribe(report => {
+  datascript_db = mori.get(report, helpers.DB_AFTER)
+})
 
 var channel
-let chData = chan()
-let chAuth = chan()
-let chUnPass = chan()
-let chSyncpoint = chan()
-var key
 
-import { get } from 'idb-keyval'
-get('syncpoint')
-  .then(syncpoint => {
-    syncpoint
-    ?
-    get(syncpoint)
-      .then(letterpoint => {
-        letterpoint ? putAsync(chSyncpoint, JSON.stringify(letterpoint)) : putAsync(chSyncpoint, 'none')
-      })
-    : putAsync(chSyncpoint, 'none')
-  })
-  .catch(err => {
-    putAsync(chSyncpoint, 'none')
-    console.log("maybe there is no syncpoint", err)
-  })
+import { receiveDataMessage } from './context/elixirmessage'
 
+const datasync = (chan, jwt) => {
+  // why test for chan.send? is there no chan after a join or ok?
+  chan.type   == 'join' && chan.send       ? chan.send({jwt: jwt, syncpoint: JSON.stringify(chan.syncpoint), subscription: querieslist})
+  : chan.type == 'new:msg'                 ? receiveDataMessage(datascript_db, maintransact, chan.msg, me)
+  : chan.type == 'timeout'                 ? console.log('timeout ', chan.room, ": ", chan.error)
+//  : chan.type   == 'ok'  && chan.send      ? chan.send({jwt: jwt, syncpoint: chan.msg.syncpoint, subscription: querieslist})
+//  : chan.type == 'ok'                      ? console.log('ok', chan)
+  : chan.type   == 'ok'                    ? receiveDataMessage(datascript_db, maintransact, {ok: chan.msg}, me)
+  : console.log("finally", chan)
 
-// Data Communicating Sequential Processes. Takes JWT from the Auth CSP and sets up the Elixir channel (server only)
-go(function* () {
-  //
-  // these lines determine whether the jwt key comes from config.jwt or the chData channel
-  //
-  localStorage.removeItem('key')
-  putAsync(chUnPass, {email: config.username, password: config.password})
-  key = yield localStorage.getItem('key') || take(chData)
-  // var key = config.jwt
-  // console.log('key is:', key)
-
-  var syncpoint = yield take(chSyncpoint)
-
-  var user = me
-  var msg = {jwt: key, syncpoint: syncpoint, subscription: querieslist}
-  const ex_data_channel = Channel(config.url, "datomic:" + user, user, receiveDataMessage, chData, report$, maintransact, key)
-  yield timeout(1000)
-  ex_data_channel.send(msg)
-  console.log('yield take chData', yield take(chData))
-  // console.log('end data go function')
-  channel = ex_data_channel
-})
-
-// Authentication Communicating Sequential Process. Puts a JWT on the Data CSP.
-go(function* () {
-  // putAsync is more Communicating Sequential Processes but from outside Go functions
-  const receiveAuthMessage = (report$, maintransact, message) => {
-    // console.log('message', message)
-    putAsync(chAuth, message)
+  chan && chan.msg ? console.log('chan and chan.msg') : ''
+  // how do i not do this
+  if (chan.send && !channel) {
+    channel = chan
   }
-  if (!localStorage.getItem('key')) {
-    // console.log('step 1')
-    var user = me
-    var msg = yield take(chUnPass)
-    console.log('yield take chUnPass', msg)
-    // var msg = {email: 'john@phoenix-trello.com', password: '12345678'}
-    const ex_auth_channel = Channel(config.url, "auth:" + user, user, receiveAuthMessage, chAuth, report$, maintransact)
-    yield timeout(1000)
-    ex_auth_channel.send(msg)
-    console.log('yield take chAuth', yield take(chAuth))
-    var value = yield take(chAuth)
-    localStorage.setItem('key', value.jwt)
-    yield put(chData, localStorage.getItem('key'))
-  }
-})
+}
 
-/*****
-* End Elixir / Phoenix Channel
-*/
+ex_auth.subscribe(chan =>
+  chan.type   == 'join'         ? chan.send({email: config.username, password: config.password})
+  : chan.type == 'timeout'      ? console.log('timeout ', chan.room, ": ", chan.error)
+  : chan.type == 'msg'          ? setItem('token', chan.msg.jwt) &&  ex_data.subscribe(datachannel => datasync(datachannel, chan.msg.jwt))
+  : chan.type == 'ok'           ? console.log('ok')
+  : chan.error                  ? console.log(chan.error)
+  : console.log(channel.type)
+)
 
 report$.subscribe(r => {
   var report = {}
   report.tx_meta = {}
-  mori.toJs(moriget(r, TX_META)).forEach( item =>
+  mori.toJs(mori.get(r, helpers.TX_META)).forEach( item =>
     report.tx_meta[item[0]] = item[1]
   )
-  report.tx_data = mori.toJs(moriget(r, TX_DATA))
+  report.tx_data = mori.toJs(mori.get(r, helpers.TX_DATA))
 
   if (report.tx_meta.uuid) {
     var newreportforuuid = {}
@@ -130,39 +84,9 @@ report$.subscribe(r => {
   : console.log('there is no channel')
 })
 
-/*
-datascript.listen(conn, {channel}, function(report) {
-  // adds a uuid. sync doesn't work without it
-  if (report.tx_meta.uuid) {
-    var newreportforuuid = {}
-    newreportforuuid.C = report.tx_data[0].C
-    newreportforuuid.m = report.tx_data[0].m
-    newreportforuuid.tx = report.tx_data[0].tx
-    newreportforuuid.added = true
-    newreportforuuid.e = report.tx_data[0].e
-    newreportforuuid.a = "uuid"
-    newreportforuuid.v = report.tx_meta.uuid
-    report.tx_data.push(newreportforuuid)
-  }
-
-  // if there's metadata but it's got remoteuser or secrets tags, then don't transact it
-  if (report.tx_meta && (report.tx_meta.remoteuser || report.tx_meta.secrets)) return
-
-  // removes the confirmationid from the transaction itself since the server only needs it in meta
-  var tx_data_modded = report.tx_data.filter( s => {
-    return s.a != 'confirmationid'
-  })
-
-  channel.send
-  ? channel.send({data: tx_data_modded, meta: report.tx_meta, confirmationid: report.tx_data.confirmationid})
-  : console.log('there is no channel')
-})
-*/
-
 export const initContext = () => {
   return {
     report$: report$,
     maintransact: maintransact,
-    localreport$: localreport$,
   }
 }

@@ -1,51 +1,69 @@
-import { putAsync } from 'js-csp'
+import { get as getItem, set as setItem } from 'idb-keyval'
+
+import config from '../config'
+import { from, Observable } from 'rxjs'
+import {
+  flatMap,
+  map,
+  tap,
+} from 'rxjs/operators'
+
 import { Socket } from 'phoenix'
 
-const TIMEOUT = 10000
+const DataChannel = (url, room, user, token) =>
+  from([user])
+    .pipe(
+      flatMap(user =>
+        from(getItem('token')).pipe(map(token => ({ user, token })))),
+      flatMap(({ user, token }) =>
+        from(getItem('syncpoint')).pipe(map(syncspot => ({ user, token, syncspot })))),
+      flatMap(({ user, token, syncspot }) =>
+        from(getItem(syncspot)).pipe(map(syncpoint => ({ user, token, syncpoint })))),
+      flatMap(({ user, token, syncpoint }) =>
+        new Observable(observer => {
+          const socket = new Socket(url)
+          socket.connect()
+          const chan = socket.channel(room + ':' + user, { user, guardian_token: token })
+          chan.join()
+            .receive('ignore', () => console.log(room, 'Access denied.'))
+            .receive('ok', () => observer.next({ type: 'join', socket, chan, user: user, send: send, syncpoint: syncpoint }))
+            .receive('timeout', () => console.log(room, 'Must be a MongoDB.'))
+          chan.on('new:msg', msg => observer.next({ type: 'new:msg', msg }))
+          const send = (message) => {
+            chan.push('new:msg', {body: message, user}, 10000)
+              .receive('ok', (msg) => observer.next({type: 'ok', msg}))
+              .receive('error', (reasons) => observer.next({ type: 'error', error: reasons, room: room }))
+              .receive('timeout', () => observer.next({ type: 'timeout', error: 'slow much?', room: room }))
+          }
+        })
+      )
+    ) // pipe end
 
-export default (url, room, user, onChat, cspChan, report$, maintransact, guardian_token) => {
-  // construct a socket
-  const socket = new Socket(url)
+const AuthChannel = (url, room, user, token) =>
+  from([user])
+    .pipe(
+      flatMap(user =>
+        new Observable(observer => {
+          const socket = new Socket(url)
+          socket.connect()
+          const chan = socket.channel(room + ':' + user, { user, token })
+          chan.join()
+            .receive('ignore', () => console.log(room, ': Access denied.'))
+            .receive('ok', () => observer.next({ type: 'join', socket, chan, user: user, send: send }))
+            .receive('timeout', () => observer.next({ type: 'error', error: room + ' timeout: Sad trombone.' }))
+          chan.on('new:msg', msg => observer.next({ type: 'msg', msg: msg }))
+          const send = (message) => {
+            chan.push('new:msg', {body: message, user}, 10000)
+              .receive('ok', (msg) => observer.next({ type: 'ok', msg: msg }))
+              .receive('error', (reasons) => console.log('flop', reasons))
+              .receive('timeout', () => console.log('slow much?'))
+          }
+          return { send }
+        })
+      )
+    ) // pipe end
 
-  // configure the event handlers
-  socket.onOpen(event => console.log(room, 'Connected.'))
-  socket.onError(event => console.log(room, 'Cannot connect.'))
-  socket.onClose(event => console.log(room, 'Goodbye.'))
-
-  // open a connection to the server
-  socket.connect()
-
-  // configure a channel into a room - https://www.youtube.com/watch?v=vWFX4ylV_ko
-  const chan = socket.channel(room, { user, guardian_token })
-
-  // join the channel and listen for admittance
-  chan.join()
-    .receive('ignore', () => console.log(room, 'Access denied.'))
-    .receive('ok', () => console.log(room, 'Access granted.'))
-    .receive('timeout', () => console.log(room, 'Must be a MongoDB.'))
-
-  // add some channel-level event handlers
-  chan.onError(event => console.log('Channel blew up.'))
-  chan.onClose(event => console.log('Channel closed.'))
-
-  // when we receive a new chat message, just trigger the appropriate callback
-  chan.on('new:msg', msg => onChat && onChat(report$, maintransact, msg))
-
-  // you can can listen to multiple types
-  chan.on('user:entered', msg => console.log('say hello to ', msg))
-
-  // a function to shut it all down
-  const close = () => socket.disconnect()
-
-  // a function to send a message
-  const send = (message) => {
-    chan.push('new:msg', {body: message, user}, TIMEOUT)
-      .receive('ok', (msg) => onChat && onChat(report$, maintransact, {ok: msg}))
-      .receive('error', (reasons) => console.log('flop', reasons))
-      .receive('timeout', () => console.log('slow much?'))
-    putAsync(cspChan, message)
-  }
-
-  // reveal a couple ways to drive this bus
-  return { close, send }
+export {
+  DataChannel,
+  AuthChannel,
 }

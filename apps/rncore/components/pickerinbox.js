@@ -68,7 +68,8 @@ const PickerInbox = ({
                     <CheckBox checked={values.indexOf(inboxitem[3]) > -1} key={inboxitem[3]} taskid={inboxitem[3]} 
                     onChange={() => actions().pickerinbox.dostuff(values, add, remove, inboxitem[3])} />
 
-                    <ListItem>{inboxitem[0]}</ListItem>
+                    <ListItem style={inboxitem[4] != 'none' ? {backgroundColor: 'red'} : ''} >{inboxitem[0]}</ListItem>
+                    <Text>{inboxitem[4]}</Text>
                     <Button onPress={() => setState({ inboxitem: inboxitem[0], uuid: inboxitem[3] })} title={"Change Type"}/>
                     </ListItemView>
                     ))}

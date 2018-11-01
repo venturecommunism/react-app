@@ -60,6 +60,14 @@ const maintransact = (data_to_add, meta) => {
   return nextTx(tx$, helpers.entities_to_clj(data_to_add), helpers.entities_to_clj(meta))
 }
 
+const localtransact = (data_to_add, meta) => {
+  return nextTx(localtx$, helpers.entities_to_clj(data_to_add, helpers.entities_to_clj(meta)))
+}
+
+const vectortransact = (data_to_add, meta) => {
+  return nextTx(tx$, data_to_add, helpers.entities_to_clj(meta))
+}
+
 export default datascript
 export {
   conn,
@@ -67,8 +75,11 @@ export {
   connect,
   nextTx,
   maintransact,
+  vectortransact,
   report$,
   tx$,
   localreport$,
   localtx$,
+  mori,
+  helpers,
 }
