@@ -44,7 +44,7 @@ defmodule Datomic.Mixfile do
     [
       {:calendar, "~> 0.17.4", override: true},
       {:datomic_gen_server, github: "venturecommunism/datomic_gen_server"},
-      {:exdn, "~> 2.1.2"},
+      {:exdn, github: "venturecommunism/exdn"},
       {:gproc, "0.3.1"},
       {:datomic_query_translator, [path: "../datomic_query_translator", from_umbrella: true, env: :dev, manager: :mix]}
     ]
