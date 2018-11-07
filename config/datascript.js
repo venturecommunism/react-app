@@ -75,6 +75,7 @@ export {
   connect,
   nextTx,
   maintransact,
+  localtransact,
   vectortransact,
   report$,
   tx$,

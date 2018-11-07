@@ -1,4 +1,4 @@
-import { get as getItem, set as setItem } from 'idb-keyval'
+import { getItem, setItem } from './persistence2'
 
 import config from '../config'
 import { from, Observable } from 'rxjs'
@@ -18,7 +18,7 @@ const DataChannel = (url, room, user, token) =>
       flatMap(({ user, token }) =>
         from(getItem('syncpoint')).pipe(map(syncspot => ({ user, token, syncspot })))),
       flatMap(({ user, token, syncspot }) =>
-        from(getItem(syncspot)).pipe(map(syncpoint => ({ user, token, syncpoint })))),
+        from(getItem(syncspot)).pipe(map(syncpoint => ({ user, token, syncpoint: JSON.parse(syncpoint) })))),
       flatMap(({ user, token, syncpoint }) =>
         new Observable(observer => {
           const socket = new Socket(url)

@@ -10,13 +10,13 @@ export default {
   removeall({}, clear) {
     clear()
   },
-  addtoproject({conn, transact}, projid, values, clear, set_theproject) {
+  addtoproject({maintransact}, projid, values, clear) {
     if (values.length < 1) {
-      set_theproject(projid)
+//      set_theproject(projid)
     } else {
-    set_theproject(projid)
+//    set_theproject(projid)
     values.map(item =>
-      transact(conn, [{
+      maintransact([{
         ':db/id': -1,
         project: projid,
         uuid: item,

@@ -1,4 +1,4 @@
-import { get as getItem, set as setItem } from 'idb-keyval'
+import { set as setItem } from 'idb-keyval'
 
 import datascript, { report$, maintransact, localreport$, localtransact, mori, helpers } from './datascript'
 
@@ -17,9 +17,12 @@ import ql from './context/querieslist'
 const querieslist = ql()
 
 var datascript_db
+var localdb
 report$.subscribe(report => {
   datascript_db = mori.get(report, helpers.DB_AFTER)
 })
+
+localreport$.subscribe(report => localdb = mori.get(report, helpers.DB_AFTER))
 
 var channel
 
@@ -48,7 +51,7 @@ ex_auth.subscribe(chan =>
   : chan.type == 'msg'          ? setItem('token', chan.msg.jwt) &&  ex_data.subscribe(datachannel => datasync(datachannel, chan.msg.jwt))
   : chan.type == 'ok'           ? console.log('ok')
   : chan.error                  ? console.log(chan.error)
-  : console.log(channel.type)
+  : console.log(chan.type)
 )
 
 report$.subscribe(r => {
@@ -88,5 +91,8 @@ export const initContext = () => {
   return {
     report$: report$,
     maintransact: maintransact,
+    localreport$: localreport$,
+    localtransact: localtransact,
+    localdb: localdb,
   }
 }

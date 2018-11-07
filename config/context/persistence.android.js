@@ -136,7 +136,7 @@ export const sync = (message) => {
   }
 }
 
-export const loadsyncpoint = (conn) => {
+export const loadsyncpoint = (maintransact) => {
   // clear()
   go(function* () {
     var loadCh = chan()
@@ -196,7 +196,7 @@ export const loadsyncpoint = (conn) => {
                 body.map(s => {
                   single_tx.push([':db/add', s.e, s.a, s.v])
                 })
-                transact(conn, single_tx, {'remoteuser': 'system'})
+                maintransact(single_tx, {'remoteuser': 'system'})
               }
             })
         })

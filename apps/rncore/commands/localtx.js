@@ -4,10 +4,9 @@ import {parse} from 'datascript-mori'
 const datascript = ds.js
 
 export default {
-  tx({globalstate, transact}, tx_data) {
+  tx({localtransact, localdb}, tx_data) {
 
-const db = datascript.db(globalstate)
-console.log(tx_data.stateref)
+const db = localdb
     const query = `[:find ?val ?uuid :where
 [?e "${Object.keys(tx_data)[0]}" ?val]
 [?e "uuid" ?uuid]
@@ -17,7 +16,7 @@ console.log(tx_data.stateref)
   console.log(result)
     if (result.length > 0) {
       console.log(tx_data)
-      transact(globalstate, [{
+      localtransact([{
         ...tx_data,
         uuid: result[0][1],
         confirmationid: uuid()
@@ -26,7 +25,7 @@ console.log(tx_data.stateref)
 
     if (result.length == 0) {
       console.log(tx_data)
-      transact(globalstate, [{
+      localtransact([{
         ...tx_data,
         uuid: uuid(),
         confirmationid: uuid()

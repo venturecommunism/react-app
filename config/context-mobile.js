@@ -1,113 +1,64 @@
-import { AsyncStorage } from 'react-native'
+import { setItem } from './context/persistence2'
 
-import datascript from 'datascript'
-import { maindb, fakedb } from './lib/createDBConn'
+import datascript, { report$, maintransact, localreport$, localtransact, mori, helpers } from './datascript'
 
-const clientonly = false
-const conn = clientonly ? fakedb() : maindb()
-import transact from './transact'
-
-import { loadsyncpoint } from './context/persistence'
-loadsyncpoint(conn)
-
-/*****
-* Elixir / Phoenix Channel
-*/
-
-import { receiveDataMessage } from './context/elixirmessage'
 import uuid from './uuid'
-
-import queries from './context/querieslist'
-const querieslist = queries()
-
-import {go, chan, take, put, timeout, putAsync} from 'js-csp'
-import Channel from './context/phoenix-channel'
+const me = uuid()
 import config from './config'
 
-const me = uuid()
+import { loadsyncpoint } from './context/persistence'
+loadsyncpoint(maintransact)
+
+import { DataChannel, AuthChannel } from './context/phoenix-channel'
+const ex_data = DataChannel(config.url, "datomic", me)
+const ex_auth = AuthChannel(config.url, "auth", me)
+
+import ql from './context/querieslist'
+const querieslist = ql()
+
+var datascript_db
+report$.subscribe(report => {
+  datascript_db = mori.get(report, helpers.DB_AFTER)
+})
 
 var channel
-let chData = chan()
-let chAuth = chan()
-let chUnPass = chan()
-let chSyncpoint = chan()
-var key
 
-import { getItem } from 'react-native-sensitive-info'
-getItem('syncpoint', {
-    sharedPreferencesName: 'mySharedPrefs',
-    keychainService: 'myKeychain'
-  })
-  .then(syncpoint => {
-    syncpoint
-    ?
-    getItem(syncpoint, {
-      sharedPreferencesName: 'mySharedPrefs',
-      keychainService: 'myKeychain'
-    })
-    .then(letterpoint => {
-      letterpoint ? putAsync(chSyncpoint, letterpoint) : putAsync(chSyncpoint, 'none')
-    })
-    : putAsync(chSyncpoint, 'none')
-  })
-  .catch(err => {
-    putAsync(chSyncpoint, 'none')
-    console.log("maybe there is no syncpoint", err)
-  })
+import { receiveDataMessage } from './context/elixirmessage'
 
+const datasync = (chan, jwt) => {
+  // why test for chan.send? is there no chan after a join or ok?
+  chan.type   == 'join' && chan.send       ? chan.send({jwt: jwt, syncpoint: JSON.stringify(chan.syncpoint), subscription: querieslist})
+  : chan.type == 'new:msg'                 ? receiveDataMessage(datascript_db, maintransact, chan.msg, me)
+  : chan.type == 'timeout'                 ? console.log('timeout ', chan.room, ": ", chan.error)
+//  : chan.type   == 'ok'  && chan.send      ? chan.send({jwt: jwt, syncpoint: chan.msg.syncpoint, subscription: querieslist})
+//  : chan.type == 'ok'                      ? console.log('ok', chan)
+  : chan.type   == 'ok'                    ? receiveDataMessage(datascript_db, maintransact, {ok: chan.msg}, me)
+  : console.log("finally", chan)
 
-// Data Communicating Sequential Processes. Takes JWT from the Auth CSP and sets up the Elixir channel (server only)
-go(function* () {
-  //
-  // these lines determine whether the jwt key comes from config.jwt or the chData channel
-  //
-  // AsyncStorage.removeItem('key')
-  // putAsync(chUnPass, {email: config.username, password: config.password})
-  // key = yield AsyncStorage.getItem('key') || take(chData)
-  var key = config.jwt
-  // console.log('key is:', key)
-
-  var syncpoint = yield take(chSyncpoint)
-
-  var user = me
-  var msg = {jwt: key, syncpoint: syncpoint, subscription: querieslist}
-  const ex_data_channel = Channel(config.url, "datomic:" + user, user, receiveDataMessage, chData, conn, key)
-  yield timeout(1000)
-  ex_data_channel.send(msg)
-  console.log('yield take chData', yield take(chData))
-  // console.log('end data go function')
-  channel = ex_data_channel
-})
-
-// Authentication Communicating Sequential Process. Puts a JWT on the Data CSP.
-go(function* () {
-  // putAsync is more Communicating Sequential Processes but from outside Go functions
-  const receiveAuthMessage = (conn, message) => {
-    // console.log('message', message)
-    putAsync(chAuth, message)
+  chan && chan.msg ? console.log('chan and chan.msg') : ''
+  // how do i not do this
+  if (chan.send && !channel) {
+    channel = chan
   }
-  if (!AsyncStorage.getItem('key')) {
-    // console.log('step 1')
-    var user = me
-    var msg = yield take(chUnPass)
-    console.log('yield take chUnPass', msg)
-    // var msg = {email: 'john@phoenix-trello.com', password: '12345678'}
-    const ex_auth_channel = Channel(config.url, "auth:" + user, user, receiveAuthMessage, chAuth, conn)
-    yield timeout(1000)
-    ex_auth_channel.send(msg)
-    console.log('yield take chAuth', yield take(chAuth))
-    var value = yield take(chAuth)
-    AsyncStorage.setItem('key', value.jwt)
-    yield put(chData, AsyncStorage.getItem('key'))
-  }
-})
+}
 
-/*****
-* End Elixir / Phoenix Channel
-*/
+ex_auth.subscribe(chan =>
+  chan.type   == 'join'         ? chan.send({email: config.username, password: config.password})
+  : chan.type == 'timeout'      ? console.log('timeout ', chan.room, ": ", chan.error)
+  : chan.type == 'msg'          ? setItem('token', chan.msg.jwt) &&  ex_data.subscribe(datachannel => datasync(datachannel, chan.msg.jwt))
+  : chan.type == 'ok'           ? console.log('ok')
+  : chan.error                  ? console.log(chan.error)
+  : console.log(channel.type)
+)
 
-datascript.listen(conn, {channel}, function(report) {
-  // adds a uuid. sync doesn't work without it
+report$.subscribe(r => {
+  var report = {}
+  report.tx_meta = {}
+  mori.toJs(mori.get(r, helpers.TX_META)).forEach( item =>
+    report.tx_meta[item[0]] = item[1]
+  )
+  report.tx_data = mori.toJs(mori.get(r, helpers.TX_DATA))
+
   if (report.tx_meta.uuid) {
     var newreportforuuid = {}
     newreportforuuid.C = report.tx_data[0].C
@@ -128,14 +79,14 @@ datascript.listen(conn, {channel}, function(report) {
     return s.a != 'confirmationid'
   })
 
-  channel.send
+  channel && channel.send
   ? channel.send({data: tx_data_modded, meta: report.tx_meta, confirmationid: report.tx_data.confirmationid})
   : console.log('there is no channel')
 })
 
 export const initContext = () => {
   return {
-    conn: conn,
-    transact: transact,
+    report$: report$,
+    maintransact: maintransact,
   }
 }
