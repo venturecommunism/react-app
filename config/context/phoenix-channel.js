@@ -16,9 +16,10 @@ const DataChannel = (url, room, user, token) =>
       flatMap(user =>
         from(getItem('token')).pipe(map(token => ({ user, token })))),
       flatMap(({ user, token }) =>
-        from(getItem('syncpoint')).pipe(map(syncspot => ({ user, token, syncspot })))),
+        from(getItem('syncpoint')).pipe(map(syncspot => !syncspot || syncspot == null ? ({user, token, syncspot: 'syncpoint-X'}) : ({ user, token, syncspot })))),
+      tap(thing => console.log(thing)),
       flatMap(({ user, token, syncspot }) =>
-        from(getItem(syncspot)).pipe(map(syncpoint => ({ user, token, syncpoint: JSON.parse(syncpoint) })))),
+        from(getItem(syncspot)).pipe(map(syncpoint => !syncpoint || syncpoint == null ? ({user, token, syncpoint: 'none'}) : ({ user, token, syncpoint: JSON.parse(syncpoint) })))),
       flatMap(({ user, token, syncpoint }) =>
         new Observable(observer => {
           const socket = new Socket(url)

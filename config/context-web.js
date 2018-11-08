@@ -30,7 +30,7 @@ import { receiveDataMessage } from './context/elixirmessage'
 
 const datasync = (chan, jwt) => {
   // why test for chan.send? is there no chan after a join or ok?
-  chan.type   == 'join' && chan.send       ? chan.send({jwt: jwt, syncpoint: JSON.stringify(chan.syncpoint), subscription: querieslist})
+  chan.type   == 'join' && chan.send       ? chan.send({jwt: jwt, syncpoint: chan.syncpoint == 'none' ? chan.syncpoint : JSON.stringify(chan.syncpoint), subscription: querieslist})
   : chan.type == 'new:msg'                 ? receiveDataMessage(datascript_db, maintransact, chan.msg, me)
   : chan.type == 'timeout'                 ? console.log('timeout ', chan.room, ": ", chan.error)
 //  : chan.type   == 'ok'  && chan.send      ? chan.send({jwt: jwt, syncpoint: chan.msg.syncpoint, subscription: querieslist})
