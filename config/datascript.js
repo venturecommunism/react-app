@@ -7,13 +7,13 @@ import { maindb, localstate } from './lib/createDBConn'
 const conn = maindb()
 const globalstate = localstate() // global but not remote
 
-const main = connect(datascript.db(conn))
-const report$ = main.report$
-const tx$ = main.tx$
-
 const local = connect(datascript.db(globalstate))
 const localreport$ = local.report$
 const localtx$ = local.tx$
+
+const main = connect(datascript.db(conn), localtx$)
+const report$ = main.report$
+const tx$ = main.tx$
 
 const maintransact = (data_to_add, meta) => {
   // disable metadata to test transactions locally

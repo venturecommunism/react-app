@@ -14,6 +14,7 @@
     "datascript-mori": "^0.17.0",
     "idb-keyval": "^3.1.0",
     "js-csp": "^0.9.3",
+    "jsedn": "https://github.com/venturecommunism/jsedn",
     "lodash": "^4.17.11",
     "mobx": "^2.6.3",
     "moment": "^2.18.1",

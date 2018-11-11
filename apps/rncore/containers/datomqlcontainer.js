@@ -9,13 +9,14 @@ import {
   withHandlers,
 } from 'recompose'
 
-import PropTypes from 'prop-types'
-
-const initkeys = (...queries) => {
+/*
+const initKeys = (...queries) => {
   var initstate = {}
-  queries.forEach(j => Object.keys(j).forEach(k => initstate[k] = []))
+  initstate.queries = {}
+  queries.forEach(j => j.forEach(k => Object.keys(k).forEach(l => initstate.queries[l] = k[l])))
   return initstate
 }
+*/
 
 const depsToPropsMapper = (context, actions) => ({
   context: () => context,
@@ -29,5 +30,4 @@ export default (component, ...queries) => compose(
   useDeps(depsToPropsMapper),
   state,
   moriload(Object.assign({}, ...queries)),
-  // make sure both these Object.assigns are correct
-)(component, Object.assign({}, ...queries))
+)(component, queries)

@@ -1,13 +1,7 @@
+import edn from 'jsedn'
 import createDatomQLContainer from './datomqlcontainer'
 
 function datomql (strings, ...values) {
-
-/*
-  var someresult = strings.reduce((result, string, i) => {
-    return `${result}${string}${values[i] || ''}`
-  }, '')
-*/
-
   const templateliteral = arguments[0][0]
 
   function getvar(txt) {
@@ -45,13 +39,25 @@ function datomql (strings, ...values) {
         .split("").reverse().join("")
     : elem)
 
-//  item[prop] = {finalstrings, values}
-
   var someresult = finalstrings.reduce((result, string, i) => {
     return `${result}${string}${values[i] || ''}`
   }, '')
 
-  item[prop] = someresult
+  const parsedquery = edn.parse(someresult)
+  const findIndex = (val) => parsedquery.val.findIndex(i => i.name === val)
+
+  item[prop] = {}
+  item[prop].query = someresult
+  item[prop].arguments = []
+
+  if (findIndex(":in") > 0) {
+    for (var q = findIndex(":in") + 1; q < findIndex(":where"); q++) {
+      if (parsedquery.val[q].name != "$" && parsedquery.val[q].name.charAt(0) == "?") {
+        item[prop].arguments.push(parsedquery.val[q].name.slice(1))
+      }
+    }
+  }
+
   return item
 }
 
