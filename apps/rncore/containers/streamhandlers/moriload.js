@@ -26,6 +26,7 @@ import {
 } from 'recompose'
 
 const singlequery = (props$, query, morearguments, queryname) => props$.pipe(
+  // could be optimized for single query with or without arguments
   switchMap(props => {
     const {report$, localreport$} = props.context()
 
@@ -44,9 +45,9 @@ const singlequery = (props$, query, morearguments, queryname) => props$.pipe(
     function newq(somereport$, query) {
       return somereport$
         .pipe(
-          map(({s1, s2}) => ({s1, argument: s2[0] ? s2[0][0] : null})),
-          map(({s1, argument}) => dscljs.q(query, get(s1, DB_AFTER), argument) ),
-          // distinctUntilChanged(mori.equals)
+          map(({s1, s2}) => ({s1, args: s2[0] ? s2[0] : [null]})),
+          map(({s1, args}) => dscljs.q(query, get(s1, DB_AFTER), ...args) ),
+          distinctUntilChanged(mori.equals)
         )
     }
 
