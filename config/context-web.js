@@ -16,12 +16,9 @@ const ex_auth = AuthChannel(config.url, "auth", me)
 import ql from './context/querieslist'
 const querieslist = ql()
 
-var datascript_db
+var maindb
 var localdb
-report$.subscribe(report => {
-  datascript_db = mori.get(report, helpers.DB_AFTER)
-})
-
+report$.subscribe(report => maindb = mori.get(report, helpers.DB_AFTER))
 localreport$.subscribe(report => localdb = mori.get(report, helpers.DB_AFTER))
 
 var channel
@@ -33,8 +30,6 @@ const datasync = (chan, jwt) => {
   chan.type   == 'join' && chan.send       ? chan.send({jwt: jwt, syncpoint: chan.syncpoint == 'none' ? chan.syncpoint : JSON.stringify(chan.syncpoint), subscription: querieslist})
   : chan.type == 'new:msg'                 ? receiveDataMessage(datascript_db, maintransact, chan.msg, me)
   : chan.type == 'timeout'                 ? console.log('timeout ', chan.room, ": ", chan.error)
-//  : chan.type   == 'ok'  && chan.send      ? chan.send({jwt: jwt, syncpoint: chan.msg.syncpoint, subscription: querieslist})
-//  : chan.type == 'ok'                      ? console.log('ok', chan)
   : chan.type   == 'ok'                    ? receiveDataMessage(datascript_db, maintransact, {ok: chan.msg}, me)
   : console.log("finally", chan)
 
@@ -93,6 +88,7 @@ export const initContext = () => {
     maintransact: maintransact,
     localreport$: localreport$,
     localtransact: localtransact,
+    maindb: maindb,
     localdb: localdb,
   }
 }

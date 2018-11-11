@@ -1,5 +1,8 @@
 import {datascript as ds, mori, helpers} from 'datascript-mori'
 const datascript = ds.js
+
+const {core: dscljs} = ds
+
 import {q$} from '../../../../config/rx-datascript'
 const {DB_ID, DB_ADD, TX_DATA, TX_META, DB_AFTER, DB_BEFORE, DB_UNIQUE, DB_UNIQUE_IDENTITY} = helpers
 const {hashMap, vector, parse, toJs, equals, isMap, hasKey, isSet, set, get, find, nth, count, reduce} = mori
@@ -22,20 +25,41 @@ import {
   mapPropsStream,
 } from 'recompose'
 
-const singlequery = (props$, query, queryname) => props$.pipe(
+const singlequery = (props$, query, morearguments, queryname) => props$.pipe(
   switchMap(props => {
-    const {report$} = props.context()
-    return q$(report$, parse(query))
+    const {report$, localreport$} = props.context()
+
+    const statequery = `[:find ?uuid :where [?e "${morearguments[0]}" ?uuid]]`
+    const somequery$ = q$(localreport$, parse(statequery))
       .pipe(
         map(res => toJs(res)),
         startWith([]),
-        // map(dsQuery => ({...props, dsQuery})) // could do this in combineLatest instead
+      )
+
+    const fusereport$ = report$
+      .pipe(
+        combineLatest(somequery$, (s1, s2) => ({s1, s2})),
+      )
+
+    function newq(somereport$, query) {
+      return somereport$
+        .pipe(
+          map(({s1, s2}) => ({s1, argument: s2[0] ? s2[0][0] : null})),
+          map(({s1, argument}) => dscljs.q(query, get(s1, DB_AFTER), argument) ),
+          // distinctUntilChanged(mori.equals)
+        )
+    }
+
+    return newq(fusereport$, parse(query))
+      .pipe(
+        map(res => toJs(res)),
+        startWith([]),
       )
 }))
 
 const multiquery = (props$, queries) => {
   var multiquery = {}
-  Object.keys(queries).map(query => multiquery[query] = singlequery(props$, queries[query], query))
+  Object.keys(queries).map(query => multiquery[query] = singlequery(props$, queries[query].query, queries[query].arguments, query))
   return multiquery
 }
 
