@@ -19,10 +19,6 @@ function nextTx(tx$, ...tx) {
 
 function createTxStream() {
   return new BehaviorSubject()
-   .pipe(
-     // this skip(1) would mean not really a BehaviorSubject and longer has value property or getValue() method
-     // skip(1)
-   )
 }
 
 function connect(db) {

@@ -15,6 +15,7 @@ export default {
       localtransact([{
         ':db/id': -1,
         project: projid,
+        id: 'project',
       }])
     } else {
     values.map(item =>

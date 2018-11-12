@@ -3,6 +3,10 @@ const Schema = {
       ':db/unique': ':db.unique/identity',
       ':db/cardinality': ':db.cardinality/one'
     },
+    "id": {
+      ':db/cardinality': ':db.cardinality/one',
+      ':db/unique': ':db.unique/identity'
+    },
     "uuid": {
       ':db/cardinality': ':db.cardinality/one',
       ':db/unique': ':db.unique/identity'
