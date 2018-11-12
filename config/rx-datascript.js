@@ -18,24 +18,28 @@ function nextTx(tx$, ...tx) {
 }
 
 function createTxStream() {
-  return new BehaviorSubject().pipe(
-    skip(1)
-  )
+  return new BehaviorSubject()
+   .pipe(
+     // this skip(1) would mean not really a BehaviorSubject and longer has value property or getValue() method
+     // skip(1)
+   )
 }
 
 function connect(db) {
   const tx$ = createTxStream()
 
+  const initialreport = hashMap(
+    DB_AFTER, db,
+    DB_BEFORE, db,
+    TX_DATA, vector(),
+    TX_META, ['initial']
+  )
+
   const report$ = tx$
     .pipe(
       scan(
-      (report, tx) => dscljs.with$(get(report, DB_AFTER), ...tx),
-      hashMap(
-        DB_AFTER, db,
-        DB_BEFORE, db,
-        TX_DATA, vector(),
-        TX_META, `INITIAL`
-      )
+      (report, tx) => tx ? dscljs.with$(get(report, DB_AFTER), ...tx) : initialreport,
+      initialreport
     ))
 
   return {

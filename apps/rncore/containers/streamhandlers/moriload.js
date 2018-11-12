@@ -36,7 +36,7 @@ const singlequery = (props$, query, morearguments, queryname, labels, filename) 
   // could be optimized for single query with or without arguments
   switchMap(props => {
 
-    const {report$, localreport$} = props.context()
+    const { report$, localreport$ } = props.context()
 
     const statequery = `[:find ?uuid :where [?e "${morearguments[0]}" ?uuid]]`
 
