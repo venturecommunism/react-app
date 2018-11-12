@@ -49,6 +49,7 @@ function datomql (strings, ...values) {
   item[prop] = {}
   item[prop].query = someresult
   item[prop].arguments = []
+  item[prop].labels = []
 
   if (findIndex(":in") > 0) {
     for (var q = findIndex(":in") + 1; q < findIndex(":where"); q++) {
@@ -56,6 +57,13 @@ function datomql (strings, ...values) {
         item[prop].arguments.push(parsedquery.val[q].name.slice(1))
       }
     }
+  }
+
+  var i = 1
+  if (parsedquery.val[0].name != ":find") { throw 'no initial find' }
+  while (parsedquery.val[i].name.charAt(0) != ":") {
+    item[prop].labels.push(parsedquery.val[i].name.slice(1))
+    i++
   }
 
   return item

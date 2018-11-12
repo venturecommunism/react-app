@@ -28,17 +28,17 @@ const PickerInbox = ({
           <View>
           <Fragment>
           <ListContainer>
-          {filterprojects && filterprojects.map(item => <View key={item[3]}><Text>- {item[0]}</Text></View>)}
+          {filterprojects && filterprojects.map(item => <View key={item.uuid}><Text>- {item.desc}</Text></View>)}
           <Text>{JSON.stringify(selectedState)}</Text>
           <Text>{filterprojects.length > 0 && filterprojects.length}</Text>
 
           {projects.map(item => (
-              <ListItemView key={item[3]}>
+              <ListItemView key={item.uuid}>
 
               <Button
-              title={item[0]}
-              onPress={() => actions().pickerinbox.addtoproject(item[3], values, clear)}
-              accessibilityLabel={item[0]} />
+              title={item.desc}
+              onPress={() => actions().pickerinbox.addtoproject(item.uuid, values, clear)}
+              accessibilityLabel={item.desc} />
 
 
               </ListItemView>
@@ -50,9 +50,9 @@ const PickerInbox = ({
           accessibilityLabel={"Reset"} />
             <ListContainer>
             {inbox.map(inboxitem => (
-                    <ListItemView key={inboxitem[3]}>
+                    <ListItemView key={inboxitem.uuid}>
 
-                {state.inboxitem != '' && state.uuid == inboxitem[3] &&
+                {state.inboxitem != '' && state.uuid == inboxitem.uuid &&
                 <Modal
                 transparent={false}
                 onRequestClose={() => console.log('closed modal')}
@@ -65,11 +65,11 @@ const PickerInbox = ({
                 </Modal> }
 
 
-                    <CheckBox checked={values.indexOf(inboxitem[3]) > -1} key={inboxitem[3]} taskid={inboxitem[3]} 
-                    onChange={() => actions().pickerinbox.dostuff(values, add, remove, inboxitem[3])} />
+                    <CheckBox checked={values.indexOf(inboxitem.uuid) > -1} key={inboxitem.uuid} taskid={inboxitem.uuid}
+                    onChange={() => actions().pickerinbox.dostuff(values, add, remove, inboxitem.uuid)} />
 
-                    <ListItem style={inboxitem[4] != 'none' ? {backgroundColor: 'red'} : ''} >{inboxitem[0]}</ListItem>
-                    <Button onPress={() => setState({ inboxitem: inboxitem[0], uuid: inboxitem[3] })} title={"Change Type"}/>
+                    <ListItem style={inboxitem.confirmid != 'none' ? {backgroundColor: 'red'} : ''} >{inboxitem.desc}</ListItem>
+                    <Button onPress={() => setState({ inboxitem: inboxitem.desc, uuid: inboxitem.uuid })} title={"Change Type"}/>
                     </ListItemView>
                     ))}
         </ListContainer>

@@ -20,12 +20,12 @@ const SomedayMaybe = ({
                 <Fragment>
                   <ListContainer>
                     {somedaymaybes.map(item => (
-                      <ListItemView key={item[3]}>
+                      <ListItemView key={item.uuid}>
 
                       <Button
-                        title={item[0]}
-                        onPress={() => setState({ favorite: item[0], picked: new Date().toLocaleTimeString()})}
-                        accessibilityLabel={item[0]} />
+                        title={item.desc}
+                        onPress={() => setState({ favorite: item.desc, picked: new Date().toLocaleTimeString()})}
+                        accessibilityLabel={item.desc} />
 
 
                       </ListItemView>
@@ -39,8 +39,8 @@ const SomedayMaybe = ({
 
                  <ListContainer>
                    {somedaymaybes.map(proj => (
-                     <ListItemView key={proj[3]}>
-                       <ListItem>{proj[0]}</ListItem>
+                     <ListItemView key={proj.uuid}>
+                       <ListItem>{proj.desc}</ListItem>
                      </ListItemView>
                    ))}
                  </ListContainer>

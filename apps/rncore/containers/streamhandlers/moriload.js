@@ -25,7 +25,7 @@ import {
   mapPropsStream,
 } from 'recompose'
 
-const singlequery = (props$, query, morearguments, queryname) => props$.pipe(
+const singlequery = (props$, query, morearguments, queryname, labels) => props$.pipe(
   // could be optimized for single query with or without arguments
   switchMap(props => {
     const {report$, localreport$} = props.context()
@@ -51,16 +51,30 @@ const singlequery = (props$, query, morearguments, queryname) => props$.pipe(
         )
     }
 
+    const label = (res) => {
+      var labeled = []
+      console.log("RES", res)
+      res.forEach(item => {
+        var sublabeled = {}
+        item.forEach((subitem, i) => {
+          sublabeled[labels[i]] = subitem
+        })
+        labeled.push(sublabeled)
+      })
+      return labeled
+    }
+
     return newq(fusereport$, parse(query))
       .pipe(
         map(res => toJs(res)),
+        map(jsres => label(jsres)),
         startWith([]),
       )
 }))
 
 const multiquery = (props$, queries) => {
   var multiquery = {}
-  Object.keys(queries).map(query => multiquery[query] = singlequery(props$, queries[query].query, queries[query].arguments, query))
+  Object.keys(queries).map(query => multiquery[query] = singlequery(props$, queries[query].query, queries[query].arguments, query, queries[query].labels))
   return multiquery
 }
 

@@ -36,13 +36,13 @@ const PickerInbox = ({
 
 
             {inboxitems.map(item => (
-                <ListItemView key={item[3]}>
-               {state && state.uuid && state.uuid == item[3] ? <Button onPress={toggle} title={"Change Type"}/> : null }
+                <ListItemView key={item.uuid}>
+               {state && state.uuid && state.uuid == item.uuid ? <Button onPress={toggle} title={"Change Type"}/> : null }
 
               <Button
-              title={item[0]}
-            onPress={() => setState({ favorite: item[0], uuid: item[3] })}
-            accessibilityLabel={item[0]} />
+              title={item.desc}
+            onPress={() => setState({ favorite: item.desc, uuid: item.uuid })}
+            accessibilityLabel={item.desc} />
 
 
               </ListItemView>
@@ -56,8 +56,8 @@ const PickerInbox = ({
 
             <ListContainer>
             {dsQuery.inboxitems.map(proj => (
-                  <ListItemView key={proj[3]}>
-                  <ListItem>{proj[0]}</ListItem>
+                  <ListItemView key={proj.uuid}>
+                  <ListItem>{proj.desc}</ListItem>
                   </ListItemView>
                   ))}
           </ListContainer>
