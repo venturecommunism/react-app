@@ -7,7 +7,7 @@ function datomql (strings, ...values) {
   function getvar(txt) {
     let var1
     // ignore space and non-space (including newlines)
-    let re1='[\s\S]*'	// match on filler
+    let re1='[\\s+]*'	// match on filler
     // finds things like 'query' and 'maincomponent_todos'
     let re2='((?:[a-z][a-z0-9_]*))'	// Variable Name 1
 
@@ -21,6 +21,7 @@ function datomql (strings, ...values) {
   const operation = getvar(templateliteral)
   const op_removed = templateliteral.replace(operation, '')
   const filename_prop = getvar(op_removed)
+  // console.log(filename_prop)
   const split_prop_filename = filename_prop.split("_")
   const filename = split_prop_filename[0]
   // console.log(filename)
@@ -65,6 +66,8 @@ function datomql (strings, ...values) {
     item[prop].labels.push(parsedquery.val[i].name.slice(1))
     i++
   }
+
+  item[prop].filename = filename
 
   return item
 }

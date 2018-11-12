@@ -1,22 +1,12 @@
 import { useDeps } from 'react-simple-di'
-import '../../rncore/containers/ObservableConfig'
+// if all specific configs work maybe move back to global config later
+// import '../../rncore/containers/ObservableConfig'
 import state from './streamhandlers/state'
 import moriload from './streamhandlers/moriload'
 
 import {
   compose,
-  withState,
-  withHandlers,
 } from 'recompose'
-
-/*
-const initKeys = (...queries) => {
-  var initstate = {}
-  initstate.queries = {}
-  queries.forEach(j => j.forEach(k => Object.keys(k).forEach(l => initstate.queries[l] = k[l])))
-  return initstate
-}
-*/
 
 const depsToPropsMapper = (context, actions) => ({
   context: () => context,

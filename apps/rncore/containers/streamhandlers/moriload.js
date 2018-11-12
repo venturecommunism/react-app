@@ -22,17 +22,27 @@ import {
   skip,
 } from 'rxjs/operators'
 import {
-  mapPropsStream,
+  mapPropsStreamWithConfig,
 } from 'recompose'
 
-const singlequery = (props$, query, morearguments, queryname, labels) => props$.pipe(
+const rxjsconfig = {
+  fromESObservable: config => new Observable(config.subscribe),
+  toESObservable: stream => stream
+}
+
+const mapPropsStream = mapPropsStreamWithConfig(rxjsconfig)
+
+const singlequery = (props$, query, morearguments, queryname, labels, filename) => props$.pipe(
   // could be optimized for single query with or without arguments
   switchMap(props => {
+
     const {report$, localreport$} = props.context()
 
     const statequery = `[:find ?uuid :where [?e "${morearguments[0]}" ?uuid]]`
+
     const somequery$ = q$(localreport$, parse(statequery))
       .pipe(
+        // tap(res => console.log(filename)),
         map(res => toJs(res)),
         startWith([]),
       )
@@ -45,18 +55,21 @@ const singlequery = (props$, query, morearguments, queryname, labels) => props$.
     function newq(somereport$, query) {
       return somereport$
         .pipe(
+          // tap(res => console.log("filename: ", filename)),
           map(({s1, s2}) => ({s1, args: s2[0] ? s2[0] : [null]})),
+          // tap(res => console.log(filename, queryname)),
           map(({s1, args}) => dscljs.q(query, get(s1, DB_AFTER), ...args) ),
           distinctUntilChanged(mori.equals)
         )
     }
 
     const label = (res) => {
+      // console.log(filename, res)
       var labeled = []
-      console.log("RES", res)
       res.forEach(item => {
         var sublabeled = {}
         item.forEach((subitem, i) => {
+          // console.log(i, filename)
           sublabeled[labels[i]] = subitem
         })
         labeled.push(sublabeled)
@@ -66,7 +79,9 @@ const singlequery = (props$, query, morearguments, queryname, labels) => props$.
 
     return newq(fusereport$, parse(query))
       .pipe(
+        // tap(res => console.log(filename)),
         map(res => toJs(res)),
+        // tap(res => console.log(filename)),
         map(jsres => label(jsres)),
         startWith([]),
       )
@@ -74,7 +89,7 @@ const singlequery = (props$, query, morearguments, queryname, labels) => props$.
 
 const multiquery = (props$, queries) => {
   var multiquery = {}
-  Object.keys(queries).map(query => multiquery[query] = singlequery(props$, queries[query].query, queries[query].arguments, query, queries[query].labels))
+  Object.keys(queries).map(query => multiquery[query] = singlequery(props$, queries[query].query, queries[query].arguments, query, queries[query].labels, queries[query].filename))
   return multiquery
 }
 
