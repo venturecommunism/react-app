@@ -1,14 +1,11 @@
 import uuid from '../../../config/uuid'
 
 export default {
-  checkitem({}, uuid) {
-    console.log(JSON.stringify(uuid))
+  uponeproject({localtransact}) {
+    localtransact([[':db.fn/retractEntity', ["id", "project"]]])
   },
-  dostuff({}, values, add, remove, uuid) {
+  checkboxchange({}, values, add, remove, uuid) {
     values.indexOf(uuid) > -1 ? remove(uuid) : add(uuid)
-  },
-  removeall({}, clear) {
-    clear()
   },
   addtoproject({maintransact, localtransact}, projid, values, clear) {
     if (values.length < 1) {

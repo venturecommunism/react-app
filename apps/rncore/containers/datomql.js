@@ -68,6 +68,7 @@ function datomql (strings, ...values) {
   }
 
   item[prop].filename = filename
+  item[prop].stateordata = operation
 
   return item
 }

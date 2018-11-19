@@ -28,9 +28,9 @@ import { receiveDataMessage } from './context/elixirmessage'
 const datasync = (chan, jwt) => {
   // why test for chan.send? is there no chan after a join or ok?
   chan.type   == 'join' && chan.send       ? chan.send({jwt: jwt, syncpoint: chan.syncpoint == 'none' ? chan.syncpoint : JSON.stringify(chan.syncpoint), subscription: querieslist})
-  : chan.type == 'new:msg'                 ? receiveDataMessage(datascript_db, maintransact, chan.msg, me)
+  : chan.type == 'new:msg'                 ? receiveDataMessage(maindb, maintransact, chan.msg, me)
   : chan.type == 'timeout'                 ? console.log('timeout ', chan.room, ": ", chan.error)
-  : chan.type   == 'ok'                    ? receiveDataMessage(datascript_db, maintransact, {ok: chan.msg}, me)
+  : chan.type   == 'ok'                    ? receiveDataMessage(maindb, maintransact, {ok: chan.msg}, me)
   : console.log("finally", chan)
 
   chan && chan.msg ? console.log('chan and chan.msg') : ''

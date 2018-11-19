@@ -1,5 +1,5 @@
 import { createDatomQLContainer, datomql } from '../containers/datomql'
-import React, {Fragment} from 'react'
+import React, { Fragment } from 'react'
 
 import { View, Text, Button, PageWrapper, ListContainer, ListItem, ListItemView, Loader, UserContainer, DateTime, Modal, CheckBox } from './styledComponents'
 import { Set, State } from 'react-powerplug'
@@ -8,19 +8,21 @@ const PickerInbox = ({
     actions,
     tx,
     localtx,
-    status,
-    message,
-    filterprojects,
-    projects,
-    inbox,
-    selectedState,
-    stateSelect,
+
+    pull,
+    project,
+
+    plainprojects,
+    drilldownprojects,
+    plaininbox,
+    drilldowninbox,
     }) => {
+  const COMMANDS = actions().pickerinbox
   return (
       <PageWrapper>
       <UserContainer>
 
-        <State initial={{ favorite: "", uuid: "" }}>
+        <State initial={{ projectlevel: "none", uuid: "" }}>
         {({ state, setState }) => (
 
         <Set initial={[]}>
@@ -28,30 +30,52 @@ const PickerInbox = ({
           <View>
           <Fragment>
           <ListContainer>
-          {filterprojects && filterprojects.map(item => <View key={item.uuid}><Text>- {item.desc}</Text></View>)}
-          <Text>{JSON.stringify(selectedState)}</Text>
-          <Text>{filterprojects.length > 0 && filterprojects.length}</Text>
+            <Text>Pull: {JSON.stringify(pull)}</Text>
+            <Text>Up One: {JSON.stringify(project.upone)}</Text>
+            <Text>Project: {JSON.stringify(project.uuid)}</Text>
+            <Text>Sub-Project count: {drilldownprojects.length}</Text>
 
-          {projects.map(item => (
+          {project.uuid != 'none' &&
+              <Button
+              title={"Up"}
+              onPress={() => COMMANDS.uponeproject(project.uuid, project.upone)}
+              accessibilityLabel={"Up One Project"} />
+          }
+
+
+          {project.uuid == 'none' && plainprojects.map(item => (
               <ListItemView key={item.uuid}>
 
               <Button
               title={item.desc}
-              onPress={() => actions().pickerinbox.addtoproject(item.uuid, values, clear)}
+              onPress={() => COMMANDS.addtoproject(item.uuid, values, clear)}
               accessibilityLabel={item.desc} />
-
 
               </ListItemView>
               ))}
+
+          {drilldownprojects.map(item => (
+              <ListItemView key={item.uuid}>
+
+              <Button
+              title={item.desc}
+              onPress={() => COMMANDS.addtoproject(item.uuid, values, clear)}
+              accessibilityLabel={item.desc} />
+
+              </ListItemView>
+              ))}
+
+
+
           </ListContainer>
           <Button
           title={"Reset"}
           onPress={clear}
           accessibilityLabel={"Reset"} />
             <ListContainer>
-            {inbox.map(inboxitem => (
+            {project.uuid == 'none' && <Text>Inbox</Text> }
+            {project.uuid == 'none' && plaininbox.map(inboxitem => (
                     <ListItemView key={inboxitem.uuid}>
-
                 {state.inboxitem != '' && state.uuid == inboxitem.uuid &&
                 <Modal
                 transparent={false}
@@ -66,12 +90,38 @@ const PickerInbox = ({
 
 
                     <CheckBox checked={values.indexOf(inboxitem.uuid) > -1} key={inboxitem.uuid} taskid={inboxitem.uuid}
-                    onChange={() => actions().pickerinbox.dostuff(values, add, remove, inboxitem.uuid)} />
+                    onChange={() => COMMANDS.checkboxchange(values, add, remove, inboxitem.uuid)} />
 
                     <ListItem style={inboxitem.confirmid != 'none' ? {backgroundColor: 'red'} : ''} >{inboxitem.desc}</ListItem>
                     <Button onPress={() => setState({ inboxitem: inboxitem.desc, uuid: inboxitem.uuid })} title={"Change Type"}/>
                     </ListItemView>
                     ))}
+
+            {project.uuid != 'none' && <Text>Sub-Inbox</Text> }
+            {project.uuid != 'none' && drilldowninbox.map(inboxitem => (
+                    <ListItemView key={inboxitem.uuid}>
+                {state.inboxitem != '' && state.uuid == inboxitem.uuid &&
+                <Modal
+                transparent={false}
+                onRequestClose={() => console.log('closed modal')}
+                >
+                <Text>{state.inboxitem}</Text>
+                <Button title={"Make Project"} onPress={ () => tx({type: "project"}, state.uuid) }/>
+                <Button title={"Make Context"} onPress={() => tx({type: "context"}, state.uuid) }/>
+                <DateTime placeholder={"Add to Calendar"} taskid={state.uuid}/>
+                <Button title={"deactivate Modal"} onPress={() => setState({ inboxitem: '', uuid: ''})}/>
+                </Modal> }
+
+
+                    <CheckBox checked={values.indexOf(inboxitem.uuid) > -1} key={inboxitem.uuid} taskid={inboxitem.uuid}
+                    onChange={() => COMMANDS.checkboxchange(values, add, remove, inboxitem.uuid)} />
+
+                    <ListItem style={inboxitem.confirmid != 'none' ? {backgroundColor: 'red'} : ''} >{inboxitem.desc}</ListItem>
+                    <Button onPress={() => setState({ inboxitem: inboxitem.desc, uuid: inboxitem.uuid })} title={"Change Type"}/>
+                    </ListItemView>
+                    ))}
+
+
         </ListContainer>
           </Fragment>
 
@@ -100,7 +150,7 @@ const PickerInbox = ({
 export default createDatomQLContainer(
     PickerInbox,
     datomql`
-    query pickerinbox_inbox {
+    query pickerinbox_plaininbox {
     [:find ?desc ?date ?status ?uuid ?confirmid ?e
     :where
     [?e "description" ?desc]
@@ -117,22 +167,7 @@ export default createDatomQLContainer(
     }
     `,
     datomql`
-    query pickerinbox_projects {
-    [:find ?desc ?date ?status ?uuid ?confirmid ?e
-    :where
-    [?e "description" ?desc]
-    [?e "entry" ?date]
-    [?e "status" ?status]
-    [?e "status" "pending"]
-    [?e "uuid" ?uuid]
-    [?e "type" "project"]
-    [(missing? $ ?e "wait")]
-    [(get-else $ ?e "confirmationid" "none") ?confirmid]
-    ]
-    }
-    `,
-    datomql`
-    query pickerinbox_filterprojects {
+    query pickerinbox_drilldowninbox {
     [:find ?desc ?date ?status ?uuid ?confirmid ?e
     :in $ ?project
     :where
@@ -142,9 +177,60 @@ export default createDatomQLContainer(
     [?e "status" "pending"]
     [?e "uuid" ?uuid]
     [?e "project" ?project]
+    [(missing? $ ?e "type")]
+    [(missing? $ ?e "wait")]
+    [(missing? $ ?e "due")]
+    [(get-else $ ?e "confirmationid" "none") ?confirmid]
+    ]
+    }
+    `,
+    datomql`
+    query pickerinbox_plainprojects {
+    [:find ?desc ?date ?status ?uuid ?confirmid ?e
+    :where
+    [?e "description" ?desc]
+    [?e "entry" ?date]
+    [?e "status" ?status]
+    [?e "status" "pending"]
+    [?e "uuid" ?uuid]
+    [?e "type" "project"]
+    [(missing? $ ?e "project")]
     [(missing? $ ?e "wait")]
     [(get-else $ ?e "confirmationid" "none") ?confirmid]
     ]
     }
-    `
+    `,
+    datomql`
+    query pickerinbox_drilldownprojects {
+    [:find ?desc ?date ?status ?uuid ?confirmid ?e
+    :in $ ?project
+    :where
+    [?e "description" ?desc]
+    [?e "entry" ?date]
+    [?e "status" ?status]
+    [?e "status" "pending"]
+    [?e "uuid" ?uuid]
+    [?e "type" "project"]
+    [?e "project" ?project]
+    [(missing? $ ?e "wait")]
+    [(get-else $ ?e "confirmationid" "none") ?confirmid]
+    ]
+    }
+    `,
+    datomql`
+    state pickerinbox_project {
+    [:find ?uuid ?upone
+    :where
+    [(get-else $ ?e2 "uponeproject" "none") ?upone]
+    [(get-else $ ?e "project" "none") ?uuid]
+    ]
+    }
+    `,
+    datomql`
+    pull pickerinbox_pull {
+    [:find ?uuid
+    :where
+    ]
+    }
+    `,
     )

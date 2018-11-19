@@ -32,17 +32,23 @@ const rxjsconfig = {
 
 const mapPropsStream = mapPropsStreamWithConfig(rxjsconfig)
 
-const singlequery = (props$, query, morearguments, queryname, labels, filename) => props$.pipe(
+const singlequery = (props$, query, morearguments, queryname, labels, filename, stateordata) => props$.pipe(
   // could be optimized for single query with or without arguments
   switchMap(props => {
-
     const { report$, localreport$ } = props.context()
 
     const statequery = `[:find ?uuid :where [?e "${morearguments[0]}" ?uuid]]`
+    const eidsquery = `[:find ?uuid :where [?e "uuid" ?uuid] [?e "type" "project"] [(missing? $ ?e "project")]]`
 
     const somequery$ = q$(localreport$, parse(statequery))
       .pipe(
         // tap(res => console.log(filename)),
+        map(res => toJs(res)),
+        startWith([]),
+      )
+
+    const eidsreport$ = q$(report$, parse(eidsquery))
+      .pipe(
         map(res => toJs(res)),
         startWith([]),
       )
@@ -52,6 +58,11 @@ const singlequery = (props$, query, morearguments, queryname, labels, filename) 
         combineLatest(somequery$, (s1, s2) => ({s1, s2})),
       )
 
+    const fusepull$ = report$
+      .pipe(
+        combineLatest(eidsreport$, (s1, s2) => ({s1, s2})),
+      )
+
     function newq(somereport$, query) {
       return somereport$
         .pipe(
@@ -59,6 +70,27 @@ const singlequery = (props$, query, morearguments, queryname, labels, filename) 
           map(({s1, s2}) => ({s1, args: s2[0] ? s2[0] : [null]})),
           // tap(res => console.log(filename, queryname)),
           map(({s1, args}) => dscljs.q(query, get(s1, DB_AFTER), ...args) ),
+          distinctUntilChanged(mori.equals)
+        )
+    }
+
+    const pullquery = `
+      [:find (pull $ ?e [* {"project" ...}])
+       :in $ ?projects
+       :where [$ ?e "project" ?projects]]`
+
+    const pull_many_syntax = parse(`[* {"_project" ...}]`)
+    const lookuprefs = parse(`[]`)
+
+    const change = (array) => parse(JSON.stringify([].concat( ...array.map(item => item.map(subitem => ["uuid", subitem])) )))
+
+    function newpull(somereport$, query) {
+      return somereport$
+        .pipe(
+          // tap(res => console.log("filename: ", filename)),
+          map(({s1, s2}) => ({s1, args: change(s2)})),
+          // tap(res => console.log(filename, queryname)),
+          map(({s1, args}) => dscljs.pull_many(get(s1, DB_AFTER), pull_many_syntax, args) ),
           distinctUntilChanged(mori.equals)
         )
     }
@@ -77,7 +109,8 @@ const singlequery = (props$, query, morearguments, queryname, labels, filename) 
       return labeled
     }
 
-    return newq(fusereport$, parse(query))
+    return stateordata == 'query'
+    ? newq(fusereport$, parse(query))
       .pipe(
         // tap(res => console.log(filename)),
         map(res => toJs(res)),
@@ -85,11 +118,30 @@ const singlequery = (props$, query, morearguments, queryname, labels, filename) 
         map(jsres => label(jsres)),
         startWith([]),
       )
+    : stateordata == 'state'
+    ? q$(localreport$, parse(query))
+      .pipe(
+        // tap(res => console.log(filename)),
+        map(res => toJs(res)),
+        // tap(res => console.log(filename)),
+        map(jsres => label(jsres)),
+        map(jsres => jsres[0] ? jsres[0] : []),
+        startWith([]),
+      )
+    : stateordata == 'pull'
+    ? newpull(fusepull$, parse(pullquery))
+      .pipe(
+        // tap(res => console.log(filename)),
+        map(res => toJs(res)),
+        // tap(res => console.log(filename)),
+        startWith([]),
+      )
+     : console.log(stateordata)
 }))
 
 const multiquery = (props$, queries) => {
   var multiquery = {}
-  Object.keys(queries).map(query => multiquery[query] = singlequery(props$, queries[query].query, queries[query].arguments, query, queries[query].labels, queries[query].filename))
+  Object.keys(queries).map(query => multiquery[query] = singlequery(props$, queries[query].query, queries[query].arguments, query, queries[query].labels, queries[query].filename, queries[query].stateordata))
   return multiquery
 }
 
