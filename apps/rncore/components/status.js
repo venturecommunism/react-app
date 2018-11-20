@@ -10,15 +10,15 @@ const Calendar = ({
   return (
     <PageWrapper>
       <UserContainer>
-
+{connectionstate.status != 'online' &&
               <View>
                 <Fragment>
                   <ListContainer>
                     <Text>{connectionstate.status}</Text>
                   </ListContainer>
                </Fragment>
-
             </View>
+}
       </UserContainer>
     </PageWrapper>
   )
@@ -30,7 +30,7 @@ export default createDatomQLContainer(
     state status_connectionstate {
 [:find ?status
   :where
-[(get-else $ ?e "status" "offline") ?status]
+[(get-else $ ?e "status" "initializing...") ?status]
 ]
     }
   `

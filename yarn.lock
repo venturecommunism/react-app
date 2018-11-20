@@ -7461,9 +7461,9 @@ jsdom@^9.12.0:
     whatwg-url "^4.3.0"
     xml-name-validator "^2.0.1"
 
-"jsedn@https://github.com/venturecommunism/jsedn":
+"jsedn@https://github.com/venturecommunism/jsedn#5d9aeacc6396ea80fb79476c475461dd22fbc152":
   version "0.4.1"
-  resolved "https://github.com/venturecommunism/jsedn#843c6bf1f2ad50cb8160a4ed75902a5ced29e0ac"
+  resolved "https://github.com/venturecommunism/jsedn#5d9aeacc6396ea80fb79476c475461dd22fbc152"
   dependencies:
     commander latest
     equals latest
