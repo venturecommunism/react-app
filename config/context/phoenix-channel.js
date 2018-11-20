@@ -25,6 +25,7 @@ const DataChannel = (url, room, user, token) =>
           const socket = new Socket(url)
           socket.connect()
           const chan = socket.channel(room + ':' + user, { user, guardian_token: token })
+          chan.onError( () => observer.next({ type: 'error', error: 'offline' }) )
           chan.join()
             .receive('ignore', () => console.log(room, 'Access denied.'))
             .receive('ok', () => observer.next({ type: 'join', socket, chan, user: user, send: send, syncpoint: syncpoint }))

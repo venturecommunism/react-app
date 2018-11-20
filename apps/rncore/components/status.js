@@ -1,0 +1,37 @@
+import { createDatomQLContainer, datomql } from '../containers/datomql'
+import React, { Fragment } from 'react'
+
+import { View, Button, Text, PageWrapper, ListContainer, ListItem, ListItemView, Loader, UserContainer } from './styledComponents'
+
+const Calendar = ({
+  actions,
+  connectionstate,
+}) => {
+  return (
+    <PageWrapper>
+      <UserContainer>
+
+              <View>
+                <Fragment>
+                  <ListContainer>
+                    <Text>{connectionstate.status}</Text>
+                  </ListContainer>
+               </Fragment>
+
+            </View>
+      </UserContainer>
+    </PageWrapper>
+  )
+}
+
+export default createDatomQLContainer(
+  Calendar,
+  datomql`
+    state status_connectionstate {
+[:find ?status
+  :where
+[(get-else $ ?e "status" "offline") ?status]
+]
+    }
+  `
+)

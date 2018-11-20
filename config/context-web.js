@@ -21,6 +21,15 @@ var localdb
 report$.subscribe(report => maindb = mori.get(report, helpers.DB_AFTER))
 localreport$.subscribe(report => localdb = mori.get(report, helpers.DB_AFTER))
 
+const connectionstate = (newstate) => {
+  console.log('newstate', newstate)
+  localtransact([{
+    ':db/id': -1,
+    status: newstate,
+    id: 'status',
+  }])
+}
+
 var channel
 
 import { receiveDataMessage } from './context/elixirmessage'
@@ -28,9 +37,10 @@ import { receiveDataMessage } from './context/elixirmessage'
 const datasync = (chan, jwt) => {
   // why test for chan.send? is there no chan after a join or ok?
   chan.type   == 'join' && chan.send       ? chan.send({jwt: jwt, syncpoint: chan.syncpoint == 'none' ? chan.syncpoint : JSON.stringify(chan.syncpoint), subscription: querieslist})
-  : chan.type == 'new:msg'                 ? receiveDataMessage(maindb, maintransact, chan.msg, me)
+  : chan.type == 'new:msg'                 ? (connectionstate("online") && receiveDataMessage(maindb, maintransact, chan.msg, me))
   : chan.type == 'timeout'                 ? console.log('timeout ', chan.room, ": ", chan.error)
-  : chan.type   == 'ok'                    ? receiveDataMessage(maindb, maintransact, {ok: chan.msg}, me)
+  : chan.type   == 'ok'                    ? (connectionstate("online") && receiveDataMessage(maindb, maintransact, {ok: chan.msg}, me))
+  : chan.type  == 'error'                  ? connectionstate(chan.error)
   : console.log("finally", chan)
 
   chan && chan.msg ? console.log('chan and chan.msg') : ''
@@ -42,10 +52,10 @@ const datasync = (chan, jwt) => {
 
 ex_auth.subscribe(chan =>
   chan.type   == 'join'         ? chan.send({email: config.username, password: config.password})
-  : chan.type == 'timeout'      ? console.log('timeout ', chan.room, ": ", chan.error)
+  : chan.type == 'timeout'      ? connectionstate('timeout')
   : chan.type == 'msg'          ? setItem('token', chan.msg.jwt) &&  ex_data.subscribe(datachannel => datasync(datachannel, chan.msg.jwt))
-  : chan.type == 'ok'           ? console.log('ok')
-  : chan.error                  ? console.log(chan.error)
+  : chan.type == 'ok'           ? connectionstate('connecting...')
+  : chan.error                  ? connectionstate('offline (timeout)')
   : console.log(chan.type)
 )
 
