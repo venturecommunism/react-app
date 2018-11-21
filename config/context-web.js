@@ -9,10 +9,6 @@ import config from './config'
 import { loadsyncpoint } from './context/persistence'
 loadsyncpoint(maintransact)
 
-import { DataChannel, AuthChannel } from './context/phoenix-channel'
-const ex_data = DataChannel(config.url, "datomic", me)
-const ex_auth = AuthChannel(config.url, "auth", me)
-
 import ql from './context/querieslist'
 const querieslist = ql()
 
@@ -20,6 +16,10 @@ var maindb
 var localdb
 report$.subscribe(report => maindb = mori.get(report, helpers.DB_AFTER))
 localreport$.subscribe(report => localdb = mori.get(report, helpers.DB_AFTER))
+
+import { DataChannel, AuthChannel } from './context/phoenix-channel'
+const ex_data = DataChannel(config.url, "datomic", me)
+const ex_auth = AuthChannel(config.url, "auth", me, localreport$)
 
 const connectionstate = (newstate) => {
   console.log('newstate', newstate)
@@ -34,12 +34,17 @@ var channel
 
 import { receiveDataMessage } from './context/elixirmessage'
 
+const online = (maindb, maintransact, msg, me) => {
+  connectionstate("online")
+  receiveDataMessage(maindb, maintransact, msg, me)
+}
+
 const datasync = (chan, jwt) => {
   // why test for chan.send? is there no chan after a join or ok?
   chan.type   == 'join' && chan.send       ? chan.send({jwt: jwt, syncpoint: chan.syncpoint == 'none' ? chan.syncpoint : JSON.stringify(chan.syncpoint), subscription: querieslist})
-  : chan.type == 'new:msg'                 ? (connectionstate("online") && receiveDataMessage(maindb, maintransact, chan.msg, me))
+  : chan.type == 'new:msg'                 ? online(maindb, maintransact, chan.msg, me)
   : chan.type == 'timeout'                 ? console.log('timeout ', chan.room, ": ", chan.error)
-  : chan.type   == 'ok'                    ? (connectionstate("online") && receiveDataMessage(maindb, maintransact, {ok: chan.msg}, me))
+  : chan.type   == 'ok'                    ? online(maindb, maintransact, {ok: chan.msg}, me)
   : chan.type  == 'error'                  ? connectionstate(chan.error)
   : console.log("finally", chan)
 
@@ -51,7 +56,7 @@ const datasync = (chan, jwt) => {
 }
 
 ex_auth.subscribe(chan =>
-  chan.type   == 'join'         ? chan.send({email: config.username, password: config.password})
+  chan.type   == 'join'         ? chan.send(chan.auth_join_msg)
   : chan.type == 'timeout'      ? connectionstate('timeout')
   : chan.type == 'msg'          ? setItem('token', chan.msg.jwt) &&  ex_data.subscribe(datachannel => datasync(datachannel, chan.msg.jwt))
   : chan.type == 'ok'           ? connectionstate('connecting...')

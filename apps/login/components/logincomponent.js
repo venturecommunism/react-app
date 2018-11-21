@@ -1,3 +1,5 @@
+import { createDatomQLContainer, datomql } from '../../rncore/containers/datomql'
+
 import config from '../../../config/config'
 
 import React, {Component} from 'react'
@@ -11,7 +13,7 @@ import {
   ActivityIndicator
 } from 'react-native'
 
-export default class Login extends Component {
+class Login extends Component {
 
   constructor(props) {
     super(props)
@@ -44,7 +46,7 @@ export default class Login extends Component {
 
         var proceed = false;
 
-        this.props.actions['login_page'](this.state.username, this.state.password)
+        this.props.actions().loginactions['login_page'](this.state.username, this.state.password)
 /*
         fetch("https://"+Environment.CLIENT_API+"/oauth/token", {
                 method: "POST",
@@ -123,5 +125,6 @@ export default class Login extends Component {
     }
 }
 
-
-
+export default createDatomQLContainer(
+  Login
+)

@@ -1,11 +1,16 @@
 import { getItem, setItem } from './persistence2'
 
+import { mori } from '../datascript'
+import { q$ } from '../rx-datascript'
+
 import config from '../config'
 import { from, Observable } from 'rxjs'
 import {
+  skip,
   flatMap,
   map,
   tap,
+  switchMap,
 } from 'rxjs/operators'
 
 import { Socket } from 'phoenix'
@@ -41,17 +46,22 @@ const DataChannel = (url, room, user, token) =>
       )
     ) // pipe end
 
-const AuthChannel = (url, room, user, token) =>
-  from([user])
+const AuthChannel = (url, room, user, localreport$, token) => q$(localreport$, mori.parse(`[:find ?email ?password :where [?e "email" ?email] [?e2 "password" ?password]]`))
     .pipe(
-      flatMap(user =>
+      // skipping one waits to load user data from localstate. not skipping loads from config.js
+      skip(1),
+      switchMap(queryresult =>
         new Observable(observer => {
+          // console.log("QUERY RESULT", mori.toJs(queryresult))
+          const jsresult = mori.toJs(queryresult)
+          const auth_join_msg = {email: jsresult[0] && jsresult[0][0] ? jsresult[0][0] : config.username, password: jsresult[0] && jsresult[0][1] ? jsresult[0][1] : config.password}
+          const user = jsresult[0] && jsresult[0][0] ? jsresult[0][0] : config.username
           const socket = new Socket(url)
           socket.connect()
           const chan = socket.channel(room + ':' + user, { user, token })
           chan.join()
             .receive('ignore', () => console.log(room, ': Access denied.'))
-            .receive('ok', () => observer.next({ type: 'join', socket, chan, user: user, send: send }))
+            .receive('ok', () => observer.next({ type: 'join', socket, chan, user: user, send: send, auth_join_msg: auth_join_msg }))
             .receive('timeout', () => observer.next({ type: 'error', error: room + ' timeout: Sad trombone.' }))
           chan.on('new:msg', msg => observer.next({ type: 'msg', msg: msg }))
           const send = (message) => {
