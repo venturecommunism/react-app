@@ -5,7 +5,7 @@ import general from './general'
 // import createtaskactions from './createtaskactions'
 // import stellardemoactions from './stellardemoactions'
 import loginactions from '../../login/commands/login'
-import createtask from '../../rncore/commands/createtask'
+import createtask from '../../createtask/commands/createtask'
 import pickerinbox from '../../rncore/commands/pickerinbox'
 
 const actions = {

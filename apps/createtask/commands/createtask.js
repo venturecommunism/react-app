@@ -1,7 +1,7 @@
 import uuid from '../../../config/uuid'
 
 export default {
-  createtask({maintransact}, text) {
+  createtask({maintransact}, text, user) {
     var date = new Date().getTime().toString()
     maintransact([{
       ':db/id': -1,
@@ -9,7 +9,8 @@ export default {
       entry: date,
       status: 'pending',
       uuid: uuid(),
-      confirmationid: uuid()
+      confirmationid: uuid(),
+      owner: user,
     }])
   },
 }

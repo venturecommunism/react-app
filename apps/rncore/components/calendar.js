@@ -1,5 +1,5 @@
 import { createDatomQLContainer, datomql } from '../containers/datomql'
-import React, {Fragment} from 'react'
+import React, { Fragment } from 'react'
 
 import { View, Button, Text, PageWrapper, ListContainer, ListItem, ListItemView, Loader, UserContainer } from './styledComponents'
 import { State } from 'react-powerplug'

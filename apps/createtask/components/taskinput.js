@@ -1,3 +1,7 @@
+import { createDatomQLContainer, datomql } from '../../rncore/containers/datomql'
+
+import config from '../../../config/config'
+
 import React from 'react'
 import {
   View,
@@ -18,8 +22,8 @@ class Inputs extends React.Component {
   handleInput = (text) => {
     this.setState({ formvalue: text })
   }
-  submittask = (formvalue) => {
-    this.props.actions['createtask'](formvalue)
+  submittask = (formvalue, username) => {
+    this.props.actions().createtask['createtask'](formvalue, username)
     this.setState({ formvalue: "" })
   }
   render(){
@@ -31,7 +35,7 @@ class Inputs extends React.Component {
           placeholderTextColor = "#9a73ef"
           autoCapitalize = "none"
           value = {this.state.formvalue}
-          onSubmitEditing = {() => this.submittask(this.state.formvalue)}
+          onSubmitEditing = {() => this.submittask(this.state.formvalue, this.props.state.username)}
           onChangeText = {this.handleInput}
         />
       </View>
@@ -64,4 +68,14 @@ const styles = StyleSheet.create({
   },
 })
 
-export default Inputs
+export default createDatomQLContainer(
+  Inputs,
+  datomql`
+    state taskinput_state {
+[:find ?username :where
+[(get-else $ ?e "email" "${config.username}") ?username]
+]
+    }
+  `
+)
+

@@ -9,7 +9,7 @@ import Calendar from './calendar'
 import PickerInbox from './pickerinbox'
 import SomedayMaybe from './somedaymaybe'
 
-import CreateTask from './createtask'
+import CreateTask from '../../createtask/components/createtask'
 
 const App = () =>
   <View>

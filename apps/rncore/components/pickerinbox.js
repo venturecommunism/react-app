@@ -92,6 +92,7 @@ const PickerInbox = ({
                     <CheckBox checked={values.indexOf(inboxitem.uuid) > -1} key={inboxitem.uuid} taskid={inboxitem.uuid}
                     onChange={() => COMMANDS.checkboxchange(values, add, remove, inboxitem.uuid)} />
 
+<ListItem>{inboxitem.owner}</ListItem>
                     <ListItem style={inboxitem.confirmid != 'none' ? {backgroundColor: 'red'} : ''} >{inboxitem.desc}</ListItem>
                     <Button onPress={() => setState({ inboxitem: inboxitem.desc, uuid: inboxitem.uuid })} title={"Change Type"}/>
                     </ListItemView>
@@ -151,13 +152,14 @@ export default createDatomQLContainer(
     PickerInbox,
     datomql`
     query pickerinbox_plaininbox {
-    [:find ?desc ?date ?status ?uuid ?confirmid ?e
+    [:find ?desc ?date ?status ?uuid ?confirmid ?owner ?e
     :where
     [?e "description" ?desc]
     [?e "entry" ?date]
     [?e "status" ?status]
     [?e "status" "pending"]
     [?e "uuid" ?uuid]
+    [?e "owner" ?owner]
     [(missing? $ ?e "project")]
     [(missing? $ ?e "type")]
     [(missing? $ ?e "wait")]
