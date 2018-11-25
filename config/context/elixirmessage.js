@@ -5,7 +5,7 @@ import transact from '../transact'
 import { sync } from './persistence'
 
 // Fires when we receive a message on the Elixir data channel
-export const receiveDataMessage = (db, maintransact, message, me) => {
+export const receiveDataMessage = (db, maintransact, message, me, username) => {
   console.log("ELIXIR MESSAGE", message)
   if ('ok' in message && 'confirmationid' in message.ok.msg) {
     var confirmationid = message['ok']['msg']['confirmationid']
@@ -31,7 +31,7 @@ export const receiveDataMessage = (db, maintransact, message, me) => {
   if (isMe(user)) return // prevent echoing yourself (TODO: server could handle this i guess?)
 
   if (Object.keys(message).some(item => item == 'syncpoint')) {
-    sync(message)
+    sync(message, username)
   }
   // only works if all the tx ids are the same
   if (message.user === 'system') {

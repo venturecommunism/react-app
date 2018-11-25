@@ -1,5 +1,7 @@
+import { loadsyncpoint } from '../../../config/context/persistence'
+
 export default {
-  login_page({localtransact}, username, password) {
+  login_page({localtransact, maintransact}, username, password) {
       localtransact([{
         ':db/id': -1,
         email: username,
@@ -10,5 +12,6 @@ export default {
         password: password,
         id: 'password',
       }])
+      loadsyncpoint(maintransact, username)
   },
 }

@@ -3,21 +3,21 @@ import {go, chan, take, put, timeout, putAsync} from 'js-csp'
 import { getItem, setItem, clear, breakmessage } from './persistence2'
 import uuid from '../uuid'
 
-export const sync = (message) => {
+export const sync = (message, username) => {
   go(function* () {
     var syncCh = chan()
-    getItem('syncpoint-A')
+    getItem('syncpoint-A'+username)
       .then(syncpointA => {
         syncpointA ? putAsync(syncCh, syncpointA) : putAsync(syncCh, 'none')
       })
     let syncpointA = yield take(syncCh)
-    syncpointA == 'none' ? setSync('syncpoint-A', message) : ''
-    getItem('syncpoint-B')
+    syncpointA == 'none' ? setSync('syncpoint-A'+username, message) : ''
+    getItem('syncpoint-B'+username)
       .then(syncpointB => {
         syncpointB ? putAsync(syncCh, syncpointB) : putAsync(syncCh, 'none')
       })
     let syncpointB = yield take(syncCh)
-    syncpointB == 'none' ? setSync('syncpoint-B', message) : putAsync(syncCh, 'ok')
+    syncpointB == 'none' ? setSync('syncpoint-B'+username, message) : putAsync(syncCh, 'ok')
     var ack = yield take(syncCh)
     if (syncpointA > syncpointB) {
       getItem(syncpointB)
@@ -25,7 +25,7 @@ export const sync = (message) => {
           putAsync(syncCh, oldsync)
         })
       var oldkeys = yield take(syncCh)
-      swapSync('syncpoint-B', 'syncpoint-A', oldkeys, message)
+      swapSync('syncpoint-B'+username, 'syncpoint-A'+username, oldkeys, message)
     }
     else if (syncpointB >= syncpointA) {
       console.log("B was greater than or equal to A")
@@ -35,7 +35,7 @@ export const sync = (message) => {
         })
       var oldkeys = yield take(syncCh)
       console.log("about to swapsync")
-      swapSync('syncpoint-A', 'syncpoint-B', oldkeys,  message)
+      swapSync('syncpoint-A'+username, 'syncpoint-B'+username, oldkeys,  message)
     }
     else {
       throw 'error'
@@ -70,16 +70,16 @@ export const sync = (message) => {
   }
 }
 
-export const loadsyncpoint = (maintransact) => {
-  // clear()
+export const loadsyncpoint = (maintransact, username) => {
+//  clear()
   go(function* () {
     var loadCh = chan()
-    getItem('syncpoint-A')
+    getItem('syncpoint-A'+username)
       .then(syncpointA => {
         syncpointA ? putAsync(loadCh, syncpointA) : putAsync(loadCh, 'none')
        })
     let syncpointA = yield take(loadCh)
-    getItem('syncpoint-B')
+    getItem('syncpoint-B'+username)
       .then(syncpointB => {
         syncpointB ? putAsync(loadCh, syncpointB) : putAsync(loadCh, 'none')
       })

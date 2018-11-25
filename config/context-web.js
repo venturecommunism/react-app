@@ -6,9 +6,6 @@ import uuid from './uuid'
 const me = uuid()
 import config from './config'
 
-import { loadsyncpoint } from './context/persistence'
-loadsyncpoint(maintransact)
-
 import ql from './context/querieslist'
 const querieslist = ql()
 
@@ -34,14 +31,14 @@ var channel
 
 import { receiveDataMessage } from './context/elixirmessage'
 
-const online = (maindb, maintransact, msg, me) => {
+const online = (maindb, maintransact, msg, me, username) => {
   connectionstate("online")
-  receiveDataMessage(maindb, maintransact, msg, me)
+  receiveDataMessage(maindb, maintransact, msg, me, username)
 }
 
 const datasync = (chan, jwt) => {
   // why test for chan.send? is there no chan after a join or ok?
-  chan.type   == 'join' && chan.send       ? chan.send({jwt: jwt, syncpoint: chan.syncpoint == 'none' ? chan.syncpoint : JSON.stringify(chan.syncpoint), subscription: querieslist})
+  chan.type   == 'join' && chan.send       ? chan.send({username: "someone@somewhere.com", jwt: jwt, syncpoint: chan.syncpoint == 'none' ? chan.syncpoint : JSON.stringify(chan.syncpoint), subscription: querieslist})
   : chan.type == 'new:msg'                 ? online(maindb, maintransact, chan.msg, me)
   : chan.type == 'timeout'                 ? console.log('timeout ', chan.room, ": ", chan.error)
   : chan.type   == 'ok'                    ? online(maindb, maintransact, {ok: chan.msg}, me)
@@ -57,7 +54,7 @@ const datasync = (chan, jwt) => {
 ex_auth.subscribe(chan =>
   chan.type   == 'join'         ? chan.send(chan.auth_join_msg)
   : chan.type == 'timeout'      ? connectionstate('timeout')
-  : chan.type == 'msg'          ? setItem('token', chan.msg.jwt) &&  ex_data.subscribe(datachannel => datasync(datachannel, chan.msg.jwt))
+  : chan.type == 'msg'          ? setItem('token', chan.msg.jwt) &&  ex_data.subscribe(datachannel => datasync(datachannel, chan.msg.jwt, chan.auth_join_msg.email))
   : chan.type == 'ok'           ? connectionstate('connecting...')
   : chan.error                  ? connectionstate('offline (timeout)')
   : console.log('no match: ', chan.type)

@@ -16,9 +16,10 @@ import {
 import { Socket } from 'phoenix'
 
 const DataChannel = (url, room, user, token) =>
+//  q$(localreport$, mori.parse(`[:find ?email ?password :where [?e "email" ?email] [?e2 "password" ?password]]`))
   from([user])
     .pipe(
-      flatMap(user =>
+      flatMap(result =>
         from(getItem('token')).pipe(map(token => ({ user, token })))),
       flatMap(({ user, token }) =>
         from(getItem('syncpoint')).pipe(map(syncspot => !syncspot || syncspot == null ? ({user, token, syncspot: 'syncpoint-X'}) : ({ user, token, syncspot })))),
@@ -63,7 +64,7 @@ const AuthChannel = (url, room, user, localreport$, token) => q$(localreport$, m
             .receive('ignore', () => console.log(room, ': Access denied.'))
             .receive('ok', () => observer.next({ type: 'join', socket, chan, user: user, send: send, auth_join_msg: auth_join_msg }))
             .receive('timeout', () => observer.next({ type: 'error', error: room + ' timeout: Sad trombone.' }))
-          chan.on('new:msg', msg => observer.next({ type: 'msg', msg: msg }))
+          chan.on('new:msg', msg => observer.next({ type: 'msg', msg: msg, auth_join_msg: auth_join_msg }))
           const send = (message) => {
             chan.push('new:msg', {body: message, user}, 10000)
               .receive('ok', (msg) => observer.next({ type: 'ok', msg: msg }))
