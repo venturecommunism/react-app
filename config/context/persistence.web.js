@@ -1,22 +1,7 @@
 import {go, chan, take, put, timeout, putAsync} from 'js-csp'
 
-import { get as getItem, set as setItem, clear } from 'idb-keyval'
-// import transact from '../transact'
+import { getItem, setItem, clear, breakmessage } from './persistence2'
 import uuid from '../uuid'
-
-function chunk(arr, chunkSize) {
-  var R = []
-  for (var i=0,len=arr.length; i<len; i+=chunkSize)
-    R.push(arr.slice(i,i+chunkSize))
-  return R
-}
-
-function breakmessage(message, chunkSize) {
-  let brokenmessage = []
-  let contents = chunk(message, chunkSize)
-  contents.map(item => brokenmessage[uuid()] = item)
-  return brokenmessage
-}
 
 export const sync = (message) => {
   go(function* () {

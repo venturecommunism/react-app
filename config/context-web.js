@@ -1,4 +1,4 @@
-import { set as setItem } from 'idb-keyval'
+import { setItem } from './context/persistence2'
 
 import datascript, { report$, maintransact, localreport$, localtransact, mori, helpers } from './datascript'
 
@@ -46,9 +46,8 @@ const datasync = (chan, jwt) => {
   : chan.type == 'timeout'                 ? console.log('timeout ', chan.room, ": ", chan.error)
   : chan.type   == 'ok'                    ? online(maindb, maintransact, {ok: chan.msg}, me)
   : chan.type  == 'error'                  ? connectionstate(chan.error)
-  : console.log("finally", chan)
+  : console.log('no match: ', chan.type)
 
-  chan && chan.msg ? console.log('chan and chan.msg') : ''
   // how do i not do this
   if (chan.send && !channel) {
     channel = chan
@@ -61,7 +60,7 @@ ex_auth.subscribe(chan =>
   : chan.type == 'msg'          ? setItem('token', chan.msg.jwt) &&  ex_data.subscribe(datachannel => datasync(datachannel, chan.msg.jwt))
   : chan.type == 'ok'           ? connectionstate('connecting...')
   : chan.error                  ? connectionstate('offline (timeout)')
-  : console.log(chan.type)
+  : console.log('no match: ', chan.type)
 )
 
 report$.subscribe(r => {

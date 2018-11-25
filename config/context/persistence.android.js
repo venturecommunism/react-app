@@ -1,54 +1,18 @@
 import {go, chan, take, put, timeout, putAsync} from 'js-csp'
 
-import { setItem, getItem, getAllItems, deleteItem } from 'react-native-sensitive-info'
-import transact from '../transact'
+import { getItem, setItem, clear, breakmessage } from './persistence2'
 import uuid from '../uuid'
-
-function chunk(arr, chunkSize) {
-  var R = []
-  for (var i=0,len=arr.length; i<len; i+=chunkSize)
-    R.push(arr.slice(i,i+chunkSize))
-  return R
-}
-
-function breakmessage(message, chunkSize) {
-  let brokenmessage = []
-  let contents = chunk(message, chunkSize)
-  contents.map(item => brokenmessage[uuid()] = item)
-  return brokenmessage
-}
-
-const clear = () => {
-  getAllItems({
-    sharedPreferencesName: 'mySharedPrefs',
-    keychainService: 'myKeychain'
-  }).then(values => {
-      Object.keys(values).map( val => {
-        deleteItem(val, {
-          sharedPreferencesName: 'mySharedPrefs',
-          keychainService: 'myKeychain'
-        })
-      })
-    })
-    .catch(err => console.log(err))
-}
 
 export const sync = (message) => {
   go(function* () {
     var syncCh = chan()
-    getItem('syncpoint-A', {
-      sharedPreferencesName: 'mySharedPrefs',
-      keychainService: 'myKeychain'
-    })
+    getItem('syncpoint-A')
       .then(syncpointA => {
         syncpointA ? putAsync(syncCh, syncpointA) : putAsync(syncCh, 'none')
       })
     let syncpointA = yield take(syncCh)
     syncpointA == 'none' ? setSync('syncpoint-A', message) : ''
-    getItem('syncpoint-B', {
-      sharedPreferencesName: 'mySharedPrefs',
-      keychainService: 'myKeychain'
-    })
+    getItem('syncpoint-B')
       .then(syncpointB => {
         syncpointB ? putAsync(syncCh, syncpointB) : putAsync(syncCh, 'none')
       })
@@ -56,10 +20,7 @@ export const sync = (message) => {
     syncpointB == 'none' ? setSync('syncpoint-B', message) : putAsync(syncCh, 'ok')
     var ack = yield take(syncCh)
     if (syncpointA > syncpointB) {
-      getItem(syncpointB, {
-        sharedPreferencesName: 'mySharedPrefs',
-        keychainService: 'myKeychain'
-      })
+      getItem(syncpointB)
         .then(oldsync => {
           putAsync(syncCh, oldsync)
         })
@@ -68,10 +29,7 @@ export const sync = (message) => {
     }
     else if (syncpointB >= syncpointA) {
       console.log("B was greater than or equal to A")
-      getItem(syncpointA, {
-        sharedPreferencesName: 'mySharedPrefs',
-        keychainService: 'myKeychain'
-      })
+      getItem(syncpointA)
         .then(oldsync => {
           putAsync(syncCh, oldsync)
         })
@@ -88,25 +46,13 @@ export const sync = (message) => {
     // clear()
     let brokenmessage = breakmessage(message.body, 20)
     console.log('setting ', syncpoint, ' to: ', message.syncpoint)
-    setItem(syncpoint, JSON.stringify(message.syncpoint), {
-      sharedPreferencesName: 'mySharedPrefs',
-      keychainService: 'myKeychain'
-    })
-    setItem(JSON.stringify(message.syncpoint), JSON.stringify(Object.keys(brokenmessage)), {
-      sharedPreferencesName: 'mySharedPrefs',
-      keychainService: 'myKeychain'
-    })
+    setItem(syncpoint, JSON.stringify(message.syncpoint))
+    setItem(JSON.stringify(message.syncpoint), JSON.stringify(Object.keys(brokenmessage)))
     Object.keys(brokenmessage).map(uuid => {
-      setItem(uuid, JSON.stringify(brokenmessage[uuid]), {
-        sharedPreferencesName: 'mySharedPrefs',
-        keychainService: 'myKeychain'
-      })
+      setItem(uuid, JSON.stringify(brokenmessage[uuid]))
     })
 
-    setItem('syncpoint', syncpoint, {
-      sharedPreferencesName: 'mySharedPrefs',
-      keychainService: 'myKeychain'
-    })
+    setItem('syncpoint', syncpoint)
   }
 
   const swapSync = (newsync, oldsync, oldkeys, message) => {
@@ -115,24 +61,12 @@ export const sync = (message) => {
     let brokenmessage = breakmessage(message.body, 20)
     console.log('setting ', newsync, ' to: ', message.syncpoint)
     Object.keys(brokenmessage).map(uuid => {
-      setItem(uuid, JSON.stringify(brokenmessage[uuid]), {
-        sharedPreferencesName: 'mySharedPrefs',
-        keychainService: 'myKeychain'
-      })
+      setItem(uuid, JSON.stringify(brokenmessage[uuid]))
     })
-    setItem(JSON.stringify(message.syncpoint), JSON.stringify([...JSON.parse(oldkeys), ...Object.keys(brokenmessage)]), {
-      sharedPreferencesName: 'mySharedPrefs',
-      keychainService: 'myKeychain'
-    })
-    setItem(newsync, JSON.stringify(message.syncpoint), {
-      sharedPreferencesName: 'mySharedPrefs',
-      keychainService: 'myKeychain'
-    })
+    setItem(JSON.stringify(message.syncpoint), JSON.stringify([...JSON.parse(oldkeys), ...Object.keys(brokenmessage)]))
+    setItem(newsync, JSON.stringify(message.syncpoint))
 
-    setItem('syncpoint', newsync, {
-      sharedPreferencesName: 'mySharedPrefs',
-      keychainService: 'myKeychain'
-    })
+    setItem('syncpoint', newsync)
   }
 }
 
@@ -140,18 +74,12 @@ export const loadsyncpoint = (maintransact) => {
   // clear()
   go(function* () {
     var loadCh = chan()
-    getItem('syncpoint-A', {
-      sharedPreferencesName: 'mySharedPrefs',
-      keychainService: 'myKeychain'
-    })
+    getItem('syncpoint-A')
       .then(syncpointA => {
         syncpointA ? putAsync(loadCh, syncpointA) : putAsync(loadCh, 'none')
        })
     let syncpointA = yield take(loadCh)
-    getItem('syncpoint-B', {
-      sharedPreferencesName: 'mySharedPrefs',
-      keychainService: 'myKeychain'
-    })
+    getItem('syncpoint-B')
       .then(syncpointB => {
         syncpointB ? putAsync(loadCh, syncpointB) : putAsync(loadCh, 'none')
       })
@@ -176,17 +104,11 @@ export const loadsyncpoint = (maintransact) => {
   const loadSync = (point) => {
     let body = []
     let checkkeys = []
-    getItem(point, {
-      sharedPreferencesName: 'mySharedPrefs',
-      keychainService: 'myKeychain'
-    })
+    getItem(point)
       .then(uuids => {
         var jsonuuids = JSON.parse(uuids)
         jsonuuids.map( uuid => {
-          getItem(uuid, {
-            sharedPreferencesName: 'mySharedPrefs',
-            keychainService: 'myKeychain'
-          })
+          getItem(uuid)
             .then(item => {
               body.push(...JSON.parse(item))
               checkkeys.push(uuid)
