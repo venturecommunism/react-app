@@ -13,17 +13,24 @@ defmodule DatomicExport do
     ]
     """
     {:ok, contents} = DatomicQuery.query(query)
+
     fullpath = "priv/files/" <> filename
     {:ok, file} = File.open fullpath, [:write]
 
-    orderedcontents = Enum.sort_by(contents, fn [e, a, v, tx, added] ->
+    elixir_contents = Exdn.to_reversible contents
+    orderedcontents = Enum.sort_by(elixir_contents, fn [e, a, v, tx, added] ->
       {tx, added, e, a, v}
     end)
     |> Enum.chunk_by(fn [_, _, _, tx, _] ->
       tx
     end)
 
-    IO.binwrite file, Poison.encode!(orderedcontents, pretty: true)
+    somethinghead = Enum.at(orderedcontents, 0)
+IO.inspect somethinghead
+#IO.inspect orderedcontents
+
+#    IO.binwrite file, Poison.encode!(orderedcontents, pretty: true)
+    IO.binwrite file, contents
     File.close file
   end
 end

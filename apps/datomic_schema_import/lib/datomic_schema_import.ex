@@ -5,7 +5,11 @@ defmodule DatomicSchemaImport do
 # one off schema were not in the original data imported from previous versions of the task manager but are being used to build new features
 one_off_schema = """
 
-[{                         :db/ident :wait
+[
+                          {:db/id "datomic.tx"
+                           :db/txInstant #inst "1970-01-01"}
+
+{                         :db/ident :wait
                            :db/valueType :db.type/string
                            :db/cardinality :db.cardinality/one
                            :db/doc "Hides a task until the wait period is over"}

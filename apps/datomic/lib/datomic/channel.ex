@@ -15,7 +15,7 @@ defmodule Datomic.Channel do
     {:via, :gproc, {:n, :l, {:topic, process_per_topic}}}
   end
 
-  def sync(latest_tx, subscription, socket) do
+  def sync(latest_tx, subscription, username, socket) do
     %{topic: topic} = socket
 
     IO.puts "latest tx"
@@ -29,7 +29,7 @@ defmodule Datomic.Channel do
     end
 
     datomicsubscription = Enum.map(subscription, fn(x) ->
-      {:ok, reversiblequery} = DatomicQueryTranslator.translatetosince(Enum.at(x,0))
+      {:ok, reversiblequery} = DatomicQueryTranslator.translatetosince(Enum.at(x,0), username)
       query = Exdn.from_elixir! reversiblequery
 #      {:ok, qedn} = DatomicGenServer.q(via_tuple(topic), otherquery, [ Exdn.from_elixir!({:list, [{:symbol, :"datomic.api/since"}, {:symbol, :"datomic_gen_server.peer/*db*"}, latest_tx ]})], [:options, {:client_timeout, 100_000}])
       {:ok, edn} = DatomicGenServer.since(via_tuple(topic), query, latest_tx, [:options, {:client_timeout, 100_000}])

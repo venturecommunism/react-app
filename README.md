@@ -59,3 +59,20 @@ You can stop the NodeJS server that serves the client by hitting Ctrl-C.
     "datomic:sql://test?jdbc:postgresql://localhost:5432/datomic?user=datomic\\&password=datomic"
 
 Make sure to have the two backslashes \\ in front of the ampersand &
+
+To add and delete users from the command line:
+
+psql -U postgres -d ex_auth_dev -h localhost
+-- show all tables
+\dt
+
+### WARNING. THE NEXT COMMAND PERMANENTLY DELETES USER DATABASE
+psql -U postgres -h localhost -c "drop database ex_auth_dev"
+
+cd apps/auth
+mix ecto.create && mix ecto.migrate
+mix run apps/auth/priv/repo/seeds.exs
+
+# Documentation
+
+Check the docs folder for documentation

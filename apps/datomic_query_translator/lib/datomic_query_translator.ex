@@ -1,5 +1,5 @@
 defmodule DatomicQueryTranslator do
-  def translatetosince(query_list) do
+  def translatetosince(query_list, username) do
     datomic_query = rejoined(since_cleanupfind(splitwithclauses(splitwhere(Exdn.to_reversible query_list))))
     {:ok, datomic_query}
   end

@@ -1,7 +1,16 @@
 defmodule DatomicImport do
+  def import_from_edn do
+    filename = "import.txt"
+    DatomicImport.import_from_edn(filename)
+  end
+
   def import do
     filename = "import.txt"
     DatomicImport.import(filename)
+  end
+
+  def import_from_edn(filename) do
+    ImportFromEdn.import(filename)
   end
 
   def import(filename) do
@@ -9,8 +18,8 @@ defmodule DatomicImport do
     fullpath = "priv/files/" <> filename
     {:ok, body} = File.read(fullpath)
     json = Poison.Parser.parse!(body)
-    # the first five are initial data including one schema
-    json_dropping_first_few = Enum.drop(json, 5)
+    # the first six are initial data including two schema
+    json_dropping_first_few = Enum.drop(json, 6)
 
     {:ok, schema} = DatomicQuery.query("""
       [:find ?attribute ?valuetype ?cardinality ?documentation

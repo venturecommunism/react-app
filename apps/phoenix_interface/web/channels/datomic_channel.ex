@@ -26,17 +26,18 @@ defmodule PhoenixInterface.DatomicChannel do
 
   defoverridable [handle_guardian_auth_failure: 1]
 
-  def handle_in("new:msg", %{"body" => %{"syncpoint" => latest_tx, "subscription" => subscription}, "user" => user}, socket) do
+  def handle_in("new:msg", %{"body" => %{"syncpoint" => latest_tx, "subscription" => subscription, "username" => username}, "user" => user}, socket) do
     Logger.debug "latest_tx: " <> latest_tx
     Logger.debug "SYNC HANDLER"
 
-    Datomic.Channel.sync(latest_tx, Enum.at(subscription,0), socket)
+    Datomic.Channel.sync(latest_tx, Enum.at(subscription,0), username, socket)
     |> Enum.sort_by(fn(datom) ->
          datom
        end)
     |> Enum.each(fn({y, x}) ->
       push socket, "new:msg", %{"user" => "system", "body" => x, "syncpoint" => y}
       Process.sleep(60)
+IO.inspect x
       IO.puts Enum.random([1,2,3,4,5,6,7,8,9])
     end)
 
@@ -45,10 +46,10 @@ defmodule PhoenixInterface.DatomicChannel do
     {:reply, {:ok, %{msg: %{"syncpoint": false, "user": user}}}, assign(socket, :user, user)}
   end
 
-  def handle_in("new:msg", %{"body" => %{"syncpoint" => latest_tx, "subscription" => subscription}, "user" => user}, socket) do
+  def handle_in("new:msg", %{"body" => %{"syncpoint" => latest_tx, "subscription" => subscription, "username" => username}, "user" => user}, socket) do
     Logger.debug "latest_tx: " <> latest_tx
 
-    Datomic.Channel.sync(latest_tx, Enum.at(subscription,0), socket)
+    Datomic.Channel.sync(latest_tx, Enum.at(subscription,0), username, socket)
     |> Enum.sort_by(fn(datom) ->
       datom
     end)
@@ -89,6 +90,7 @@ defmodule PhoenixInterface.DatomicChannel do
 
   def handle_in("new:msg", _msg, socket) do
     IO.inspect "no message"
+IO.inspect _msg
     {:noreply, socket}
   end
 end
