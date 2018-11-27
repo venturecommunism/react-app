@@ -15,7 +15,7 @@ report$.subscribe(report => maindb = mori.get(report, helpers.DB_AFTER))
 localreport$.subscribe(report => localdb = mori.get(report, helpers.DB_AFTER))
 
 import { DataChannel, AuthChannel } from './context/phoenix-channel'
-const ex_data = DataChannel(config.url, "datomic", me)
+const ex_data = DataChannel(config.url, "datomic", me, localreport$)
 const ex_auth = AuthChannel(config.url, "auth", me, localreport$)
 
 const connectionstate = (newstate) => {
@@ -36,12 +36,12 @@ const online = (maindb, maintransact, msg, me, username) => {
   receiveDataMessage(maindb, maintransact, msg, me, username)
 }
 
-const datasync = (chan, jwt) => {
+const datasync = (chan, jwt, username) => {
   // why test for chan.send? is there no chan after a join or ok?
-  chan.type   == 'join' && chan.send       ? chan.send({username: "someone@somewhere.com", jwt: jwt, syncpoint: chan.syncpoint == 'none' ? chan.syncpoint : JSON.stringify(chan.syncpoint), subscription: querieslist})
-  : chan.type == 'new:msg'                 ? online(maindb, maintransact, chan.msg, me)
+  chan.type   == 'join' && chan.send       ? chan.send({username: username, jwt: jwt, syncpoint: chan.syncpoint == 'none' ? chan.syncpoint : JSON.stringify(chan.syncpoint), subscription: querieslist})
+  : chan.type == 'new:msg'                 ? online(maindb, maintransact, chan.msg, me, username)
   : chan.type == 'timeout'                 ? console.log('timeout ', chan.room, ": ", chan.error)
-  : chan.type   == 'ok'                    ? online(maindb, maintransact, {ok: chan.msg}, me)
+  : chan.type   == 'ok'                    ? online(maindb, maintransact, {ok: chan.msg}, me, username)
   : chan.type  == 'error'                  ? connectionstate(chan.error)
   : console.log('no match: ', chan.type)
 

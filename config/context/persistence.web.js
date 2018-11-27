@@ -11,13 +11,13 @@ export const sync = (message, username) => {
         syncpointA ? putAsync(syncCh, syncpointA) : putAsync(syncCh, 'none')
       })
     let syncpointA = yield take(syncCh)
-    syncpointA == 'none' ? setSync('syncpoint-A'+username, message) : ''
+    syncpointA == 'none' ? setSync('syncpoint-A'+username, message, username) : ''
     getItem('syncpoint-B'+username)
       .then(syncpointB => {
         syncpointB ? putAsync(syncCh, syncpointB) : putAsync(syncCh, 'none')
       })
     let syncpointB = yield take(syncCh)
-    syncpointB == 'none' ? setSync('syncpoint-B'+username, message) : putAsync(syncCh, 'ok')
+    syncpointB == 'none' ? setSync('syncpoint-B'+username, message, username) : putAsync(syncCh, 'ok')
     var ack = yield take(syncCh)
     if (syncpointA > syncpointB) {
       getItem(syncpointB)
@@ -25,7 +25,7 @@ export const sync = (message, username) => {
           putAsync(syncCh, oldsync)
         })
       var oldkeys = yield take(syncCh)
-      swapSync('syncpoint-B'+username, 'syncpoint-A'+username, oldkeys, message)
+      swapSync('syncpoint-B'+username, 'syncpoint-A'+username, oldkeys, message, username)
     }
     else if (syncpointB >= syncpointA) {
       console.log("B was greater than or equal to A")
@@ -35,14 +35,14 @@ export const sync = (message, username) => {
         })
       var oldkeys = yield take(syncCh)
       console.log("about to swapsync")
-      swapSync('syncpoint-A'+username, 'syncpoint-B'+username, oldkeys,  message)
+      swapSync('syncpoint-A'+username, 'syncpoint-B'+username, oldkeys,  message, username)
     }
     else {
       throw 'error'
     }
   })
 
-  const setSync = (syncpoint, message) => {
+  const setSync = (syncpoint, message, username) => {
     // clear()
     let brokenmessage = breakmessage(message.body, 20)
     console.log('setting ', syncpoint, ' to: ', message.syncpoint)
@@ -52,10 +52,10 @@ export const sync = (message, username) => {
       setItem(uuid, brokenmessage[uuid])
     })
 
-    setItem('syncpoint', syncpoint)
+    setItem('syncpoint'+username, syncpoint)
   }
 
-  const swapSync = (newsync, oldsync, oldkeys, message) => {
+  const swapSync = (newsync, oldsync, oldkeys, message, username) => {
     console.log('invoking swapsync')
     // clear()
     let brokenmessage = breakmessage(message.body, 20)
@@ -66,12 +66,12 @@ export const sync = (message, username) => {
     setItem(message.syncpoint, [...oldkeys, ...Object.keys(brokenmessage)])
     setItem(newsync, message.syncpoint)
 
-    setItem('syncpoint', newsync)
+    setItem('syncpoint'+username, newsync)
   }
 }
 
 export const loadsyncpoint = (maintransact, username) => {
-//  clear()
+  // clear()
   go(function* () {
     var loadCh = chan()
     getItem('syncpoint-A'+username)
