@@ -16,7 +16,7 @@ localreport$.subscribe(report => localdb = mori.get(report, helpers.DB_AFTER))
 
 import { DataChannel, AuthChannel } from './context/phoenix-channel'
 const ex_data = DataChannel(config.url, "datomic", me, localreport$)
-const ex_auth = AuthChannel(config.url, "auth", me, localreport$)
+const ex_auth = AuthChannel(config.url, "auth", me, localreport$, maintransact)
 
 const connectionstate = (newstate) => {
   console.log('newstate', newstate)

@@ -30,6 +30,7 @@ const PickerInbox = ({
           <View>
           <Fragment>
           <ListContainer>
+            <Text>Username: {JSON.stringify(project.username)}</Text>
             <Text>Pull: {JSON.stringify(pull)}</Text>
             <Text>Up One: {JSON.stringify(project.upone)}</Text>
             <Text>Project: {JSON.stringify(project.uuid)}</Text>
@@ -153,6 +154,7 @@ export default createDatomQLContainer(
     datomql`
     query pickerinbox_plaininbox {
     [:find ?desc ?date ?status ?uuid ?confirmid ?owner ?e
+    :in $ ?owner
     :where
     [?e "description" ?desc]
     [?e "entry" ?date]
@@ -221,10 +223,11 @@ export default createDatomQLContainer(
     `,
     datomql`
     state pickerinbox_project {
-    [:find ?uuid ?upone
+    [:find ?uuid ?upone ?username
     :where
     [(get-else $ ?e2 "uponeproject" "none") ?upone]
     [(get-else $ ?e "project" "none") ?uuid]
+    [(get-else $ ?e3 "email" "none") ?username]
     ]
     }
     `,

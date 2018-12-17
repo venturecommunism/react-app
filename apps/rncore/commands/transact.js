@@ -1,9 +1,9 @@
 import uuid from '../../../config/uuid'
 
 export default {
-  tx({conn, transact}, tx_data, id) {
+  tx({maintransact}, tx_data, id) {
     console.log(tx_data)
-    transact(conn, [{
+    maintransact([{
       ...tx_data,
       uuid: id,
       confirmationid: uuid()

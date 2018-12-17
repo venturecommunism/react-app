@@ -1,6 +1,5 @@
 import { useDeps } from 'react-simple-di'
-// if all specific configs work maybe move back to global config later
-// import '../../rncore/containers/ObservableConfig'
+import '../../rncore/containers/ObservableConfig'
 import state from './streamhandlers/state'
 import moriload from './streamhandlers/moriload'
 
