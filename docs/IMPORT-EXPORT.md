@@ -14,8 +14,7 @@ lein run create-db tmpimpexp
 
 cd ../../../datomic_schema_import
 iex -S mix
-DatomicSchemaImport.importfirstschema
-DatomicSchemaImport.importoneoff
+DatomicSchemaImport.importall
 
 cd ../../../datomic_import
 iex -S mix

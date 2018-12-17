@@ -1,6 +1,6 @@
 defmodule DatomicQueryTranslator do
   def translatetosince(query_list, username) do
-    datomic_query = rejoined(since_cleanupfind(splitwithclauses(splitwhere(Exdn.to_reversible query_list))))
+    datomic_query = rejoined(since_cleanupfind(splitwithclauses(splitwhere(Exdn.to_reversible query_list)), username))
     {:ok, datomic_query}
   end
   def translatetocurrentstate(query_list) do
@@ -39,11 +39,14 @@ defmodule DatomicQueryTranslator do
     {elem(splitwclauses, 0), mappedfind, elem(splitwclauses, 1)}
   end
 
-  defp since_cleanupfind(argsplitwithclauses) do
+  defp since_cleanupfind(argsplitwithclauses, username) do
     splitwclauses = Enum.split_with(elem(argsplitwithclauses, 0), fn(x) -> !useorrejectfind(x) end)
     mappedfind = Enum.map(elem(argsplitwithclauses, 2), fn(x) -> processwhereclause(x) end)
     atomswclauses = [:find, {:symbol, :"?e"}, {:symbol, :"?aname"}, {:symbol, :"?v"}, {:symbol, :"?tx"}, {:symbol, :"?op"}, :in, {:symbol, :"$"}, {:symbol, :"$since"}]
-    newmappedfind = mappedfind ++ [[{:symbol, :"$since"}, {:symbol, :"?e"}, {:symbol, :"?a"}, {:symbol, :"?v"}, {:symbol, :"?tx"}, {:symbol, :"?op"}]] ++ [[{:symbol, :"$"}, {:symbol, :"?a"}, {:symbol, :"db/ident"}, {:symbol, :"?aname"}]]
+
+    read_permissions = [[{:symbol, :"?e"}, ":group", {:symbol, :"?some_group_uuid"}], [{:symbol, :"?oo2"}, ":members", username], [{:symbol, :"?oo2"}, ":id", {:symbol, :"?some_group_uuid"}]]
+
+    newmappedfind = mappedfind ++ read_permissions ++ [[{:symbol, :"$since"}, {:symbol, :"?e"}, {:symbol, :"?a"}, {:symbol, :"?v"}, {:symbol, :"?tx"}, {:symbol, :"?op"}]] ++ [[{:symbol, :"$"}, {:symbol, :"?a"}, {:symbol, :"db/ident"}, {:symbol, :"?aname"}]]
     {atomswclauses, newmappedfind, elem(splitwclauses, 1)}
   end
 

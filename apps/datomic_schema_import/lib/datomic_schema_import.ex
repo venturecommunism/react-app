@@ -1,6 +1,35 @@
 import Datomic.Channel
 
 defmodule DatomicSchemaImport do
+  def importall do
+    DatomicSchemaImport.importfirstschema
+    DatomicSchemaImport.importoneoff
+    DatomicSchemaImport.importthird
+    DatomicSchemaImport.importfourth
+  end
+
+  def importthird do
+third_schema = """
+
+[
+                          {:db/id "datomic.tx"
+                           :db/txInstant #inst "1970-01-01"}
+
+{                         :db/ident :group
+                           :db/valueType :db.type/string
+                           :db/cardinality :db.cardinality/one
+                           :db/doc "Group some content belongs to"}
+
+{                         :db/ident :members
+                           :db/valueType :db.type/string
+                           :db/cardinality :db.cardinality/many
+                           :db/doc "Members of a group"}
+
+]
+"""
+schemaimport(third_schema)
+  end
+
   def importoneoff do
 # one off schema were not in the original data imported from previous versions of the task manager but are being used to build new features
 one_off_schema = """

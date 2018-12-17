@@ -1,5 +1,12 @@
 # DatomicTransact
 
+iex -S mix
+DatomicLink.start
+data_to_add = """
+...
+"""
+DatomicTransact.transact(data_to_add)
+
 **TODO: Add description**
 
 ## Installation
