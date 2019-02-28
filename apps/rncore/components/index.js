@@ -1,3 +1,5 @@
+import { createDatomQLContainer, datomql } from '../../rncore/containers/datomql'
+
 import React from 'react'
 import {
   View,
@@ -7,23 +9,33 @@ import {
 import Groups from '../../groups/components/groups'
 import TextThing from '../../createtask/components/text'
 import Login from '../../login/components/logincomponent'
-import Calendar from './calendar'
-import PickerInbox from './pickerinbox'
-import SomedayMaybe from './somedaymaybe'
+import Feed from '../../feed/components/index'
 
 import CreateTask from '../../createtask/components/createtask'
 
 const App = () =>
   <View>
     <ScrollView>
-<Groups />
-<TextThing />
       <Login />
-      <Calendar />
-      <PickerInbox />
-      <SomedayMaybe />
+      <Feed />
+      <Groups />
+      <TextThing />
     </ScrollView>
     <CreateTask/>
   </View>
 
 export default App
+
+/*
+export default createDatomQLContainer(
+  App,
+  datomql`
+    state index_loginstate {
+[:find ?status
+  :where
+[(get-else $ ?e "status" "prelogin") ?status]
+]
+    }
+  `
+)
+*/

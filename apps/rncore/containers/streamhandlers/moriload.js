@@ -24,70 +24,59 @@ import {
   skip,
 } from 'rxjs/operators'
 import {
-  mapPropsStreamWithConfig,
+  mapPropsStream,
 } from 'recompose'
-
-const rxjsconfig = {
-  fromESObservable: config => new Observable(config.subscribe),
-  toESObservable: stream => stream
-}
-
-const mapPropsStream = mapPropsStreamWithConfig(rxjsconfig)
 
 const singlequery = (props$, query, morearguments, queryname, labels, filename, stateordata) => props$.pipe(
   // could be optimized for single query with or without arguments
   switchMap(props => {
     const { report$, localreport$ } = props.context()
-
-
-// concat two parts of the query from morearguments
+    // concat two parts of the query from morearguments
     const statequery = `[:find ?uuid :where [?e "${morearguments[0]}" ?uuid]]`
 
-const findclause = `:find ?` + morearguments.join(" ?")
-var whereclause = ''
-morearguments.forEach((item, i) => whereclause += `[?e${i+1} "${morearguments[i]}" ?${morearguments[i]}] `)
-// console.log('whereclause', whereclause)
-const whole_query = morearguments[0] ? `[` + findclause + ` :where ` + whereclause + `]` : `[:find ?uuid :where [?e "${morearguments[0]}" ?uuid]]`
-//console.log(whole_query)
+    const findclause = `:find ?` + morearguments.join(" ?")
+    var whereclause = ''
+    morearguments.forEach((item, i) => whereclause += `[?e${i+1} "${morearguments[i]}" ?${morearguments[i]}] `)
+    // console.log('whereclause', whereclause)
+    const whole_query = morearguments[0] ? `[` + findclause + ` :where ` + whereclause + `]` : `[:find ?uuid :where [?e "${morearguments[0]}" ?uuid]]`
+    //console.log(whole_query)
 
-  const parsedquery = edn.parse(whole_query)
-//  console.log(parsedquery)
+    const parsedquery = edn.parse(whole_query)
+    //  console.log(parsedquery)
+    // get a labeler function
 
+    var localstatelabels = []
 
-// get a labeler function
+    var i = 1
+    if (parsedquery.val[0].name != ":find") { throw 'no initial find' }
+    while (parsedquery.val[i].name.charAt(0) != ":") {
+      localstatelabels.push(parsedquery.val[i].name.slice(1))
+      i++
+    }
 
-  var localstatelabels = []
-
-  var i = 1
-  if (parsedquery.val[0].name != ":find") { throw 'no initial find' }
-  while (parsedquery.val[i].name.charAt(0) != ":") {
-    localstatelabels.push(parsedquery.val[i].name.slice(1))
-    i++
-  }
-
-// console.log('localstatelabels', localstatelabels)
+    // console.log('localstatelabels', localstatelabels)
 
     const eidsquery = `[:find ?uuid :where [?e "uuid" ?uuid] [?e "type" "project"] [(missing? $ ?e "project")]]`
 
     const somequery$ = q$(localreport$, parse(whole_query))
       .pipe(
-// tap(res => console.log("whole query", whole_query)),
+        // tap(res => console.log("whole query", whole_query)),
         // tap(res => console.log(filename)),
         map(res => toJs(res)),
-// tap(res => console.log("whole_query plain response", res)),
-map(res => locallabel(res)),
-//tap(res => console.log("checking somequery", res)),
+        // tap(res => console.log("whole_query plain response", res)),
+        // map(res => locallabel(res)),
+        //tap(res => console.log("checking somequery", res)),
         startWith([]),
       )
 
     const usernamequery$ = q$(localreport$, parse(`[:find ?owner :where [?e "owner" ?owner]]`))
       .pipe(
-// tap(res => console.log("whole qurrry", whole_query)),
+        // tap(res => console.log("whole qurrry", whole_query)),
         // tap(res => console.log(filename)),
         map(res => toJs(res)),
-tap(res => console.log("plain response", res)),
-map(res => locallabel(res)),
-tap(res => console.log("checking somequery", res)),
+        tap(res => console.log("plain response", res)),
+        map(res => locallabel(res)),
+        tap(res => console.log("checking somequery", res)),
         startWith([]),
       )
 
@@ -115,6 +104,7 @@ tap(res => console.log("checking somequery", res)),
     function newq(somereport$, query) {
       return somereport$
         .pipe(
+          // tap(({s1, s2}) => console.log("pre-args", s1, s2)),
           map(({s1, s2}) => ({s1, args: s2[0] ? s2[0] : [null]})),
           // tap(({s1, args}) => console.log("ARGS", filename, queryname, args)),
           map(({s1, args}) => dscljs.q(query, get(s1, DB_AFTER), ...args) ),

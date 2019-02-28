@@ -1,8 +1,10 @@
-import { createDatomQLContainer, datomql } from '../containers/datomql'
+import { createDatomQLContainer, datomql } from '../../rncore/containers/datomql'
 import React, { Fragment } from 'react'
 
-import { View, Text, Button, PageWrapper, ListContainer, ListItem, ListItemView, Loader, UserContainer, DateTime, Modal, CheckBox } from './styledComponents'
+import { View, Text, Button, PageWrapper, ListContainer, ListItem, ListItemView, Loader, UserContainer, DateTime, Modal, CheckBox } from '../../rncore/components/styledComponents'
 import { Set, State } from 'react-powerplug'
+
+import IndividualTask from './individualtask'
 
 const PickerInbox = ({
     actions,
@@ -63,6 +65,11 @@ const PickerInbox = ({
               onPress={() => COMMANDS.addtoproject(item.uuid, values, clear)}
               accessibilityLabel={item.desc} />
 
+              <Button
+              title="remove project"
+              onPress={() => COMMANDS.removeproject(item.uuid, item.project)}
+              accessibilityLabel="remove project" />
+
               </ListItemView>
               ))}
 
@@ -118,6 +125,8 @@ const PickerInbox = ({
                     <CheckBox checked={values.indexOf(inboxitem.uuid) > -1} key={inboxitem.uuid} taskid={inboxitem.uuid}
                     onChange={() => COMMANDS.checkboxchange(values, add, remove, inboxitem.uuid)} />
 
+                    <IndividualTask task={inboxitem} />
+
                     <ListItem style={inboxitem.confirmid != 'none' ? {backgroundColor: 'red'} : ''} >{inboxitem.desc}</ListItem>
                     <Button onPress={() => setState({ inboxitem: inboxitem.desc, uuid: inboxitem.uuid })} title={"Change Type"}/>
                     </ListItemView>
@@ -151,6 +160,7 @@ const PickerInbox = ({
 
 export default createDatomQLContainer(
     PickerInbox,
+// think about what ?owner does after :in $ since it require being logged in to see the view work
     datomql`
     query pickerinbox_plaininbox {
     [:find ?desc ?date ?status ?uuid ?confirmid ?owner ?e
@@ -206,7 +216,7 @@ export default createDatomQLContainer(
     `,
     datomql`
     query pickerinbox_drilldownprojects {
-    [:find ?desc ?date ?status ?uuid ?confirmid ?e
+    [:find ?desc ?date ?status ?uuid ?confirmid ?project ?e
     :in $ ?project
     :where
     [?e "description" ?desc]

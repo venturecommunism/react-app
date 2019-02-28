@@ -1,7 +1,7 @@
-import { createDatomQLContainer, datomql } from '../containers/datomql'
+import { createDatomQLContainer, datomql } from '../../rncore/containers/datomql'
 import React, {Fragment} from 'react'
 
-import { View, Button, Text, PageWrapper, ListContainer, ListItem, ListItemView, Loader, UserContainer } from './styledComponents'
+import { View, Button, Text, PageWrapper, ListContainer, ListItem, ListItemView, Loader, UserContainer } from '../../rncore/components/styledComponents'
 import { State } from 'react-powerplug'
 
 const SomedayMaybe = ({

@@ -7,6 +7,14 @@ export default {
   checkboxchange({}, values, add, remove, uuid) {
     values.indexOf(uuid) > -1 ? remove(uuid) : add(uuid)
   },
+  removeproject({maintransact}, uuid, projid) {
+      maintransact([[
+        ':db/retract',
+        ["uuid", uuid],
+        "project",
+        projid
+        ]])
+  },
   addtoproject({maintransact, localtransact}, projid, values, clear) {
     if (values.length < 1) {
       localtransact([{
