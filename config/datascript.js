@@ -14,9 +14,13 @@ const localtx$ = local.tx$
 const main = connect(datascript.db(conn), localtx$)
 const report$ = main.report$
 const tx$ = main.tx$
+const validtx$ = main.validtx$
 
 const maintransact = (data_to_add, meta) => {
   // disable metadata to test transactions locally
+
+console.log("behaviorsubject", tx$.value)
+console.log("is it a bsub", report$.value)
 
   // confid is the confirmationid. it will be put in meta so that the server can send it back and it will be mapped onto data_to_add so that
   // when it does come back it can be updated / removed
@@ -57,7 +61,8 @@ const maintransact = (data_to_add, meta) => {
     data_to_add[0].uuid ? datom.uuid = data_to_add[0].uuid : ''
   })
 
-  return nextTx(tx$, helpers.entities_to_clj(data_to_add), helpers.entities_to_clj(meta))
+  return nextTx(tx$, data_to_add, meta)
+//  return nextTx(tx$, helpers.entities_to_clj(data_to_add), helpers.entities_to_clj(meta))
 }
 
 const localtransact = (data_to_add, meta) => {
@@ -79,6 +84,7 @@ export {
   vectortransact,
   report$,
   tx$,
+  validtx$,
   localreport$,
   localtx$,
   mori,

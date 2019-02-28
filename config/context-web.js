@@ -1,6 +1,6 @@
 import { setItem } from './context/persistence2'
 
-import datascript, { report$, maintransact, localreport$, localtransact, mori, helpers } from './datascript'
+import datascript, { tx$, validtx$, report$, maintransact, localreport$, localtransact, mori, helpers } from './datascript'
 
 import uuid from './uuid'
 const me = uuid()
@@ -60,15 +60,17 @@ ex_auth.subscribe(chan =>
   : console.log('no match: ', chan.type)
 )
 
-report$.subscribe(r => {
-  var report = {}
-  report.tx_meta = {}
-  mori.toJs(mori.get(r, helpers.TX_META)).forEach( item =>
-    report.tx_meta[item[0]] = item[1]
-  )
-  report.tx_data = mori.toJs(mori.get(r, helpers.TX_DATA))
+validtx$.subscribe(r => {
+  console.log("validtx", r)
 
-  if (report.tx_meta.uuid) {
+  if (r == undefined) return
+
+  var report = {}
+  report.tx_meta = r[1]
+  report.tx_data = r[0]
+
+/*
+  if (report.tx_meta && report.tx_meta.uuid) {
     var newreportforuuid = {}
     newreportforuuid.C = report.tx_data[0].C
     newreportforuuid.m = report.tx_data[0].m
@@ -79,6 +81,7 @@ report$.subscribe(r => {
     newreportforuuid.v = report.tx_meta.uuid
     report.tx_data.push(newreportforuuid)
   }
+*/
 
   // if there's metadata but it's got remoteuser or secrets tags, then don't transact it
   if (report.tx_meta && (report.tx_meta.remoteuser || report.tx_meta.secrets)) return
@@ -88,9 +91,12 @@ report$.subscribe(r => {
     return s.a != 'confirmationid'
   })
 
-  channel && channel.send
-  ? channel.send({data: tx_data_modded, meta: report.tx_meta, confirmationid: report.tx_data.confirmationid})
-  : console.log('there is no channel')
+  console.log("newmethod")
+  console.log({data: tx_data_modded, meta: report.tx_meta, confirmationid: report.tx_data.confirmationid})
+
+//  channel && channel.send
+//  ? channel.send({data: tx_data_modded, meta: report.tx_meta, confirmationid: report.tx_data.confirmationid})
+//  : console.log('there is no channel')
 })
 
 export const initContext = () => {

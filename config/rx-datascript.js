@@ -6,6 +6,7 @@ import {
   map,
   skip,
   scan,
+  combineLatest,
   distinctUntilChanged
 } from 'rxjs/operators'
 
@@ -33,14 +34,22 @@ function connect(db) {
 
   const report$ = tx$
     .pipe(
+//      tap( wut => console.log("wut", wut) ),
+      map( wut => wut && wut[0] && wut[1] ? [ helpers.entities_to_clj( wut[0] ), helpers.entities_to_clj( wut[1] ) ] : wut ),
       scan(
       (report, tx) => tx ? dscljs.with$(get(report, DB_AFTER), ...tx) : initialreport,
       initialreport
     ))
 
+  const validtx$ = tx$
+    .pipe(
+      combineLatest(report$, (s1, s2) => s1),
+    )
+
   return {
     report$,
     tx$,
+    validtx$
   }
 }
 
