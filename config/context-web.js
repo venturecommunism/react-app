@@ -94,9 +94,9 @@ validtx$.subscribe(r => {
   console.log("newmethod")
   console.log({data: tx_data_modded, meta: report.tx_meta, confirmationid: report.tx_data.confirmationid})
 
-//  channel && channel.send
-//  ? channel.send({data: tx_data_modded, meta: report.tx_meta, confirmationid: report.tx_data.confirmationid})
-//  : console.log('there is no channel')
+  channel && channel.send
+  ? channel.send({data: tx_data_modded, meta: report.tx_meta, confirmationid: report.tx_data.confirmationid})
+  : console.log('there is no channel')
 })
 
 export const initContext = () => {

@@ -6,7 +6,7 @@ import {
   map,
   skip,
   scan,
-  combineLatest,
+  zip,
   distinctUntilChanged
 } from 'rxjs/operators'
 
@@ -43,7 +43,7 @@ function connect(db) {
 
   const validtx$ = tx$
     .pipe(
-      combineLatest(report$, (s1, s2) => s1),
+      zip(report$, (s1, s2) => s1),
     )
 
   return {
