@@ -85,7 +85,7 @@ IO.inspect x
 
     # push socket, "join", %{status: "connected"}
     # broadcast! socket, "new:msg", %{user: user, body: %{"syncpoint": false, "user": user}}
-     {:reply, {:ok, %{msg: %{"syncpoint": false, "user": user, "confirmationid": confirmationid}}}, assign(socket, :user, user)}
+    {:reply, {:ok, %{msg: %{"syncpoint": false, "user": user, "confirmationid": confirmationid}}}, assign(socket, :user, user)}
   end
 
   def handle_in("new:msg", _msg, socket) do
