@@ -6,6 +6,8 @@ import {
   ScrollView
 } from 'react-native'
 
+import Test from '../../rxtest/components/index'
+// import Search from '../../clientsearch/components/index'
 import Groups from '../../groups/components/groups'
 import TextThing from '../../createtask/components/text'
 import Login from '../../login/components/logincomponent'
@@ -16,10 +18,12 @@ import CreateTask from '../../createtask/components/createtask'
 const App = () =>
   <View>
     <ScrollView>
-      <Login />
+      <Test />
+      {/* <Search /> */}
+{/*      <Login />
       <Feed />
       <Groups />
-      <TextThing />
+      <TextThing /> */}
     </ScrollView>
     <CreateTask/>
   </View>
