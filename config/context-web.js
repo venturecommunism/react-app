@@ -61,8 +61,6 @@ ex_auth.subscribe(chan =>
 )
 
 validtx$.subscribe(r => {
-  console.log("validtx", r)
-
   if (r == undefined) return
 
   var report = {}
@@ -90,9 +88,6 @@ validtx$.subscribe(r => {
   var tx_data_modded = report.tx_data.filter( s => {
     return s.a != 'confirmationid'
   })
-
-  console.log("newmethod")
-  console.log({data: tx_data_modded, meta: report.tx_meta, confirmationid: report.tx_data.confirmationid})
 
   channel && channel.send
   ? channel.send({data: tx_data_modded, meta: report.tx_meta, confirmationid: report.tx_data.confirmationid})

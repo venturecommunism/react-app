@@ -27,6 +27,7 @@
     "react-mounter": "^1.2.0",
     "react-native": "0.56.0",
     "react-native-sensitive-info": "^5.2.6",
+    "react-native-voice": "^0.2.6",
     "react-native-web": "^0.8.0",
     "react-powerplug": "^1.0.0-rc.1",
     "react-router-dom": "^4.3.1",

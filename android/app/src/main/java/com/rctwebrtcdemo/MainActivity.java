@@ -1,5 +1,6 @@
 package com.rctwebrtcdemo;
 
+import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactActivity;
 
 public class MainActivity extends ReactActivity {

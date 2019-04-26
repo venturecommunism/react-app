@@ -19,6 +19,12 @@ class Inputs extends React.Component {
     this.state = { formvalue: "" }
   }
 
+  componentDidUpdate(prevProps) {
+    if (this.props.task !== prevProps.task) {
+      this.setState({ formvalue: this.props.task })
+    }
+  }
+
   handleInput = (text) => {
     this.setState({ formvalue: text })
   }

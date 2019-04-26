@@ -1,13 +1,10 @@
 import { setItem } from './context/persistence2'
 
-import datascript, { report$, maintransact, localreport$, localtransact, mori, helpers } from './datascript'
+import datascript, { tx$, validtx$, report$, maintransact, localreport$, localtransact, mori, helpers } from './datascript'
 
 import uuid from './uuid'
 const me = uuid()
 import config from './config'
-
-import { loadsyncpoint } from './context/persistence'
-loadsyncpoint(maintransact)
 
 import ql from './context/querieslist'
 const querieslist = ql()
@@ -18,8 +15,8 @@ report$.subscribe(report => maindb = mori.get(report, helpers.DB_AFTER))
 localreport$.subscribe(report => localdb = mori.get(report, helpers.DB_AFTER))
 
 import { DataChannel, AuthChannel } from './context/phoenix-channel'
-const ex_data = DataChannel(config.url, "datomic", me)
-const ex_auth = AuthChannel(config.url, "auth", me, localreport$)
+const ex_data = DataChannel(config.url, "datomic", me, localreport$)
+const ex_auth = AuthChannel(config.url, "auth", me, localreport$, maintransact)
 
 const connectionstate = (newstate) => {
   console.log('newstate', newstate)
@@ -34,17 +31,17 @@ var channel
 
 import { receiveDataMessage } from './context/elixirmessage'
 
-const online = (maindb, maintransact, msg, me) => {
+const online = (maindb, maintransact, msg, me, username) => {
   connectionstate("online")
-  receiveDataMessage(maindb, maintransact, msg, me)
+  receiveDataMessage(maindb, maintransact, msg, me, username)
 }
 
-const datasync = (chan, jwt) => {
+const datasync = (chan, jwt, username) => {
   // why test for chan.send? is there no chan after a join or ok?
-  chan.type   == 'join' && chan.send       ? chan.send({jwt: jwt, syncpoint: chan.syncpoint == 'none' ? chan.syncpoint : JSON.stringify(chan.syncpoint), subscription: querieslist})
-  : chan.type == 'new:msg'                 ? online(maindb, maintransact, chan.msg, me)
+  chan.type   == 'join' && chan.send       ? chan.send({username: username, jwt: jwt, syncpoint: chan.syncpoint == 'none' ? chan.syncpoint : JSON.stringify(chan.syncpoint), subscription: querieslist})
+  : chan.type == 'new:msg'                 ? online(maindb, maintransact, chan.msg, me, username)
   : chan.type == 'timeout'                 ? console.log('timeout ', chan.room, ": ", chan.error)
-  : chan.type   == 'ok'                    ? online(maindb, maintransact, {ok: chan.msg}, me)
+  : chan.type   == 'ok'                    ? online(maindb, maintransact, {ok: chan.msg}, me, username)
   : chan.type  == 'error'                  ? connectionstate(chan.error)
   : console.log('no match: ', chan.type)
 
@@ -57,21 +54,21 @@ const datasync = (chan, jwt) => {
 ex_auth.subscribe(chan =>
   chan.type   == 'join'         ? chan.send(chan.auth_join_msg)
   : chan.type == 'timeout'      ? connectionstate('timeout')
-  : chan.type == 'msg'          ? setItem('token', chan.msg.jwt) &&  ex_data.subscribe(datachannel => datasync(datachannel, chan.msg.jwt))
+  : chan.type == 'msg'          ? setItem('token', chan.msg.jwt) &&  ex_data.subscribe(datachannel => datasync(datachannel, chan.msg.jwt, chan.auth_join_msg.email))
   : chan.type == 'ok'           ? connectionstate('connecting...')
   : chan.error                  ? connectionstate('offline (timeout)')
   : console.log('no match: ', chan.type)
 )
 
-report$.subscribe(r => {
-  var report = {}
-  report.tx_meta = {}
-  mori.toJs(mori.get(r, helpers.TX_META)).forEach( item =>
-    report.tx_meta[item[0]] = item[1]
-  )
-  report.tx_data = mori.toJs(mori.get(r, helpers.TX_DATA))
+validtx$.subscribe(r => {
+  if (r == undefined) return
 
-  if (report.tx_meta.uuid) {
+  var report = {}
+  report.tx_meta = r[1]
+  report.tx_data = r[0]
+
+/*
+  if (report.tx_meta && report.tx_meta.uuid) {
     var newreportforuuid = {}
     newreportforuuid.C = report.tx_data[0].C
     newreportforuuid.m = report.tx_data[0].m
@@ -82,6 +79,7 @@ report$.subscribe(r => {
     newreportforuuid.v = report.tx_meta.uuid
     report.tx_data.push(newreportforuuid)
   }
+*/
 
   // if there's metadata but it's got remoteuser or secrets tags, then don't transact it
   if (report.tx_meta && (report.tx_meta.remoteuser || report.tx_meta.secrets)) return
