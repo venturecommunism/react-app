@@ -19,11 +19,14 @@ export default class VoiceNative extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
+      end: '',
       recognized: '',
       started: '',
       results: [],
+      formvalue: '',
     }
 
+    Voice.onSpeechEnd = this.onSpeechEnd.bind(this)
     Voice.onSpeechStart = this.onSpeechStart.bind(this)
     Voice.onSpeechRecognized = this.onSpeechRecognized.bind(this)
     Voice.onSpeechResults = this.onSpeechResults.bind(this)
@@ -31,6 +34,12 @@ export default class VoiceNative extends React.Component {
 
   componentWillUnmount() {
     Voice.destroy().then(Voice.removeAllListeners)
+  }
+
+  onSpeechEnd(e) {
+    this.setState({
+      end: '√',
+    })
   }
 
   onSpeechStart(e) {
@@ -48,14 +57,17 @@ export default class VoiceNative extends React.Component {
   onSpeechResults(e) {
     this.setState({
       results: e.value,
+      formvalue: e.value[0],
     })
   }
 
   async _startRecognition(e) {
     this.setState({
+      end: '',
       recognized: '',
       started: '',
       results: [],
+      formvalue: '',
     })
     try {
       await Voice.start('en-US')
@@ -67,8 +79,9 @@ export default class VoiceNative extends React.Component {
   render () {
     return (
       <FloatingButton>
-        {this.state.results && <Inputs task={this.state.results[0]} />}
-        {this.state.results.length > 1 && this.state.results.map((result, index) => <Button key={index} title={result} onPress={() => console.log('test')} value={result}></Button>
+<Text>{!this.state.end && this.state.started && 'Listening...'}</Text>
+        {this.state.results && <Inputs task={this.state.formvalue} />}
+        {this.state.results.length > 1 && this.state.results.map((result, index) => <Button key={index} title={result} onPress={() => this.setState({formvalue: result})} value={result}></Button>
         )}
         <Button
         onPress={this._startRecognition.bind(this)}

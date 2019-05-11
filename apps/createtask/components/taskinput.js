@@ -1,3 +1,5 @@
+import Tts from 'react-native-tts'
+
 import { createDatomQLContainer, datomql } from '../../rncore/containers/datomql'
 
 import config from '../../../config/config'
@@ -22,6 +24,7 @@ class Inputs extends React.Component {
   componentDidUpdate(prevProps) {
     if (this.props.task !== prevProps.task) {
       this.setState({ formvalue: this.props.task })
+      if (this.props.task != null) { Tts.speak(this.props.task) }
     }
   }
 

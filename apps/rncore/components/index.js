@@ -3,11 +3,11 @@ import { createDatomQLContainer, datomql } from '../../rncore/containers/datomql
 import React from 'react'
 import {
   View,
-  ScrollView
+  ScrollView,
 } from 'react-native'
 
 import Test from '../../rxtest/components/index'
-// import Search from '../../clientsearch/components/index'
+import Search from '../../clientsearch/components/index'
 import Groups from '../../groups/components/groups'
 import TextThing from '../../createtask/components/text'
 import Login from '../../login/components/logincomponent'
@@ -19,11 +19,11 @@ const App = () =>
   <View>
     <ScrollView>
       <Test />
-      {/* <Search /> */}
-{/*      <Login />
+      <Search />
+      <Login />
       <Feed />
       <Groups />
-      <TextThing /> */}
+      <TextThing />
     </ScrollView>
     <CreateTask/>
   </View>

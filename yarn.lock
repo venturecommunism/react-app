@@ -10547,6 +10547,11 @@ react-native-sensitive-info@^5.2.6:
   resolved "https://registry.yarnpkg.com/react-native-sensitive-info/-/react-native-sensitive-info-5.2.6.tgz#df20e7e95b24db385324fc1915d599bfa5017216"
   integrity sha512-Xd0K/je93kbYh+8s3sy3glTpBoU2Il5rhNYTCLiK8qu3NBiXD/SlnJaslaFkZG9KyVHpcCMkZIKzXhr+H7QK4Q==
 
+react-native-tts@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/react-native-tts/-/react-native-tts-3.0.0.tgz#987d6bc5430f7d0bdc0c7c278eb72744fe3ec516"
+  integrity sha512-ccaKP393e5+DHEJ/GEA7uX2HEuvnW6gXB0jwT+SUHbmSV+8FY3HFMV3JUxL7YQSigSXXLAbbIFYgmPhjNcVYBw==
+
 react-native-voice@^0.2.6:
   version "0.2.6"
   resolved "https://registry.yarnpkg.com/react-native-voice/-/react-native-voice-0.2.6.tgz#f6c67fac932a511475ddc4c7b6ff0efeb540cc19"
