@@ -5,7 +5,6 @@ defmodule DatomicSchemaImport do
     DatomicSchemaImport.importfirstschema
     DatomicSchemaImport.importoneoff
     DatomicSchemaImport.importthird
-    DatomicSchemaImport.importfourth
   end
 
   def importthird do
