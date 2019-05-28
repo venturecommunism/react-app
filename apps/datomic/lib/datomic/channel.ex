@@ -18,6 +18,15 @@ defmodule Datomic.Channel do
   def sync(latest_tx, subscription, username, socket) do
     %{topic: topic} = socket
 
+    server_latest_tx_query = "[:find (max 1 ?tx) :where [?tx :db/txInstant]]"
+
+    {:ok, "[[[" <> server_latest_tx_with_extra} = DatomicGenServer.q(via_tuple(topic), server_latest_tx_query, [], [:options, {:client_timeout, 100_000}])
+    "\n]]]" <> reversed = String.reverse(server_latest_tx_with_extra)
+    server_latest_tx = String.reverse(reversed)
+
+    IO.puts "latest tx FROM SERVER"
+    IO.inspect server_latest_tx
+
     IO.puts "latest tx"
     IO.inspect latest_tx
 

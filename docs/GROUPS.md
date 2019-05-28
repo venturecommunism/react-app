@@ -1,18 +1,18 @@
+import Datomic.Channel
+
+topic = "someproc"
+
+DatomicGenServer.start_link(
+  Application.get_env(:datomic, :database),
+  true,
+  [{:timeout, 20_000}, {:default_message_timeout, 20_000}, {:registry, via_tuple(topic)}]
+)
+
 data_to_transact = """
 [{
   :type "group"
-  :members ["user@somewhere.com"]
-  :id "user@somewhere.com"
-},
-{
-  :type "group"
-  :members ["user@somewhere.com" "test@somewhere.com"]
-  :id "somegroup"
-},
-{
-  :type "group"
-  :members ["test@somewhere.com"]
-  :id "test@somewhere.com"
+  :members ["someone@somewhere.com"]
+  :id "someone@somewhere.com"
 }]
 """
 
