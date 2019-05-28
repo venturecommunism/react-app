@@ -7,6 +7,7 @@ import general from './general'
 import loginactions from '../../login/commands/login'
 import createtask from '../../createtask/commands/createtask'
 import pickerinbox from '../../rncore/commands/pickerinbox'
+import rxtest from '../../rncore/commands/rxtest'
 
 const actions = {
   rxtx,
@@ -16,7 +17,8 @@ const actions = {
 //  createtaskactions,
   loginactions,
   createtask,
-  pickerinbox
+  pickerinbox,
+  rxtest,
 }
 
 export default actions

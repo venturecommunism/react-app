@@ -38,7 +38,13 @@ export const receiveDataMessage = (db, maintransact, message, me, username) => {
     try {
       var single_tx = []
       message.body.map(s => {
-        single_tx.push([':db/add', s.e, s.a, s.v])
+
+        if (s.op == false) {
+          single_tx.push([':db/retract', s.e, s.a, s.v])
+        } else {
+          single_tx.push([':db/add', s.e, s.a, s.v])
+        }
+
       })
       maintransact(single_tx, {'remoteuser': message.user})
     }

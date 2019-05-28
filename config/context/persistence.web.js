@@ -115,7 +115,8 @@ export const loadsyncpoint = (maintransact, username) => {
                 console.log('loading syncpoint: ', point)
                 var single_tx = []
                 body.map(s => {
-                  single_tx.push([':db/add', s.e, s.a, s.v])
+                  var operation = s.op == true ? ":db/add" : ":db/retract"
+                  single_tx.push([operation, s.e, s.a, s.v])
                 })
                 maintransact(single_tx, {'remoteuser': 'system'})
               }

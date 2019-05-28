@@ -1,3 +1,5 @@
+import uuid from './uuid'
+
 import { datascript as ds, mori, helpers } from 'datascript-mori'
 import { connect, nextTx } from './rx-datascript'
 const datascript = ds.js
@@ -19,14 +21,53 @@ const validtx$ = main.validtx$
 const maintransact = (data_to_add, meta) => {
   // disable metadata to test transactions locally
 
+if (!meta || meta == null) {
+//console.log('wait', data_to_add)
+//alert('wait')
+}
+
 console.log("behaviorsubject", tx$.value)
 console.log("is it a bsub", report$.value)
 
   // confid is the confirmationid. it will be put in meta so that the server can send it back and it will be mapped onto data_to_add so that
   // when it does come back it can be updated / removed
   // set the meta if it's unset. need to track how confirmationid and uuid (for a tx) are used
-  if (!meta) {
-    var meta = {
+
+  // if it's a retraction but not retracting the confirmationid (e.g. length exactly 4 and about the confirmationid) do something else
+  if (data_to_add[0] && data_to_add[0][0] && data_to_add[0].length != 4 && data_to_add[0][2] != 'confirmationid' && data_to_add[0][0] ==  ":db/retract") {
+    retract(data_to_add, meta)
+    return
+  }
+
+  var meta
+
+  // if there's no metadata and it's just a simple transaction
+  // need to improve this logic
+  if (meta == null && data_to_add[0][":db/id"] == -1) {
+console.log(meta)
+//alert('yow')
+    meta = {
+      type: "basic transaction",
+      // this is where the confirmationid gets set so that the server knows about it
+      confirmationid: data_to_add[0].confirmationid,
+      // for some reason this uuid has to be here and in the data_to_add.map in order to sync with the server
+      uuid: data_to_add[0].uuid
+    }
+  }
+
+  var confirmationid = uuid()
+  if (meta == null && data_to_add[0][0] == ":db/retract") {
+    meta = {
+      type: "confirmation",
+      // this is where the confirmationid gets set so that the server knows about it
+      confirmationid: confirmationid,
+      // for some reason this uuid has to be here and in the data_to_add.map in order to sync with the server
+      uuid: data_to_add[0][1][1]
+    }
+  }
+
+  if (meta == null) {
+    meta = {
       type: "basic transaction",
       // this is where the confirmationid gets set so that the server knows about it
       confirmationid: data_to_add[0].confirmationid,
@@ -63,6 +104,24 @@ console.log("is it a bsub", report$.value)
 
   return nextTx(tx$, data_to_add, meta)
 //  return nextTx(tx$, helpers.entities_to_clj(data_to_add), helpers.entities_to_clj(meta))
+}
+
+const retract = (data_to_add, meta) => {
+  var confirmationid = uuid()
+  console.log("confirmationid", confirmationid)
+  if (!meta) {
+    var meta = {
+      type: "retraction",
+      // this is where the confirmationid gets set so that the server knows about it
+      confirmationid: confirmationid,
+      // for some reason this uuid has to be here and in the data_to_add.map in order to sync with the server
+      uuid: data_to_add[0][1][1]
+    }
+  }
+
+  // adds the confirmation id (but this should be removed from the transaction on the server)
+  data_to_add.push([":db/add", ["uuid", data_to_add[0][1][1]], "confirmationid", confirmationid])
+  return nextTx(tx$, data_to_add, meta)
 }
 
 const localtransact = (data_to_add, meta) => {

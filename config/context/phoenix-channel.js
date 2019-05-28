@@ -55,7 +55,7 @@ const DataChannel = (url, room, user, localreport$, token) =>
 const AuthChannel = (url, room, user, localreport$, maintransact, token) => q$(localreport$, mori.parse(`[:find ?email ?password :where [?e "email" ?email] [?e2 "password" ?password]]`))
     .pipe(
       // skipping one waits to load user data from localstate. not skipping loads from config.js
-      // skip(1),
+      skip(1),
       tap(res => mori.toJs(res)[0] && mori.toJs(res)[0][0] ? loadsyncpoint(maintransact, mori.toJs(res)[0][0]) : loadsyncpoint(maintransact, config.username)),
       switchMap(queryresult =>
         new Observable(observer => {
