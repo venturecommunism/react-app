@@ -53,9 +53,9 @@ IO.inspect x
     |> Enum.sort_by(fn(datom) ->
       datom
     end)
-    |> Enum.each(fn({_, x}) ->
+    |> Enum.each(fn({y, x}) ->
 
-      push socket, "new:msg", %{"user" => "system", "body" => x}
+      push socket, "new:msg", %{"user" => "system", "body" => x, "syncpoint" => y}
       Process.sleep(60)
       IO.puts Enum.random([1,2,3,4,5,6,7,8,9])
     end)

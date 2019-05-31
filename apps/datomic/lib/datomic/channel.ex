@@ -17,12 +17,11 @@ defmodule Datomic.Channel do
 
   def sync(latest_tx, subscription, username, socket) do
     %{topic: topic} = socket
-
     server_latest_tx_query = "[:find (max 1 ?tx) :where [?tx :db/txInstant]]"
 
     {:ok, "[[[" <> server_latest_tx_with_extra} = DatomicGenServer.q(via_tuple(topic), server_latest_tx_query, [], [:options, {:client_timeout, 100_000}])
     "\n]]]" <> reversed = String.reverse(server_latest_tx_with_extra)
-    server_latest_tx = String.reverse(reversed)
+    server_latest_tx = String.to_integer(String.reverse(reversed))
 
     IO.puts "latest tx FROM SERVER"
     IO.inspect server_latest_tx
@@ -30,11 +29,34 @@ defmodule Datomic.Channel do
     IO.puts "latest tx"
     IO.inspect latest_tx
 
+    %{topic: topic} = socket
+
+    IO.puts "is latest_tx an integer?"
+    IO.inspect is_integer(latest_tx)
+
+    latest_tx = cond do
+      latest_tx == "none" ->
+        "none"
+      true ->
+        String.to_integer(latest_tx)
+    end
+
+    cond do
+      latest_tx == "none" ->
+        since(latest_tx, server_latest_tx, subscription, username, topic)
+      server_latest_tx - latest_tx >= 40 ->
+        since(latest_tx, server_latest_tx, subscription, username, topic)
+      server_latest_tx - latest_tx < 40 ->
+        qlog(latest_tx, username, topic)
+    end
+  end
+
+  def since(latest_tx, server_latest_tx, subscription, username, topic) do
     latest_tx = cond do
       latest_tx == "none" ->
         1
       true ->
-        String.to_integer(latest_tx)
+        latest_tx
     end
 
     datomicsubscription = Enum.map(subscription, fn(x) ->
@@ -60,6 +82,7 @@ defmodule Datomic.Channel do
         Enum.at(Enum.at(listfrommapset, 0), 3)
     end
 
+    # changing final_tx to server_latest_tx
     {:ok, superfinaloutput} = Exdn.from_elixir finaloutput
     Datomic.TxForm.parse(superfinaloutput)
     |> Enum.map(fn x ->
@@ -67,13 +90,29 @@ defmodule Datomic.Channel do
         "a" => x["a"],
         "e" => x["e"],
         "op" => x["op"],
-        "tx" => final_tx,
+        "tx" => server_latest_tx,
         "v" => x["v"]
       }
     end)
     |> Enum.group_by(fn x ->
       x["tx"]
     end)
+  end
+
+  def qlog(latest_tx, username, topic) do
+    query = "[:find ?e ?aname ?v ?tx ?op :in $ ?log ?t1 :where
+             [(tx-ids ?log " <> Integer.to_string(latest_tx + 1) <> " nil) [?tx ...]] [(tx-data ?log ?tx) [[?e ?a ?v _ ?op]]]
+             [?e \":group\" ?some_group_uuid] [?oo2 \":members\" \"" <> username <> "\"] [?oo2 \":id\" ?some_group_uuid] [?a \":db/ident\" ?aname]]"
+
+    {:ok, edn} = DatomicGenServer.qlog(via_tuple(topic), query, 13194139534314, [], [:options, {:client_timeout, 100_000}])
+
+    base_one = byte_size("\#{")
+    <<_::binary-size(base_one), rest::binary>> = edn
+    base_two = byte_size(rest) - byte_size("\}\n")
+    <<inner::binary-size(base_two), _::binary>> = rest
+    final_list = Exdn.to_elixir! "[" <> inner <> "]"
+
+    MyLogQueryList.chopfirst(final_list) |> Enum.group_by( fn(x) -> x["tx"] end)
   end
 end
 

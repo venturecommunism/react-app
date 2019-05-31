@@ -39,8 +39,9 @@ defmodule MyLogQueryList do
     []
   end
 
-  def chopfirst([ _ | tail ]) do
-    first(tail)
+  # changed this from chopfirst([_ | tail]) not sure why it was that way
+  def chopfirst(list) do
+    first(list)
   end
 end
 
