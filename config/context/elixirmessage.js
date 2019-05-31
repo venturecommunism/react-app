@@ -21,7 +21,7 @@ export const receiveDataMessage = (db, maintransact, message, me, username) => {
 
     var confirmedent = result[0] ? result[0][0] : ''
 
-    var report_id_confirmed_tx = [[':db/retract', confirmedent, 'confirmationid', confirmationid]]
+    var report_id_confirmed_tx = [[':db/retract', ["confirmationid", confirmationid], 'confirmationid', confirmationid]]
     confirmedent ? maintransact(report_id_confirmed_tx, {'remoteuser': 'server confirmation'}) : console.error("missing confirmationid")
   }
   if ('ok' in message) return

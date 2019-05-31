@@ -3,46 +3,28 @@ import {go, chan, take, put, timeout, putAsync} from 'js-csp'
 import { getItem, setItem, clear, breakmessage } from './persistence2'
 import uuid from '../uuid'
 
-export const sync = (message) => {
+export const sync = (message, username) => {
   go(function* () {
     var syncCh = chan()
-    getItem('syncpoint-A')
-      .then(syncpointA => {
-        syncpointA ? putAsync(syncCh, syncpointA) : putAsync(syncCh, 'none')
-      })
-    let syncpointA = yield take(syncCh)
-    syncpointA == 'none' ? setSync('syncpoint-A', message) : ''
-    getItem('syncpoint-B')
+    getItem('syncpoint-B'+username)
       .then(syncpointB => {
         syncpointB ? putAsync(syncCh, syncpointB) : putAsync(syncCh, 'none')
       })
     let syncpointB = yield take(syncCh)
-    syncpointB == 'none' ? setSync('syncpoint-B', message) : putAsync(syncCh, 'ok')
+    syncpointB == 'none' ? setSync('syncpoint-B'+username, message) : putAsync(syncCh, 'ok')
     var ack = yield take(syncCh)
-    if (syncpointA > syncpointB) {
-      getItem(syncpointB)
-        .then(oldsync => {
-          putAsync(syncCh, oldsync)
-        })
-      var oldkeys = yield take(syncCh)
-      swapSync('syncpoint-B', 'syncpoint-A', oldkeys, message)
-    }
-    else if (syncpointB >= syncpointA) {
-      console.log("B was greater than or equal to A")
-      getItem(syncpointA)
-        .then(oldsync => {
-          putAsync(syncCh, oldsync)
-        })
-      var oldkeys = yield take(syncCh)
-      console.log("about to swapsync")
-      swapSync('syncpoint-A', 'syncpoint-B', oldkeys,  message)
-    }
-    else {
-      throw 'error'
-    }
+
+    getItem(syncpointB)
+      .then(oldsync => {
+        putAsync(syncCh, oldsync)
+      })
+
+    var oldkeys = yield take(syncCh)
+    console.log("about to swapsync")
+    swapSync('syncpoint-B'+username, 'syncpoint-A'+username, oldkeys, message, username)
   })
 
-  const setSync = (syncpoint, message) => {
+  const setSync = (syncpoint, message, username) => {
     // clear()
     let brokenmessage = breakmessage(message.body, 20)
     console.log('setting ', syncpoint, ' to: ', message.syncpoint)
@@ -52,10 +34,10 @@ export const sync = (message) => {
       setItem(uuid, JSON.stringify(brokenmessage[uuid]))
     })
 
-    setItem('syncpoint', syncpoint)
+    setItem('syncpoint'+username, syncpoint)
   }
 
-  const swapSync = (newsync, oldsync, oldkeys, message) => {
+  const swapSync = (newsync, oldsync, oldkeys, message, username) => {
     console.log('invoking swapsync')
     // clear()
     let brokenmessage = breakmessage(message.body, 20)
@@ -66,39 +48,22 @@ export const sync = (message) => {
     setItem(JSON.stringify(message.syncpoint), JSON.stringify([...JSON.parse(oldkeys), ...Object.keys(brokenmessage)]))
     setItem(newsync, JSON.stringify(message.syncpoint))
 
-    setItem('syncpoint', newsync)
+    setItem('syncpoint'+username, newsync)
   }
 }
 
-export const loadsyncpoint = (maintransact) => {
+export const loadsyncpoint = (maintransact, username) => {
   // clear()
   go(function* () {
     var loadCh = chan()
-    getItem('syncpoint-A')
-      .then(syncpointA => {
-        syncpointA ? putAsync(loadCh, syncpointA) : putAsync(loadCh, 'none')
-       })
-    let syncpointA = yield take(loadCh)
-    getItem('syncpoint-B')
+    getItem('syncpoint-B'+username)
       .then(syncpointB => {
         syncpointB ? putAsync(loadCh, syncpointB) : putAsync(loadCh, 'none')
       })
     let syncpointB = yield take(loadCh)
-    syncpointA != 'none' && syncpointB == 'none' ? loadSync(syncpointA) : ''
     putAsync(loadCh, 'ok')
     var ack = yield take(loadCh)
-    if (syncpointA > syncpointB) {
-      loadSync(syncpointA)
-    }
-    else if (syncpointB > syncpointA) {
-      loadSync(syncpointB)
-    }
-    else if (syncpointA == syncpointB) {
-      loadSync(syncpointA)
-    }
-    else {
-      throw 'error'
-    }
+    loadSync(syncpointB)
   })
 
   const loadSync = (point) => {
@@ -116,12 +81,14 @@ export const loadsyncpoint = (maintransact) => {
                 console.log('loading syncpoint: ', point)
                 var single_tx = []
                 body.map(s => {
-                  single_tx.push([':db/add', s.e, s.a, s.v])
+                  var operation = s.op == true ? ":db/add" : ":db/retract"
+                  single_tx.push([operation, s.e, s.a, s.v])
                 })
                 maintransact(single_tx, {'remoteuser': 'system'})
               }
             })
         })
       })
+      .catch(err => console.log(err))
   }
 }

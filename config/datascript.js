@@ -44,8 +44,7 @@ console.log("is it a bsub", report$.value)
   // if there's no metadata and it's just a simple transaction
   // need to improve this logic
   if (meta == null && data_to_add[0][":db/id"] == -1) {
-console.log(meta)
-//alert('yow')
+    console.log(meta)
     meta = {
       type: "basic transaction",
       // this is where the confirmationid gets set so that the server knows about it
@@ -55,7 +54,14 @@ console.log(meta)
     }
   }
 
-  var confirmationid = uuid()
+  var confirmationid
+
+  if (data_to_add.some(r => {
+    if (r[2] == 'confirmationid') {
+      confirmationid = r[3]
+      return true
+    }
+  }))
   if (meta == null && data_to_add[0][0] == ":db/retract") {
     meta = {
       type: "confirmation",
@@ -107,8 +113,6 @@ console.log(meta)
 }
 
 const retract = (data_to_add, meta) => {
-  var confirmationid = uuid()
-  console.log("confirmationid", confirmationid)
   if (!meta) {
     var meta = {
       type: "retraction",

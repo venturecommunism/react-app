@@ -18,6 +18,10 @@ const Schema = {
       ':db/cardinality': ':db.cardinality/one',
       ':db/unique': ':db.unique/identity'
     },
+    "confirmationid": {
+      ':db/cardinality': ':db.cardinality/one',
+      ':db/unique': ':db.unique/identity'
+    },
     name: {
       ':db/cardinality': ':db.cardinality/one',
       ':db/unique': ':db.unique/identity'

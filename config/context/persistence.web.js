@@ -6,12 +6,6 @@ import uuid from '../uuid'
 export const sync = (message, username) => {
   go(function* () {
     var syncCh = chan()
-    getItem('syncpoint-A'+username)
-      .then(syncpointA => {
-        syncpointA ? putAsync(syncCh, syncpointA) : putAsync(syncCh, 'none')
-      })
-    let syncpointA = yield take(syncCh)
-    syncpointA == 'none' ? setSync('syncpoint-A'+username, message, username) : ''
     getItem('syncpoint-B'+username)
       .then(syncpointB => {
         syncpointB ? putAsync(syncCh, syncpointB) : putAsync(syncCh, 'none')
@@ -19,27 +13,16 @@ export const sync = (message, username) => {
     let syncpointB = yield take(syncCh)
     syncpointB == 'none' ? setSync('syncpoint-B'+username, message, username) : putAsync(syncCh, 'ok')
     var ack = yield take(syncCh)
-    if (syncpointA > syncpointB) {
-      getItem(syncpointB)
-        .then(oldsync => {
-          putAsync(syncCh, oldsync)
-        })
-      var oldkeys = yield take(syncCh)
-      swapSync('syncpoint-B'+username, 'syncpoint-A'+username, oldkeys, message, username)
-    }
-    else if (syncpointB >= syncpointA) {
-      console.log("B was greater than or equal to A")
-      getItem(syncpointA)
-        .then(oldsync => {
-          putAsync(syncCh, oldsync)
-        })
-      var oldkeys = yield take(syncCh)
-      console.log("about to swapsync")
-      swapSync('syncpoint-A'+username, 'syncpoint-B'+username, oldkeys,  message, username)
-    }
-    else {
-      throw 'error'
-    }
+
+    getItem(syncpointB)
+      .then(oldsync => {
+        putAsync(syncCh, oldsync)
+      })
+
+
+    var oldkeys = yield take(syncCh)
+    console.log("about to swapsync")
+    swapSync('syncpoint-B'+username, 'syncpoint-A'+username, oldkeys, message, username)
   })
 
   const setSync = (syncpoint, message, username) => {
@@ -74,31 +57,14 @@ export const loadsyncpoint = (maintransact, username) => {
   // clear()
   go(function* () {
     var loadCh = chan()
-    getItem('syncpoint-A'+username)
-      .then(syncpointA => {
-        syncpointA ? putAsync(loadCh, syncpointA) : putAsync(loadCh, 'none')
-       })
-    let syncpointA = yield take(loadCh)
     getItem('syncpoint-B'+username)
       .then(syncpointB => {
         syncpointB ? putAsync(loadCh, syncpointB) : putAsync(loadCh, 'none')
       })
     let syncpointB = yield take(loadCh)
-    syncpointA != 'none' && syncpointB == 'none' ? loadSync(syncpointA) : ''
     putAsync(loadCh, 'ok')
     var ack = yield take(loadCh)
-    if (syncpointA > syncpointB) {
-      loadSync(syncpointA)
-    }
-    else if (syncpointB > syncpointA) {
-      loadSync(syncpointB)
-    }
-    else if (syncpointA == syncpointB) {
-      loadSync(syncpointA)
-    }
-    else {
-      throw 'error'
-    }
+    loadSync(syncpointB)
   })
 
   const loadSync = (point) => {
@@ -123,5 +89,6 @@ export const loadsyncpoint = (maintransact, username) => {
             })
         })
       })
+      .catch(err => console.log(err))
   }
 }

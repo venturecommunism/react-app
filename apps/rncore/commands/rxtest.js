@@ -1,10 +1,18 @@
+import uuid from '../../../config/uuid'
+
 export default {
-  removeattribute({maintransact}, uuid, attrib, value) {
+  removeattribute({maintransact}, uuidnum, attrib, value) {
     maintransact([[
       ':db/retract',
-      ["uuid", uuid],
+      ["uuid", uuidnum],
       attrib,
       value
+    ],
+    [
+      ':db/add',
+      ["uuid", uuidnum],
+      "confirmationid",
+      uuid()
     ]])
   },
 }

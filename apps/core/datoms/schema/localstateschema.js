@@ -15,7 +15,6 @@ const Schema = {
       ':db/cardinality': ':db.cardinality/one',
       ':db/unique': ':db.unique/identity'
     },
-
     "localstate/moduleid": {
       ':db/unique': ':db.unique/identity',
       ':db/cardinality': ':db.cardinality/one'
