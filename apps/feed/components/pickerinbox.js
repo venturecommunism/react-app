@@ -49,6 +49,10 @@ const PickerInbox = ({
           {project.uuid == 'none' && plainprojects.map(item => (
               <ListItemView key={item.uuid}>
 
+
+              <CheckBox checked={values.indexOf(item.uuid) > -1} key={item.uuid} taskid={item.uuid}
+              onChange={() => COMMANDS.checkboxchange(values, add, remove, item.uuid)} />
+
               <Button
               title={item.desc}
               onPress={() => COMMANDS.addtoproject(item.uuid, values, clear)}
