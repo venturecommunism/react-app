@@ -4,6 +4,8 @@ import React, { Fragment } from 'react'
 import { View, Button, Text, PageWrapper, ListContainer, ListItem, ListItemView, Loader, UserContainer } from '../../rncore/components/styledComponents'
 import { State } from 'react-powerplug'
 
+import { countdowntimer } from '../../rncore/lib/helpers'
+
 const Calendar = ({
   actions,
   status,
@@ -41,6 +43,7 @@ const Calendar = ({
                    {calendaritems.map(proj => (
                      <ListItemView key={proj.uuid}>
                        <ListItem>{proj.desc}</ListItem>
+                       <ListItem>{countdowntimer(proj.due)}</ListItem>
                      </ListItemView>
                    ))}
                  </ListContainer>

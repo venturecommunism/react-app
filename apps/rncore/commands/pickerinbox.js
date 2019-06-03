@@ -1,6 +1,14 @@
 import uuid from '../../../config/uuid'
 
 export default {
+  datetimepicker({maintransact}, uuidnum, year, month, day, hour, minute) {
+    var due = year + (month < 9 ? "0" + (month + 1) : (month + 1)) + (day < 10 ? "0" + day : day) + "T" + (hour < 10 ? "0" + hour : hour) + (minute < 10 ? "0" + minute : minute) + "00" + "Z"
+    maintransact([{
+      uuid: uuidnum,
+      due: due,
+      confirmationid: uuid()
+    }])
+  },
   uponeproject({localtransact}) {
     localtransact([[':db.fn/retractEntity', ["id", "project"]]])
   },

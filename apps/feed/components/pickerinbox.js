@@ -92,7 +92,7 @@ const PickerInbox = ({
                 <Text>{state.inboxitem}</Text>
                 <Button title={"Make Project"} onPress={ () => tx({type: "project"}, state.uuid) }/>
                 <Button title={"Make Context"} onPress={() => tx({type: "context"}, state.uuid) }/>
-                <DateTime placeholder={"Add to Calendar"} taskid={state.uuid}/>
+                <DateTime buttonaction={COMMANDS.datetimepicker} placeholder={"Add to Calendar"} taskid={state.uuid}/>
                 <Button title={"deactivate Modal"} onPress={() => setState({ inboxitem: '', uuid: ''})}/>
                 </Modal> }
 
