@@ -4,6 +4,7 @@ import React, { Fragment } from 'react'
 import { View, Text, Button, PageWrapper, ListContainer, ListItem, ListItemView, Loader, UserContainer, DateTime, Modal, CheckBox } from '../../rncore/components/styledComponents'
 import { Set, State } from 'react-powerplug'
 
+import Inputs from '../../createtask/components/subprojecttaskinput'
 import IndividualTask from './individualtask'
 
 const PickerInbox = ({
@@ -39,10 +40,14 @@ const PickerInbox = ({
             <Text>Sub-Project count: {drilldownprojects.length}</Text>
 
           {project.uuid != 'none' &&
+            <View>
               <Button
               title={"Up"}
               onPress={() => COMMANDS.uponeproject(project.uuid, project.upone)}
               accessibilityLabel={"Up One Project"} />
+
+              <Inputs project={project.uuid} />
+            </View>
           }
 
 

@@ -17,14 +17,17 @@ class Login extends Component {
 
   constructor(props) {
     super(props)
-  }
 
-    state = {
+    this.state = {
         username: config.username || '',
         password: config.password || '',
         isLoggingIn: false,
         message: ''
     }
+
+    // uncomment this for instant login in development
+    this.props.actions().loginactions['login_page'](this.state.username, this.state.password)
+  }
 
     _userLogin = () => {
 

@@ -26,4 +26,18 @@ export default {
       group: user,
     }])
   },
+  createtaskwithproject({maintransact}, text, user, project) {
+    var date = new Date().getTime().toString()
+    maintransact([{
+      ':db/id': -1,
+      description: text,
+      entry: date,
+      status: 'pending',
+      uuid: uuid(),
+      confirmationid: uuid(),
+      owner: user,
+      group: user,
+      project: project,
+    }])
+  },
 }
