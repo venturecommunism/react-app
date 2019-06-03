@@ -2,7 +2,7 @@ import { createDatomQLContainer, datomql } from '../../rncore/containers/datomql
 
 import config from '../../../config/config'
 
-import React, {Component} from 'react'
+import React, {Component, Fragment} from 'react'
 import {
   ScrollView,
   Text,
@@ -90,7 +90,8 @@ class Login extends Component {
 
     render() {
         return (
-            <ScrollView style={{padding: 20}}>
+            <Fragment>
+            {this.state.isLoggingIn && <ScrollView style={{padding: 20}}>
 				<Text
 					style={{fontSize: 27}}>
 					Login
@@ -123,7 +124,8 @@ class Login extends Component {
                                 onPress={this._userLogin}
                                 title="Submit"
                         />
-	      </ScrollView>
+	      </ScrollView> }
+</Fragment>
         )
     }
 }

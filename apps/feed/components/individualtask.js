@@ -1,12 +1,15 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import {
-  View,
-  Text
+  Text,
+  Button,
 } from 'react-native'
 
-const IndividualTask = ({task}) =>
-  <View>
-    <Text>{JSON.stringify(task)}</Text>
-  </View>
+import { ListItem } from '../../rncore/components/styledComponents'
+
+const IndividualTask = ({inboxitem, onPress}) =>
+  <Fragment>
+    <ListItem style={inboxitem.confirmid != 'none' ? {backgroundColor: 'red'} : ''} >{inboxitem.desc}</ListItem>
+    <Button onPress={onPress} title={"Change Type"}/>
+  </Fragment>
 
 export default IndividualTask
