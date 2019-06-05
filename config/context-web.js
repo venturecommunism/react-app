@@ -19,7 +19,7 @@ const ex_data = DataChannel(config.url, "datomic", me, localreport$)
 const ex_auth = AuthChannel(config.url, "auth", me, localreport$, maintransact)
 
 const connectionstate = (newstate) => {
-  console.log('newstate', newstate)
+//  console.log('newstate', newstate)
   localtransact([{
     ':db/id': -1,
     status: newstate,

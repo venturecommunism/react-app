@@ -21,7 +21,7 @@ export const sync = (message, username) => {
 
 
     var oldkeys = yield take(syncCh)
-    console.log("about to swapsync")
+    // console.log("about to swapsync")
     swapSync('syncpoint-B'+username, 'syncpoint-A'+username, oldkeys, message, username)
   })
 
@@ -39,10 +39,10 @@ export const sync = (message, username) => {
   }
 
   const swapSync = (newsync, oldsync, oldkeys, message, username) => {
-    console.log('invoking swapsync')
+    // console.log('invoking swapsync')
     // clear()
     let brokenmessage = breakmessage(message.body, 20)
-    console.log('setting ', newsync, ' to: ', message.syncpoint)
+    // console.log('setting ', newsync, ' to: ', message.syncpoint)
     Object.keys(brokenmessage).map(uuid => {
       setItem(uuid, brokenmessage[uuid])
     })
@@ -54,7 +54,7 @@ export const sync = (message, username) => {
 }
 
 export const loadsyncpoint = (maintransact, username) => {
-  // clear()
+  clear()
   go(function* () {
     var loadCh = chan()
     getItem('syncpoint-B'+username)
@@ -78,7 +78,7 @@ export const loadsyncpoint = (maintransact, username) => {
               body.push(...item)
               checkkeys.push(uuid)
               if (checkkeys.length == uuids.length) {
-                console.log('loading syncpoint: ', point)
+//                console.log('loading syncpoint: ', point)
                 var single_tx = []
                 body.map(s => {
                   var operation = s.op == true ? ":db/add" : ":db/retract"

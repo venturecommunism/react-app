@@ -135,7 +135,7 @@ const PickerInbox = ({
                     <CheckBox checked={values.indexOf(inboxitem.uuid) > -1} key={inboxitem.uuid} taskid={inboxitem.uuid}
                     onChange={() => COMMANDS.checkboxchange(values, add, remove, inboxitem.uuid)} />
 
-                    <IndividualTask inboxitem={inboxitem} onPress={() => setState({ inboxitem: inboxitem.desc, uuid: inboxitem.uuid })} />
+                    <IndividualTask inboxitem={inboxitem} Trash={() => COMMANDS.trash(inboxitem.uuid)} changeType={() => setState({ inboxitem: inboxitem.desc, uuid: inboxitem.uuid })} />
                 </ListItemView>
                     ))}
 

@@ -22,13 +22,13 @@ const DataChannel = (url, room, user, localreport$, token) =>
 //  from([user])
     .pipe(
       map(result => mori.toJs(result)),
-      tap(showres => console.log("SHOW", showres)),
+      // tap(showres => console.log("SHOW", showres)),
       flatMap(jsresult =>
         from(getItem('token')).pipe(map(token => ({ user, token, username: jsresult[0] && jsresult[0][0] ? jsresult[0][0] : config.email })))),
-      tap(show => console.log("OK SHOW", show)),
+      // tap(show => console.log("OK SHOW", show)),
       flatMap(({ user, token, username }) =>
         from(getItem('syncpoint'+username)).pipe(map(syncspot => !syncspot || syncspot == null ? ({user, token, syncspot: 'syncpoint-X'}) : ({ user, token, syncspot })))),
-      tap(thing => console.log(thing)),
+      // tap(thing => console.log(thing)),
       flatMap(({ user, token, syncspot }) =>
         from(getItem(syncspot)).pipe(map(syncpoint => !syncpoint || syncpoint == null ? ({user, token, syncpoint: 'none'}) : ({ user, token, syncpoint: JSON.parse(syncpoint) })))),
       flatMap(({ user, token, syncpoint }) =>

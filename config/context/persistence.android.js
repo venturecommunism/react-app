@@ -20,7 +20,7 @@ export const sync = (message, username) => {
       })
 
     var oldkeys = yield take(syncCh)
-    console.log("about to swapsync")
+    // console.log("about to swapsync")
     swapSync('syncpoint-B'+username, 'syncpoint-A'+username, oldkeys, message, username)
   })
 

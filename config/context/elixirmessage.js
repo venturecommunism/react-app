@@ -6,7 +6,7 @@ import { sync } from './persistence'
 
 // Fires when we receive a message on the Elixir data channel
 export const receiveDataMessage = (db, maintransact, message, me, username) => {
-  console.log("ELIXIR MESSAGE", message)
+//  console.log("ELIXIR MESSAGE", message)
   if ('ok' in message && 'confirmationid' in message.ok.msg) {
     var confirmationid = message['ok']['msg']['confirmationid']
     var stringconfirmationid = JSON.stringify(confirmationid)
@@ -17,7 +17,7 @@ export const receiveDataMessage = (db, maintransact, message, me, username) => {
     const confirmedqArgs = [confirmedquery, confirmeddb]
     var result = datascript.q(...confirmedqArgs)
 
-    console.log("receiveDataMessage", result)
+//    console.log("receiveDataMessage", result)
 
     var confirmedent = result[0] ? result[0][0] : ''
 
@@ -25,7 +25,7 @@ export const receiveDataMessage = (db, maintransact, message, me, username) => {
     confirmedent ? maintransact(report_id_confirmed_tx, {'remoteuser': 'server confirmation'}) : console.error("missing confirmationid")
   }
   if ('ok' in message) return
-  console.log("ELIXIR OBJECT", message)
+  // console.log("ELIXIR OBJECT", message)
   const user = message.user
   const isMe = (someUser) => me === someUser
   if (isMe(user)) return // prevent echoing yourself (TODO: server could handle this i guess?)

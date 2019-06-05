@@ -23,6 +23,29 @@ export default {
         projid
         ]])
   },
+  trash({maintransact}, uuidnum) {
+
+      maintransact([{
+        ':db/id': -1,
+        status: 'completed',
+        uuid: uuidnum,
+        confirmationid: uuid()
+      }])
+/*      maintransact([[
+        ':db/add',
+        ["uuid", uuidnum],
+        "status",
+        "completed"
+        ],
+        [
+        ':db/add',
+        ["uuid", uuidnum],
+        "confirmationid",
+        uuid()
+        ]
+    ])
+*/
+  },
   addtoproject({maintransact, localtransact}, projid, values, clear) {
     if (values.length < 1) {
       localtransact([{

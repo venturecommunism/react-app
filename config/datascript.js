@@ -21,13 +21,14 @@ const validtx$ = main.validtx$
 const maintransact = (data_to_add, meta) => {
   // disable metadata to test transactions locally
 
+
 if (!meta || meta == null) {
 //console.log('wait', data_to_add)
 //alert('wait')
 }
 
-console.log("behaviorsubject", tx$.value)
-console.log("is it a bsub", report$.value)
+// console.log("behaviorsubject", tx$.value)
+// console.log("is it a bsub", report$.value)
 
   // confid is the confirmationid. it will be put in meta so that the server can send it back and it will be mapped onto data_to_add so that
   // when it does come back it can be updated / removed
@@ -44,7 +45,6 @@ console.log("is it a bsub", report$.value)
   // if there's no metadata and it's just a simple transaction
   // need to improve this logic
   if (meta == null && data_to_add[0][":db/id"] == -1) {
-    console.log(meta)
     meta = {
       type: "basic transaction",
       // this is where the confirmationid gets set so that the server knows about it
@@ -58,6 +58,7 @@ console.log("is it a bsub", report$.value)
 
   if (data_to_add.some(r => {
     if (r[2] == 'confirmationid') {
+// console.log('picking a confirmationid', r[3])
       confirmationid = r[3]
       return true
     }
@@ -73,10 +74,11 @@ console.log("is it a bsub", report$.value)
   }
 
   if (meta == null) {
+// console.log("meta was null")
     meta = {
       type: "basic transaction",
       // this is where the confirmationid gets set so that the server knows about it
-      confirmationid: data_to_add[0].confirmationid,
+      confirmationid: data_to_add[0].confirmationid ? data_to_add[0].confirmationid : confirmationid,
       // for some reason this uuid has to be here and in the data_to_add.map in order to sync with the server
       uuid: data_to_add[0].uuid
     }
