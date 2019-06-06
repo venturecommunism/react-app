@@ -1,6 +1,6 @@
 import {datascript as ds, mori, helpers} from 'datascript-mori'
 const datascript = ds.js
-import transact from '../transact'
+import transact from '../datascript'
 
 import { sync } from './persistence'
 

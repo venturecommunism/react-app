@@ -1,4 +1,4 @@
-import { setItem } from './context/persistence2'
+import { setItem, getItem } from './context/persistence2'
 
 import datascript, { tx$, validtx$, report$, maintransact, localreport$, localtransact, mori, helpers } from './datascript'
 
@@ -36,9 +36,23 @@ const online = (maindb, maintransact, msg, me, username) => {
   receiveDataMessage(maindb, maintransact, msg, me, username)
 }
 
+const sync = (chan, username, jwt) => {
+  // chan.send({username: username, jwt: jwt, syncpoint: chan.syncpoint == 'none' ? chan.syncpoint : JSON.stringify(chan.syncpoint), subscription: querieslist})
+  getItem('syncpoint'+username).then(
+    syncpoint => console.log(syncpoint)
+  )
+  getItem('syncpoint-B'+username).then(
+    syncpoint => {
+      var syncspot = syncpoint ? syncpoint : 'none'
+      chan.send({username: username, jwt: jwt, syncpoint: syncspot == 'none' ? syncspot : syncspot, subscription: querieslist})
+    }
+  )
+  .catch(err => console.log(err))
+}
+
 const datasync = (chan, jwt, username) => {
   // why test for chan.send? is there no chan after a join or ok?
-  chan.type   == 'join' && chan.send       ? chan.send({username: username, jwt: jwt, syncpoint: chan.syncpoint == 'none' ? chan.syncpoint : JSON.stringify(chan.syncpoint), subscription: querieslist})
+  chan.type   == 'join' && chan.send       ? sync(chan, username, jwt)
   : chan.type == 'new:msg'                 ? online(maindb, maintransact, chan.msg, me, username)
   : chan.type == 'timeout'                 ? console.log('timeout ', chan.room, ": ", chan.error)
   : chan.type   == 'ok'                    ? online(maindb, maintransact, {ok: chan.msg}, me, username)
