@@ -1,3 +1,5 @@
+import { setItem, getItem } from './context/persistence2'
+
 import uuid from './uuid'
 
 import { datascript as ds, mori, helpers } from 'datascript-mori'
@@ -109,6 +111,24 @@ if (!meta || meta == null) {
     // this uuid is needed in order to sync with the server
     data_to_add[0].uuid ? datom.uuid = data_to_add[0].uuid : ''
   })
+
+  var stringified_data_to_add = JSON.stringify(data_to_add)
+
+  var existing_offline_txns
+  getItem('offline-transactions').then(
+    txns => {
+      existing_offline_txns = txns
+      var offline_tx_to_persist
+      if (!meta.remoteuser) {
+        var confirmationid = confirmationid ? confirmationid : meta.confirmationid
+        offline_tx_to_persist = [[data_to_add, meta, confirmationid]]
+        var intermediate_thing = (existing_offline_txns && existing_offline_txns != []) ? existing_offline_txns.push(offline_tx_to_persist) : [offline_tx_to_persist]
+        var newdata = existing_offline_txns ? JSON.stringify(JSON.parse(existing_offline_txns).push(offline_tx_to_persist)) : JSON.stringify(offline_tx_to_persist)
+        setItem('offline-transactions', newdata)
+      }
+    }
+  )
+  .catch(err => console.log(err))
 
   return nextTx(tx$, data_to_add, meta)
 //  return nextTx(tx$, helpers.entities_to_clj(data_to_add), helpers.entities_to_clj(meta))

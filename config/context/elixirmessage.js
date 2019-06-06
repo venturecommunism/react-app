@@ -1,3 +1,5 @@
+import { setItem, getItem } from './persistence2'
+
 import {datascript as ds, mori, helpers} from 'datascript-mori'
 const datascript = ds.js
 import transact from '../datascript'
@@ -6,9 +8,22 @@ import { sync } from './persistence'
 
 // Fires when we receive a message on the Elixir data channel
 export const receiveDataMessage = (db, maintransact, message, me, username) => {
-//  console.log("ELIXIR MESSAGE", message)
+  // console.log("ELIXIR MESSAGE", message)
   if ('ok' in message && 'confirmationid' in message.ok.msg) {
     var confirmationid = message['ok']['msg']['confirmationid']
+
+    getItem('offline-transactions').then(
+      txns => {
+        var parsed_txns = txns ? JSON.parse(txns) : null
+        parsed_txns.forEach( (item, i) => {
+          if (item[1].confirmationid == confirmationid) {
+            var newdata = parsed_txns.splice(i, 1) != [] ? parsed_txns.splice(i, 1) : null
+            setItem('offline-transactions', JSON.stringify(newdata))
+          }
+        })
+      }
+    )
+
     var stringconfirmationid = JSON.stringify(confirmationid)
 
     var confirmedquery = `[:find ?e
@@ -17,12 +32,12 @@ export const receiveDataMessage = (db, maintransact, message, me, username) => {
     const confirmedqArgs = [confirmedquery, confirmeddb]
     var result = datascript.q(...confirmedqArgs)
 
-//    console.log("receiveDataMessage", result)
+    // console.log("receiveDataMessage", result)
 
     var confirmedent = result[0] ? result[0][0] : ''
 
     var report_id_confirmed_tx = [[':db/retract', ["confirmationid", confirmationid], 'confirmationid', confirmationid]]
-    confirmedent ? maintransact(report_id_confirmed_tx, {'remoteuser': 'server confirmation'}) : console.error("missing confirmationid")
+    confirmedent ? maintransact(report_id_confirmed_tx, {'remoteuser': 'server confirmation'}) : console.log("missing confirmationid")
   }
   if ('ok' in message) return
   // console.log("ELIXIR OBJECT", message)

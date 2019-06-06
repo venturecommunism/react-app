@@ -26,6 +26,7 @@ class Login extends Component {
     }
 
     // uncomment this for instant login in development
+    this.state.isLoggingIn = true
     this.props.actions().loginactions['login_page'](this.state.username, this.state.password)
   }
 
@@ -87,11 +88,10 @@ class Login extends Component {
 //        this._password.setNativeProps({ text: '' });
         this.setState({ message: '' });
     }
-
     render() {
         return (
             <Fragment>
-            {this.state.isLoggingIn && <ScrollView style={{padding: 20}}>
+            {!this.state.isLoggingIn && <ScrollView style={{padding: 20}}>
 				<Text
 					style={{fontSize: 27}}>
 					Login

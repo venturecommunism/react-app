@@ -19,7 +19,7 @@ const ex_data = DataChannel(config.url, "datomic", me, localreport$)
 const ex_auth = AuthChannel(config.url, "auth", me, localreport$, maintransact)
 
 const connectionstate = (newstate) => {
-//  console.log('newstate', newstate)
+  // console.log('newstate', newstate)
   localtransact([{
     ':db/id': -1,
     status: newstate,
@@ -37,10 +37,15 @@ const online = (maindb, maintransact, msg, me, username) => {
 }
 
 const sync = (chan, username, jwt) => {
-  // chan.send({username: username, jwt: jwt, syncpoint: chan.syncpoint == 'none' ? chan.syncpoint : JSON.stringify(chan.syncpoint), subscription: querieslist}) 
-  getItem('syncpoint'+username).then(
-    syncpoint => console.log(syncpoint)
+  getItem('offline-transactions').then(
+    txns => {
+console.log("txns", txns)
+      var parsed_txns = txns && txns != [] ? JSON.parse(txns) : []
+      parsed_txns.forEach( item => channel.send({data: item[0], meta: item[1], confirmationid: item[2]}) )
+    }
   )
+  .catch(err => console.log(err))
+
   getItem('syncpoint-B'+username).then(
     syncpoint => {
       var syncspot = syncpoint ? syncpoint : 'none'
