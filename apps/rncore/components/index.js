@@ -12,6 +12,7 @@ import Groups from '../../groups/components/groups'
 import TextThing from '../../createtask/components/text'
 import Login from '../../login/components/logincomponent'
 import Feed from '../../feed/components/index'
+import Clear from './cleardata'
 
 import CreateTask from '../../createtask/components/createtask'
 
@@ -24,6 +25,7 @@ const App = () =>
       <Feed />
       <Groups />
       <TextThing />
+      <Clear />
     </ScrollView>
     <CreateTask/>
   </View>

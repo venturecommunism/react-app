@@ -3,6 +3,8 @@ import {go, chan, take, put, timeout, putAsync} from 'js-csp'
 import { getItem, setItem, clear, breakmessage } from './persistence2'
 import uuid from '../uuid'
 
+export { clear }
+
 export const sync = (message, username) => {
   go(function* () {
     var syncCh = chan()
@@ -54,7 +56,7 @@ export const sync = (message, username) => {
 }
 
 export const loadsyncpoint = (maintransact, username) => {
-  clear()
+  // clear()
   go(function* () {
     var loadCh = chan()
     getItem('syncpoint-B'+username)
