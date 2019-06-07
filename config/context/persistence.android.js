@@ -29,7 +29,7 @@ export const sync = (message, username) => {
   const setSync = (syncpoint, message, username) => {
     // clear()
     let brokenmessage = breakmessage(message.body, 20)
-    console.log('setting ', syncpoint, ' to: ', message.syncpoint)
+    // console.log('setting ', syncpoint, ' to: ', message.syncpoint)
     setItem(syncpoint, JSON.stringify(message.syncpoint))
     setItem(JSON.stringify(message.syncpoint), JSON.stringify(Object.keys(brokenmessage)))
     Object.keys(brokenmessage).map(uuid => {

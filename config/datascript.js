@@ -117,14 +117,15 @@ if (!meta || meta == null) {
   var existing_offline_txns
   getItem('offline-transactions').then(
     txns => {
-      existing_offline_txns = txns
+      var existing_offline_txns = txns ? JSON.parse(txns) : undefined
+      if (existing_offline_txns == undefined) existing_offline_txns = []
       var offline_tx_to_persist
       if (!meta.remoteuser) {
         var confirmationid = confirmationid ? confirmationid : meta.confirmationid
         offline_tx_to_persist = [[data_to_add, meta, confirmationid]]
-        var intermediate_thing = (existing_offline_txns && existing_offline_txns != []) ? existing_offline_txns.push(offline_tx_to_persist) : [offline_tx_to_persist]
-        var newdata = existing_offline_txns ? JSON.stringify(JSON.parse(existing_offline_txns).push(offline_tx_to_persist)) : JSON.stringify(offline_tx_to_persist)
-        setItem('offline-transactions', newdata)
+        existing_offline_txns.push(offline_tx_to_persist)
+        console.log("existing_offline_txns", existing_offline_txns)
+        setItem('offline-transactions', JSON.stringify(existing_offline_txns))
       }
     }
   )
