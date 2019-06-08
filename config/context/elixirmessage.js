@@ -17,7 +17,9 @@ export const receiveDataMessage = (db, maintransact, message, me, username) => {
         var parsed_txns = txns ? JSON.parse(txns) : null
         parsed_txns.forEach( (item, i) => {
           if (item[1].confirmationid == confirmationid) {
+console.log("old", JSON.stringify(parsed_txns))
             var newdata = parsed_txns.splice(i, 1) != [] ? parsed_txns.splice(i, 1) : null
+console.log("new", JSON.stringify(newdata))
             setItem('offline-transactions', JSON.stringify(newdata))
           }
         })
@@ -50,6 +52,7 @@ export const receiveDataMessage = (db, maintransact, message, me, username) => {
   }
   // only works if all the tx ids are the same
   if (message.user === 'system') {
+console.log("INCOMING MESSAGE", message)
     try {
       var single_tx = []
       message.body.map(s => {

@@ -39,9 +39,11 @@ const online = (maindb, maintransact, msg, me, username) => {
 const sync = (chan, username, jwt) => {
   getItem('offline-transactions').then(
     txns => {
-console.log("txns", txns)
       var parsed_txns = txns && txns != [] ? JSON.parse(txns) : []
-      parsed_txns.forEach( item => channel.send({data: item[0], meta: item[1], confirmationid: item[2]}) )
+      parsed_txns.forEach( item => {
+        console.log(item)
+        channel.send({data: item[0], meta: item[1], confirmationid: item[2]})
+      })
     }
   )
   .catch(err => console.log(err))

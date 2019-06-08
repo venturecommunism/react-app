@@ -122,10 +122,11 @@ if (!meta || meta == null) {
       var offline_tx_to_persist
       if (!meta.remoteuser) {
         var confirmationid = confirmationid ? confirmationid : meta.confirmationid
-        offline_tx_to_persist = [[data_to_add, meta, confirmationid]]
+        offline_tx_to_persist = [data_to_add, meta, confirmationid]
         existing_offline_txns.push(offline_tx_to_persist)
         console.log("existing_offline_txns", existing_offline_txns)
         setItem('offline-transactions', JSON.stringify(existing_offline_txns))
+console.log("set as", JSON.stringify(existing_offline_txns))
       }
     }
   )
