@@ -117,7 +117,7 @@ if (!meta || meta == null) {
   var existing_offline_txns
 
   var confirmationid = confirmationid ? confirmationid : meta.confirmationid
-  if (confirmationid) {
+  if (confirmationid && meta.type != "confirmation" && meta.remoteuser != "server confirmation") {
     console.log("YES CONFIRMATIONID", data_to_add)
     setItem('offlinetxn-'+confirmationid, JSON.stringify([data_to_add, meta, confirmationid]))
   }
