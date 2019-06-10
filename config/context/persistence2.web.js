@@ -1,4 +1,4 @@
-import { set, get, clear } from 'idb-keyval'
+import { set, get, clear, update } from 'idb-keyval'
 
 import uuid from '../uuid'
 
@@ -19,7 +19,13 @@ const breakmessage = (message, chunkSize) => {
   return brokenmessage
 }
 
+const updateItem = (key, func) => {
+  console.log('update fired')
+  update(key, func)
+}
+
 export {
+  updateItem,
   setItem,
   getItem,
   clear,

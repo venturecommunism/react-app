@@ -1,4 +1,6 @@
-import { setItem, getItem } from './persistence2'
+import { setItem, getItem, updateItem } from './persistence2'
+
+import { del } from 'idb-keyval'
 
 import {datascript as ds, mori, helpers} from 'datascript-mori'
 const datascript = ds.js
@@ -6,12 +8,19 @@ import transact from '../datascript'
 
 import { sync } from './persistence'
 
+const updaterfunc = (data) => {
+  console.log("updater func fired")
+  return () => JSON.stringify(data)
+}
+
 // Fires when we receive a message on the Elixir data channel
 export const receiveDataMessage = (db, maintransact, message, me, username) => {
   // console.log("ELIXIR MESSAGE", message)
   if ('ok' in message && 'confirmationid' in message.ok.msg) {
     var confirmationid = message['ok']['msg']['confirmationid']
+    del('offlinetxn-'+confirmationid)
 
+/*
     getItem('offline-transactions').then(
       txns => {
         var parsed_txns = txns ? JSON.parse(txns) : null
@@ -20,12 +29,13 @@ export const receiveDataMessage = (db, maintransact, message, me, username) => {
 console.log("old", JSON.stringify(parsed_txns))
             var newdata = parsed_txns.splice(i, 1) != [] ? parsed_txns.splice(i, 1) : null
 console.log("new", JSON.stringify(newdata))
-            setItem('offline-transactions', JSON.stringify(newdata))
+            //setItem('offline-transactions', JSON.stringify(newdata))
+            //updateItem('offline-transactions', updaterfunc(newdata, localdb, localtransact))
           }
         })
       }
     )
-
+*/
     var stringconfirmationid = JSON.stringify(confirmationid)
 
     var confirmedquery = `[:find ?e

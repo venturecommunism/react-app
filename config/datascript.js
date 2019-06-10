@@ -115,22 +115,13 @@ if (!meta || meta == null) {
   var stringified_data_to_add = JSON.stringify(data_to_add)
 
   var existing_offline_txns
-  getItem('offline-transactions').then(
-    txns => {
-      var existing_offline_txns = txns ? JSON.parse(txns) : undefined
-      if (existing_offline_txns == undefined) existing_offline_txns = []
-      var offline_tx_to_persist
-      if (!meta.remoteuser) {
-        var confirmationid = confirmationid ? confirmationid : meta.confirmationid
-        offline_tx_to_persist = [data_to_add, meta, confirmationid]
-        existing_offline_txns.push(offline_tx_to_persist)
-        console.log("existing_offline_txns", existing_offline_txns)
-        setItem('offline-transactions', JSON.stringify(existing_offline_txns))
-console.log("set as", JSON.stringify(existing_offline_txns))
-      }
-    }
-  )
-  .catch(err => console.log(err))
+
+  var confirmationid = confirmationid ? confirmationid : meta.confirmationid
+  if (confirmationid) {
+    console.log("YES CONFIRMATIONID", data_to_add)
+    setItem('offlinetxn-'+confirmationid, JSON.stringify([data_to_add, meta, confirmationid]))
+  }
+
 
   return nextTx(tx$, data_to_add, meta)
 //  return nextTx(tx$, helpers.entities_to_clj(data_to_add), helpers.entities_to_clj(meta))

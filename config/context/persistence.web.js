@@ -3,10 +3,14 @@ import {go, chan, take, put, timeout, putAsync} from 'js-csp'
 import { getItem, setItem, clear, breakmessage } from './persistence2'
 import uuid from '../uuid'
 
+import { keys } from 'idb-keyval'
+
 export { clear }
 
 export const sync = (message, username) => {
   go(function* () {
+// first get all the keys and look for any syncpoint-y things
+
     var syncCh = chan()
     getItem('syncpoint-B'+username)
       .then(syncpointB => {
@@ -16,6 +20,8 @@ export const sync = (message, username) => {
     syncpointB == 'none' ? setSync('syncpoint-B'+username, message, username) : putAsync(syncCh, 'ok')
     var ack = yield take(syncCh)
 
+
+// get rid of this
     getItem(syncpointB)
       .then(oldsync => {
         putAsync(syncCh, oldsync)
@@ -32,6 +38,8 @@ export const sync = (message, username) => {
     let brokenmessage = breakmessage(message.body, 20)
     // console.log('setting ', syncpoint, ' to: ', message.syncpoint)
     setItem(syncpoint, message.syncpoint)
+
+    setItem(username+'-syncpoint-'+message.syncpoint, [...Object.keys(brokenmessage)])
     setItem(message.syncpoint, Object.keys(brokenmessage))
     Object.keys(brokenmessage).map(uuid => {
       setItem(uuid, brokenmessage[uuid])
@@ -48,25 +56,28 @@ export const sync = (message, username) => {
     Object.keys(brokenmessage).map(uuid => {
       setItem(uuid, brokenmessage[uuid])
     })
-    setItem(message.syncpoint, [...oldkeys, ...Object.keys(brokenmessage)])
-    setItem(newsync, message.syncpoint)
 
-    setItem('syncpoint'+username, newsync)
+    setItem(username+'-syncpoint-'+message.syncpoint, [...Object.keys(brokenmessage)])
   }
 }
 
 export const loadsyncpoint = (maintransact, username) => {
   // clear()
-  go(function* () {
-    var loadCh = chan()
-    getItem('syncpoint-B'+username)
-      .then(syncpointB => {
-        syncpointB ? putAsync(loadCh, syncpointB) : putAsync(loadCh, 'none')
-      })
-    let syncpointB = yield take(loadCh)
-    putAsync(loadCh, 'ok')
-    var ack = yield take(loadCh)
-    loadSync(syncpointB)
+
+  var thekeys
+  keys().then(keys => {
+
+    thekeys = keys
+    var filteredarray = thekeys.filter( (item) => {
+      if (typeof item == 'string') {
+        var re = new RegExp(username+'-syncpoint-')
+        if (item.match(re, ["i"])) return true
+      } else {
+        return false
+      }
+    })
+    console.log("sync filtered array", filteredarray)
+    filteredarray.sort().forEach( item => loadSync(item) )
   })
 
   const loadSync = (point) => {
