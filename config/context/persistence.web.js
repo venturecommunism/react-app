@@ -68,6 +68,16 @@ export const loadsyncpoint = (maintransact, username) => {
   keys().then(keys => {
 
     thekeys = keys
+    var offlinetxarray = thekeys.filter( (item) => {
+      if (typeof item == 'string') {
+        var re = new RegExp('offlinetxn-')
+        if (item.match(re, ["i"])) return true
+      } else {
+        return false
+      }
+    })
+    console.log("offlinetxarray", offlinetxarray)
+
     var filteredarray = thekeys.filter( (item) => {
       if (typeof item == 'string') {
         var re = new RegExp(username+'-syncpoint-')
@@ -77,10 +87,12 @@ export const loadsyncpoint = (maintransact, username) => {
       }
     })
     console.log("sync filtered array", filteredarray)
-    filteredarray.sort().forEach( item => loadSync(item) )
+    filteredarray.sort().forEach( (item, i) => loadSync(item, i, filteredarray.length) )
+
   })
 
-  const loadSync = (point) => {
+
+  const loadSync = (point, index, length) => {
     let body = []
     let checkkeys = []
     getItem(point)
@@ -93,6 +105,7 @@ export const loadsyncpoint = (maintransact, username) => {
               if (checkkeys.length == uuids.length) {
 //                console.log('loading syncpoint: ', point)
                 var single_tx = []
+console.log("body in loadsync", body)
                 body.map(s => {
                   var operation = s.op == true ? ":db/add" : ":db/retract"
                   single_tx.push([operation, s.e, s.a, s.v])
@@ -101,6 +114,45 @@ export const loadsyncpoint = (maintransact, username) => {
               }
             })
         })
+      })
+      .then( (something) => {
+      if (index == length - 1) {
+
+
+  var thekeys
+  keys().then(keys => {
+
+    thekeys = keys
+    var offlinetxarray = thekeys.filter( (item) => {
+      if (typeof item == 'string') {
+        var re = new RegExp('offlinetxn-')
+        if (item.match(re, ["i"])) return true
+      } else {
+        return false
+      }
+    })
+    console.log("offlinetxarray", offlinetxarray)
+
+
+    offlinetxarray.forEach( (offlinetxn) => {
+          let body = []
+          let checkkeys = []
+          getItem(offlinetxn)
+            .then(item => {
+              body.push(JSON.parse(item)[0])
+              var single_tx = []
+body.map(s => {
+  console.log("a thing", s)
+  // var tx = JSON.parse(s)
+  maintransact(s, {'type': 'basic transaction'})
+})
+    })
+  })
+
+})
+
+
+}
       })
       .catch(err => console.log(err))
   }
