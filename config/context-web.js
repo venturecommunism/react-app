@@ -1,6 +1,4 @@
-import { setItem, getItem } from './context/persistence2'
-
-import { keys } from 'idb-keyval'
+import { setItem, getItem, getKeys } from './context/persistence2'
 
 import datascript, { tx$, validtx$, report$, maintransact, localreport$, localtransact, mori, helpers } from './datascript'
 
@@ -40,7 +38,7 @@ const online = (maindb, maintransact, msg, me, username) => {
 
 const sync = (chan, username, jwt) => {
   var thekeys
-  keys().then(keys => {
+  getKeys().then(keys => {
     thekeys = keys
     var filteredarray = thekeys.filter( (item) => {
       if (typeof item == 'string') {
@@ -59,7 +57,7 @@ const sync = (chan, username, jwt) => {
   })
 
   var thekeys
-  keys().then(keys => {
+  getKeys().then(keys => {
 
     thekeys = keys
     var filteredarray = thekeys.filter( (item) => {

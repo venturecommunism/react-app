@@ -1,9 +1,7 @@
 import {go, chan, take, put, timeout, putAsync} from 'js-csp'
 
-import { getItem, setItem, clear, breakmessage } from './persistence2'
+import { getItem, setItem, clear, breakmessage, getKeys } from './persistence2'
 import uuid from '../uuid'
-
-import { keys } from 'idb-keyval'
 
 export { clear }
 
@@ -65,7 +63,7 @@ export const loadsyncpoint = (maintransact, username) => {
   // clear()
 
   var thekeys
-  keys().then(keys => {
+  getKeys().then(keys => {
 
     thekeys = keys
     var offlinetxarray = thekeys.filter( (item) => {
@@ -120,7 +118,7 @@ console.log("body in loadsync", body)
 
 
   var thekeys
-  keys().then(keys => {
+  getKeys().then(keys => {
 
     thekeys = keys
     var offlinetxarray = thekeys.filter( (item) => {

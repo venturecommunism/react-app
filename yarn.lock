@@ -10541,10 +10541,10 @@ react-mounter@^1.2.0:
     babel-runtime "6.x.x"
     domready "1.x.x"
 
-react-native-sensitive-info@^5.2.6:
-  version "5.2.6"
-  resolved "https://registry.yarnpkg.com/react-native-sensitive-info/-/react-native-sensitive-info-5.2.6.tgz#df20e7e95b24db385324fc1915d599bfa5017216"
-  integrity sha512-Xd0K/je93kbYh+8s3sy3glTpBoU2Il5rhNYTCLiK8qu3NBiXD/SlnJaslaFkZG9KyVHpcCMkZIKzXhr+H7QK4Q==
+react-native-sensitive-info@^5.4.1:
+  version "5.4.1"
+  resolved "https://registry.yarnpkg.com/react-native-sensitive-info/-/react-native-sensitive-info-5.4.1.tgz#9cec225b7838f793d2d24709e4c2d0aad74dc0a7"
+  integrity sha512-T0eJVAb8cBZOiYHq5TagaUsuETFJlCxjcLUpkciIUlYqeU55L4XTkdy6BgfOmVAowEMv5z3i3cmvJuTRUVrqZw==
 
 react-native-tts@^3.0.0:
   version "3.0.0"

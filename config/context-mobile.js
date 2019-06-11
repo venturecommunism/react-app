@@ -1,4 +1,4 @@
-import { setItem, getItem } from './context/persistence2'
+import { setItem, getItem, getKeys } from './context/persistence2'
 
 import datascript, { tx$, validtx$, report$, maintransact, localreport$, localtransact, mori, helpers } from './datascript'
 
@@ -37,22 +37,44 @@ const online = (maindb, maintransact, msg, me, username) => {
 }
 
 const sync = (chan, username, jwt) => {
-  getItem('offline-transactions').then(
-    txns => {
-console.log("txns", txns)
-      var parsed_txns = txns && txns != [] ? JSON.parse(txns) : []
-      parsed_txns.forEach( item => channel.send({data: item[0], meta: item[1], confirmationid: item[2]}) )
-    }
-  )
-  .catch(err => console.log(err))
+  var thekeys
+  getKeys().then(keys => {
+    thekeys = keys
+    var filteredarray = thekeys.filter( (item) => {
+      if (typeof item == 'string') {
+        if (item.match(/^offlinetxn/g)) return true
+      } else {
+        return false
+      }
+    })
+    // console.log("filtered array", filteredarray)
+    filteredarray.forEach( item => {
+      getItem(item).then( output => {
+        var data = JSON.parse(output)
+        channel.send({data: data[0], meta: data[1], confirmationid: data[2]})
+      })
+    })
+  })
 
-  getItem('syncpoint-B'+username).then(
-    syncpoint => {
-      var syncspot = syncpoint ? syncpoint : 'none'
-      chan.send({username: username, jwt: jwt, syncpoint: syncspot == 'none' ? syncspot : syncspot, subscription: querieslist})
-    }
-  )
-  .catch(err => console.log(err))
+
+  var thekeys
+  getKeys().then(keys => {
+
+    thekeys = keys
+    var filteredarray = thekeys.filter( (item) => {
+      if (typeof item == 'string') {
+        var re = new RegExp(username+'-syncpoint-')
+        if (item.match(re, ["i"])) return true
+      } else {
+        return false
+      }
+    })
+    // console.log("sync filtered array", filteredarray)
+    var removal = username+'-syncpoint-'
+    var syncspot = filteredarray.length > 0 ? filteredarray.sort().reverse()[0].slice(removal.length) : 'none'
+    console.log("syncspot", syncspot)
+    chan.send({username: username, jwt: jwt, syncpoint: syncspot == 'none' ? syncspot : syncspot, subscription: querieslist})
+  })
 }
 
 const datasync = (chan, jwt, username) => {

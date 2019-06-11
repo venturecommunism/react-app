@@ -1,8 +1,18 @@
-import { setItem as set, getItem as get, getAllItems, deleteItem } from 'react-native-sensitive-info'
+import { setItem as set, getItem as get, deleteItem, getAllItems } from 'react-native-sensitive-info'
 
 import uuid from '../uuid'
 
 const jsonkeys = ['syncpoint']
+
+const getKeys = () => new Promise(function(resolve, reject) {
+  getAllItems({
+    sharedPreferencesName: 'mySharedPrefs',
+    keychainService: 'myKeychain'
+  }).then( vals => {
+    var keys = Object.keys(vals)
+    resolve(keys)
+  })
+})
 
 const setItem = (key, value) => {
   if (jsonkeys.indexOf(key) > -1) { 
@@ -64,6 +74,7 @@ const breakmessage = (message, chunkSize) => {
 }
 
 export {
+  getKeys,
   setItem,
   getItem,
   clear,
