@@ -4,6 +4,11 @@ import uuid from '../uuid'
 
 const jsonkeys = ['syncpoint']
 
+const delItem = (key) => deleteItem(key, {
+    sharedPreferencesName: 'mySharedPrefs',
+    keychainService: 'myKeychain'
+  })
+
 const getKeys = () => new Promise(function(resolve, reject) {
   getAllItems({
     sharedPreferencesName: 'mySharedPrefs',
@@ -74,6 +79,7 @@ const breakmessage = (message, chunkSize) => {
 }
 
 export {
+  delItem,
   getKeys,
   setItem,
   getItem,

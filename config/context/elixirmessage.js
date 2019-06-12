@@ -1,6 +1,4 @@
-import { setItem, getItem, updateItem } from './persistence2'
-
-import { del } from 'idb-keyval'
+import { setItem, getItem, updateItem, delItem } from './persistence2'
 
 import {datascript as ds, mori, helpers} from 'datascript-mori'
 const datascript = ds.js
@@ -18,7 +16,7 @@ export const receiveDataMessage = (db, maintransact, message, me, username) => {
   // console.log("ELIXIR MESSAGE", message)
   if ('ok' in message && 'confirmationid' in message.ok.msg) {
     var confirmationid = message['ok']['msg']['confirmationid']
-    del('offlinetxn-'+confirmationid)
+    delItem('offlinetxn-'+confirmationid)
 
 /*
     getItem('offline-transactions').then(

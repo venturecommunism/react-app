@@ -2,6 +2,7 @@ import { set, get, clear, update, keys } from 'idb-keyval'
 
 import uuid from '../uuid'
 
+const delItem = (key) => del(key)
 const getKeys = () => keys()
 const setItem = (key, val) => set(key, val)
 const getItem = (key) => get(key)
