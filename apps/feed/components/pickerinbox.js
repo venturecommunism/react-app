@@ -19,6 +19,8 @@ const PickerInbox = ({
     drilldownprojects,
     plaininbox,
     drilldowninbox,
+
+    contexts,
     }) => {
   const COMMANDS = actions().pickerinbox
   return (
@@ -100,6 +102,9 @@ const PickerInbox = ({
                 >
                 <Text>{state.inboxitem}</Text>
                 <Button title={"Make Project"} onPress={ () => tx({type: "project"}, state.uuid) }/>
+
+                <Button title={"Make Contact"} onPress={() => tx({type: "person"}, state.uuid) }/>
+
                 <Button title={"Make Context"} onPress={() => tx({type: "context"}, state.uuid) }/>
                 <DateTime buttonaction={COMMANDS.datetimepicker} placeholder={"Add to Calendar"} taskid={state.uuid}/>
                 <Button title={"deactivate Modal"} onPress={() => setState({ inboxitem: '', uuid: ''})}/>
@@ -125,6 +130,9 @@ const PickerInbox = ({
                 >
                 <Text>{state.inboxitem}</Text>
                 <Button title={"Make Project"} onPress={ () => tx({type: "project"}, state.uuid) }/>
+
+                <Button title={"Make Contact"} onPress={() => tx({type: "person"}, state.uuid) }/>
+
                 <Button title={"Make Context"} onPress={() => tx({type: "context"}, state.uuid) }/>
                 <Button title={"Remove Project"} onPress={() => actions().rxtest.removeattribute(state.uuid, "project", project.uuid) }/>
                 <DateTime placeholder={"Add to Calendar"} taskid={state.uuid}/>
@@ -135,7 +143,7 @@ const PickerInbox = ({
                     <CheckBox checked={values.indexOf(inboxitem.uuid) > -1} key={inboxitem.uuid} taskid={inboxitem.uuid}
                     onChange={() => COMMANDS.checkboxchange(values, add, remove, inboxitem.uuid)} />
 
-                    <IndividualTask inboxitem={inboxitem} Trash={() => COMMANDS.trash(inboxitem.uuid)} changeType={() => setState({ inboxitem: inboxitem.desc, uuid: inboxitem.uuid })} />
+                    <IndividualTask contexts={contexts} inboxitem={inboxitem} Trash={() => COMMANDS.trash(inboxitem.uuid)} changeType={() => setState({ inboxitem: inboxitem.desc, uuid: inboxitem.uuid })} />
                 </ListItemView>
                     ))}
 
@@ -255,4 +263,16 @@ export default createDatomQLContainer(
     ]
     }
     `,
+    datomql`
+    query pickerinbox_contexts {
+[:find ?desc ?date ?uuid ?confirmid ?e
+  :where
+[?e "description" ?desc]
+[?e "entry" ?date]
+[?e "uuid" ?uuid]
+[?e "type" "context"]
+[(get-else $ ?e "confirmationid" "none") ?confirmid]
+]
+}
+`,
     )

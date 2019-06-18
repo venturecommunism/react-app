@@ -74,7 +74,7 @@ export const loadsyncpoint = (maintransact, username) => {
         return false
       }
     })
-    console.log("offlinetxarray", offlinetxarray)
+    // console.log("offlinetxarray", offlinetxarray)
 
     var filteredarray = thekeys.filter( (item) => {
       if (typeof item == 'string') {
@@ -84,7 +84,7 @@ export const loadsyncpoint = (maintransact, username) => {
         return false
       }
     })
-    console.log("sync filtered array", filteredarray)
+    // console.log("sync filtered array", filteredarray)
     filteredarray.sort().forEach( (item, i) => loadSync(item, i, filteredarray.length) )
 
   })
@@ -103,7 +103,7 @@ export const loadsyncpoint = (maintransact, username) => {
               if (checkkeys.length == uuids.length) {
 //                console.log('loading syncpoint: ', point)
                 var single_tx = []
-console.log("body in loadsync", body)
+// console.log("body in loadsync", body)
                 body.map(s => {
                   var operation = s.op == true ? ":db/add" : ":db/retract"
                   single_tx.push([operation, s.e, s.a, s.v])
@@ -129,7 +129,7 @@ console.log("body in loadsync", body)
         return false
       }
     })
-    console.log("offlinetxarray", offlinetxarray)
+    // console.log("offlinetxarray", offlinetxarray)
 
 
     offlinetxarray.forEach( (offlinetxn) => {

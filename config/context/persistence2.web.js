@@ -1,4 +1,4 @@
-import { set, get, clear, update, keys } from 'idb-keyval'
+import { set, get, clear, update, keys, del } from 'idb-keyval'
 
 import uuid from '../uuid'
 
@@ -27,6 +27,7 @@ const updateItem = (key, func) => {
 }
 
 export {
+  delItem,
   getKeys,
   updateItem,
   setItem,

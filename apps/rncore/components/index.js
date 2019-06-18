@@ -6,6 +6,7 @@ import {
   ScrollView,
 } from 'react-native'
 
+import Contacts from '../../feed/components/contacts'
 import Test from '../../rxtest/components/index'
 import Search from '../../clientsearch/components/index'
 import Groups from '../../groups/components/groups'
@@ -19,6 +20,7 @@ import CreateTask from '../../createtask/components/createtask'
 const App = () =>
   <View>
     <ScrollView>
+      <Contacts />
       <Test />
       <Search />
       <Login />
