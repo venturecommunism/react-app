@@ -1,3 +1,4 @@
+import contextpicker from '../../rncore/commands/whiteboard'
 import edittask from '../../rncore/commands/edittask'
 import rxtx from '../../rncore/commands/rxtx'
 import localtx from '../../rncore/commands/localtx'
@@ -11,6 +12,7 @@ import pickerinbox from '../../rncore/commands/pickerinbox'
 import rxtest from '../../rncore/commands/rxtest'
 
 const actions = {
+  contextpicker,
   edittask,
   rxtx,
   localtx,
