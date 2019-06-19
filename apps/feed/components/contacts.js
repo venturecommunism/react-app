@@ -7,6 +7,7 @@ import { View, Button, Text, PageWrapper, ListContainer, ListItem, ListItemView,
 import { State } from 'react-powerplug'
 
 import call from '../../phonecalls/commands/phonecalls'
+import EditTask from '../../feed/components/edittask'
 
 const Contacts = ({
   actions,
@@ -25,8 +26,8 @@ const Contacts = ({
                  <ListContainer>
                    {contacts.map(proj => (
                      <ListItemView key={proj.uuid}>
-                       {/* <ListItem>{proj.desc}</ListItem> */}
-                       <TouchableOpacity onPress={() => call(proj.desc.match(pattern)[0])}><Text>{proj.desc.match(pattern)[0]}</Text></TouchableOpacity>
+                       <ListItemView><EditTask uuid={proj.uuid} /></ListItemView>
+                       <ListItemView><TouchableOpacity onPress={() => call(proj.desc.match(pattern)[0])}><Text>{proj.desc.match(pattern)[0]}</Text></TouchableOpacity></ListItemView>
                        <ListItem>{proj.desc.replace(proj.desc.match(pattern)[0], "")}</ListItem>
                      </ListItemView>
                    ))}

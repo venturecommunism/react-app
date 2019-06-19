@@ -1,3 +1,4 @@
+import edittask from './edittask'
 import transact from './transact'
 import general from './general'
 import createtask from '../../createtask/commands/createtask'
@@ -8,6 +9,7 @@ import loginactions from '../../login/commands/login'
 import rxtest from '../../rncore/commands/rxtest'
 
 const actions = {
+  edittask,
   transact,
   general,
   createtask,

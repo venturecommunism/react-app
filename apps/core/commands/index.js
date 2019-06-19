@@ -1,3 +1,4 @@
+import edittask from '../../rncore/commands/edittask'
 import rxtx from '../../rncore/commands/rxtx'
 import localtx from '../../rncore/commands/localtx'
 import transact from '../../rncore/commands/transact'
@@ -10,6 +11,7 @@ import pickerinbox from '../../rncore/commands/pickerinbox'
 import rxtest from '../../rncore/commands/rxtest'
 
 const actions = {
+  edittask,
   rxtx,
   localtx,
   transact,
