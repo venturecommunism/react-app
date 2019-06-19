@@ -21,6 +21,7 @@ const PickerInbox = ({
     drilldowninbox,
 
     contexts,
+    defaultcontextcount,
     }) => {
   const COMMANDS = actions().pickerinbox
   return (
@@ -143,7 +144,7 @@ const PickerInbox = ({
                     <CheckBox checked={values.indexOf(inboxitem.uuid) > -1} key={inboxitem.uuid} taskid={inboxitem.uuid}
                     onChange={() => COMMANDS.checkboxchange(values, add, remove, inboxitem.uuid)} />
 
-                    <IndividualTask contexts={contexts} inboxitem={inboxitem} Trash={() => COMMANDS.trash(inboxitem.uuid)} changeType={() => setState({ inboxitem: inboxitem.desc, uuid: inboxitem.uuid })} />
+                    <IndividualTask defaultcontextcount={defaultcontextcount} contexts={contexts} inboxitem={inboxitem} Trash={() => COMMANDS.trash(inboxitem.uuid)} changeType={() => setState({ inboxitem: inboxitem.desc, uuid: inboxitem.uuid })} />
                 </ListItemView>
                     ))}
 
@@ -197,7 +198,7 @@ export default createDatomQLContainer(
     `,
     datomql`
     query pickerinbox_drilldowninbox {
-    [:find ?desc ?date ?status ?uuid ?confirmid ?e
+    [:find ?desc ?date ?status ?context ?uuid ?confirmid ?e
     :in $ ?project
     :where
     [?e "description" ?desc]
@@ -206,6 +207,7 @@ export default createDatomQLContainer(
     [?e "status" "pending"]
     [?e "uuid" ?uuid]
     [?e "project" ?project]
+    [(get-else $ ?e "context" "none") ?context]
     [(missing? $ ?e "type")]
     [(missing? $ ?e "wait")]
     [(missing? $ ?e "due")]
@@ -263,16 +265,50 @@ export default createDatomQLContainer(
     ]
     }
     `,
+// this not-join isn't working. might be because of the version of datascript in datascript-mori
     datomql`
     query pickerinbox_contexts {
-[:find ?desc ?date ?uuid ?confirmid ?e
+[:find ?desc ?date ?status ?uuid ?confirmid ?e
+  :in $ ?project
   :where
-[?e "description" ?desc]
-[?e "entry" ?date]
-[?e "uuid" ?uuid]
-[?e "type" "context"]
-[(get-else $ ?e "confirmationid" "none") ?confirmid]
-]
-}
+    [?e "description" ?desc]
+    [?e "entry" ?date]
+    [?e "status" ?status]
+    [?e "status" "pending"]
+    [?e "uuid" ?uuid]
+    [?e "type" "context"]
+    [$ (not-join [?e2 "project" ?project]
+    [?e2 "context" ?uuid])]
+
+    [(missing? $ ?e "wait")]
+    [(missing? $ ?e "due")]
+    [(get-else $ ?e "confirmationid" "none") ?confirmid]
+    ]
+    }
 `,
+    datomql`
+    query pickerinbox_defaultcontextcount {
+    [:find (count ?desc) ?desc ?uuid
+    :in $ ?project
+    :where
+    [?e "description" ?desc1]
+    [?e "entry" ?date]
+    [?e "status" ?status]
+    [?e "status" "pending"]
+    [?e "uuid" ?some_uuid]
+    [?e "project" ?project]
+    [?e2 "type" "project"]
+    [?e2 "uuid" ?project]
+    [?e3 "project" ?project]
+    [?e3 "context" ?uuid]
+    [?e4 "description" ?desc]
+    [?e4 "type" "context"]
+    [?e4 "uuid" ?uuid]
+    [(missing? $ ?e "type")]
+    [(missing? $ ?e "wait")]
+    [(missing? $ ?e "due")]
+    [(get-else $ ?e "confirmationid" "none") ?confirmid]
+    ]
+    }
+    `,
     )

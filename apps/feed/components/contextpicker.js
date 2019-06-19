@@ -22,7 +22,7 @@ const ContextPicker = ({
 }) =>
   <Fragment>
     <ListContainer>
-    {contexts.map( context => <ListItemView key={context.uuid}><Button onPress={() => actions().contextpicker['selectcontext'](inboxitem, context.uuid)} title={context.desc} /></ListItemView> )}
+      {contexts.map( context => <ListItemView style={{'backgroundColor': context.uuid == inboxitem.context ? 'red' : 'blue'}} key={context.uuid}><Button onPress={context.uuid != inboxitem.context ? () => actions().contextpicker['selectcontext'](inboxitem, context.uuid) : () => console.log('this context is already set')} title={context['desc-count'] ? context.desc + ' (' + context['desc-count'] + ')' : context.desc } /></ListItemView> )}
     </ListContainer>
   </Fragment>
 
