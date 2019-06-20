@@ -1,3 +1,4 @@
+import contextpicker from '../../rncore/commands/whiteboard'
 import edittask from './edittask'
 import transact from './transact'
 import general from './general'
@@ -9,6 +10,7 @@ import loginactions from '../../login/commands/login'
 import rxtest from '../../rncore/commands/rxtest'
 
 const actions = {
+  contextpicker,
   edittask,
   transact,
   general,

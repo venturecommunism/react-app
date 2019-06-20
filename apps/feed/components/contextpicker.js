@@ -11,7 +11,7 @@ import {
   StyleSheet,
 } from 'react-native'
 
-import { ListContainer, ListItemView } from '../../rncore/components/styledComponents'
+import { ListContainer, ListItemView, ListItem } from '../../rncore/components/styledComponents'
 
 const ContextPicker = ({
   actions,
@@ -22,7 +22,12 @@ const ContextPicker = ({
 }) =>
   <Fragment>
     <ListContainer>
-      {contexts.map( context => <ListItemView style={{'backgroundColor': context.uuid == inboxitem.context ? 'red' : 'blue'}} key={context.uuid}><Button onPress={context.uuid != inboxitem.context ? () => actions().contextpicker['selectcontext'](inboxitem, context.uuid) : () => console.log('this context is already set')} title={context['desc-count'] ? context.desc + ' (' + context['desc-count'] + ')' : context.desc } /></ListItemView> )}
+      {/* contexts.map( context => <ListItemView key={context.uuid}><ListItem>{JSON.stringify(context)}</ListItem></ListItemView> ) */}
+      {contexts.map( context =>
+      <Fragment key={context.uuid}>
+        <ListItemView style={{'backgroundColor': context.uuid == inboxitem.context ? 'red' : 'blue'}} ><Button onPress={context.uuid != inboxitem.context ? () => actions().contextpicker['selectcontext'](inboxitem, context.uuid) : () => console.log('this context is already set')} title={context['e3-count'] ? context.desc + ' (' + context['e3-count'] + ')' : context.desc } /></ListItemView>
+      </Fragment>
+      )}
     </ListContainer>
   </Fragment>
 

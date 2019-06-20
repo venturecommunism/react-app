@@ -288,7 +288,7 @@ export default createDatomQLContainer(
 `,
     datomql`
     query pickerinbox_defaultcontextcount {
-    [:find (count ?desc) ?desc ?uuid
+    [:find (count ?e3) ?desc ?uuid
     :in $ ?project
     :where
     [?e "description" ?desc1]
