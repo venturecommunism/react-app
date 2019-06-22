@@ -10,21 +10,24 @@ const {DB_ID, DB_ADD, TX_DATA, TX_META, DB_AFTER, DB_BEFORE, DB_UNIQUE, DB_UNIQU
 const {hashMap, vector, parse, toJs, equals, isMap, hasKey, isSet, set, get, find, nth, count, reduce} = mori
 const morimap = helpers.map
 
-import { isObservable, Observable, from, of, interval, timer } from 'rxjs'
+import { isObservable, Observable, from, of, interval, timer, combineLatest } from 'rxjs'
 import {
   switchMap,
   map,
   startWith,
   tap,
   catchError,
-  combineLatest,
   merge,
   distinctUntilChanged,
+  combineLatest as pipeCombineLatest,
   debounce,
   skip,
+
+  debounceTime,
 } from 'rxjs/operators'
 import {
   mapPropsStream,
+  createEventHandler,
 } from 'recompose'
 
 const singlequery = (props$, query, morearguments, queryname, labels, filename, stateordata) => props$.pipe(
@@ -88,17 +91,17 @@ const singlequery = (props$, query, morearguments, queryname, labels, filename, 
 
     const fusereport$ = report$
       .pipe(
-        combineLatest(somequery$, (s1, s2) => ({s1, s2})),
+        pipeCombineLatest(somequery$, (s1, s2) => ({s1, s2})),
       )
 
     const usernamefusereport$ = report$
       .pipe(
-        combineLatest(usernamequery$, (s1, s2) => ({s1, s2})),
+        pipeCombineLatest(usernamequery$, (s1, s2) => ({s1, s2})),
       )
 
     const fusepull$ = report$
       .pipe(
-        combineLatest(eidsreport$, (s1, s2) => ({s1, s2})),
+        pipeCombineLatest(eidsreport$, (s1, s2) => ({s1, s2})),
       )
 
     function newq(somereport$, query) {
@@ -218,15 +221,36 @@ const multiquery = (props$, queries) => {
 }
 
 const dsload = (queries) => mapPropsStream(props$ => {
+
+  const { handler, stream } = createEventHandler()
+  const value$ = stream.pipe(
+    map(e => e),
+    startWith('Do')
+  )
+
+  const getvalue$ = value$.pipe(
+    map(e => e),
+    startWith('')
+  )
+
+value$.subscribe(console.log)
+
   const dsQ$ = multiquery(props$, queries)
   const keys = Object.keys(dsQ$)
   const values = Object.values(dsQ$)
-  return props$.pipe(
-    combineLatest(...values, (props, ...values) => {
+//  return props$.pipe(
+    return combineLatest(props$, value$, ...values, (props, value, ...values) => {
       var returnobj = {...props}
       keys.forEach( (key, i) => returnobj[key] = values[i] )
-      return returnobj
-  }))
+      return {...returnobj, value, handler}
+  })
+  .pipe(
+    // debounceTime(70),
+    switchMap(props => {
+      return of(props)
+    })
+  )
+//)
 })
 
 export default dsload

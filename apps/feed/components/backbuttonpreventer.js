@@ -23,7 +23,6 @@ class BackButtonDemo extends Component {
     render() {
         return (
             <View>
-                <Text>Back button example</Text>
             </View>
         );
     }
