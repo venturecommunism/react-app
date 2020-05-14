@@ -24,7 +24,7 @@
     "bunyan": "^1.8.10",
     "colors": "^1.1.2",
     "fs": "^0.0.1-security",
-    "js-yaml": "^3.8.3",
+    "js-yaml": "^3.13.1",
     "prompt": "^1.0.0",
     "puppeteer": "^0.13.0",
     "readline": "^1.3.0"
