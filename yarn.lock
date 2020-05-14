@@ -6029,9 +6029,9 @@ icss-utils@^2.1.0:
   dependencies:
     postcss "^6.0.1"
 
-"idb-keyval@https://github.com/wmhilton-contrib/idb-keyval#f150146a94b4ca7ccd19d7fbc13de8e607091a65":
-  version "3.1.0"
-  resolved "https://github.com/wmhilton-contrib/idb-keyval#f150146a94b4ca7ccd19d7fbc13de8e607091a65"
+"idb-keyval@https://github.com/wmhilton-contrib/idb-keyval#ad46d616a6751f1e1155d4aaf4795f716b7f0882":
+  version "3.3.1"
+  resolved "https://github.com/wmhilton-contrib/idb-keyval#ad46d616a6751f1e1155d4aaf4795f716b7f0882"
 
 ieee754@^1.1.4:
   version "1.1.12"

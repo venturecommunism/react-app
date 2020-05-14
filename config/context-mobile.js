@@ -71,8 +71,9 @@ const sync = (chan, username, jwt) => {
     })
     // console.log("sync filtered array", filteredarray)
     var removal = username+'-syncpoint-'
-    var syncspot = filteredarray.length > 0 ? filteredarray.sort().reverse()[0].slice(removal.length) : 'none'
-    console.log("syncspot", syncspot)
+//    var syncspot = filteredarray.length > 0 ? filteredarray.sort().reverse()[0].slice(removal.length) : 'none'
+    // console.log("syncspot", syncspot)
+    var syncspot = 'none'
     chan.send({username: username, jwt: jwt, syncpoint: syncspot == 'none' ? syncspot : syncspot, subscription: querieslist})
   })
 }

@@ -11,10 +11,17 @@ import {
 } from 'rxjs/operators'
 
 const {core: dscljs} = ds
-const {hashMap, vector, get, equals} = mori
+const {hashMap, vector, get, equals, toJs} = mori
 const {DB_AFTER, DB_BEFORE, TX_DATA, TX_META} = helpers
 
 function nextTx(tx$, ...tx) {
+  const conn = tx$.getValue()
+  conn ? console.log("conn", JSON.stringify(Object.keys(conn))) : ''
+  // if (conn && conn.length == 1) console.log(toJs(tx[0]))
+  const report = conn ? get(conn[0], DB_AFTER) : null
+  // console.log("report", report)
+
+  report ? tx.conn = report : null
   tx$.next(tx)
 }
 
@@ -34,10 +41,22 @@ function connect(db) {
 
   const report$ = tx$
     .pipe(
-//      tap( wut => console.log("wut", wut) ),
-      map( wut => wut && wut[0] && wut[1] ? [ helpers.entities_to_clj( wut[0] ), helpers.entities_to_clj( wut[1] ) ] : wut ),
+      // tap( tx => console.log("tx", tx) ),
+      map( tx => tx && tx[0] && tx[1] ? [ helpers.entities_to_clj( tx[0] ), helpers.entities_to_clj( tx[1] ) ] : tx ),
       scan(
-      (report, tx) => tx ? dscljs.with$(get(report, DB_AFTER), ...tx) : initialreport,
+      (report, tx) => {
+        // console.log("REPORT", report)
+        const conn = tx && tx.conn ? tx.conn : get(report, DB_AFTER)
+        // console.log("report", toJs(conn))
+        // tx ? console.log("gotit", dscljs.with$(thingie, ...tx)) : console.log("no tx")
+
+const outcome = tx ? dscljs.with$(conn, ...tx) : 'none'
+// tx ? console.log("tx", toJs(tx[0])) : ''
+// console.log("outcome", outcome)
+// !tx ? console.log("initialreport", toJs(initialreport)['db-after']) : ''
+
+        return tx ? dscljs.with$(conn, ...tx) : initialreport
+      },
       initialreport
     ))
 

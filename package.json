@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "datascript-mori": "^0.17.0",
-    "idb-keyval": "https://github.com/wmhilton-contrib/idb-keyval#f150146a94b4ca7ccd19d7fbc13de8e607091a65",
+    "idb-keyval": "https://github.com/wmhilton-contrib/idb-keyval#ad46d616a6751f1e1155d4aaf4795f716b7f0882",
     "js-csp": "^0.9.3",
     "jsedn": "https://github.com/venturecommunism/jsedn#5d9aeacc6396ea80fb79476c475461dd22fbc152",
     "lodash": "^4.17.11",
