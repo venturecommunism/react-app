@@ -59,7 +59,7 @@
   "devDependencies": {
     "babel-jest": "23.4.2",
     "babel-preset-react-native": "^5",
-    "electron": "^1.4.13",
+    "electron": "^11.5.0",
     "jest": "23.5.0",
     "react-app-tools": "git+https://github.com/venturecommunism/react-app-tools.git",
     "react-test-renderer": "16.4.1"
